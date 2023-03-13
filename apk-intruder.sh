@@ -41,6 +41,9 @@ else
         mkdir ./output
     fi
 
+    # Create result file
+    echo "=== Results ===" > "$(pwd)/output/results.txt"
+
     # Decompile all apks in "input" directory and run tests
     for files in ./input/*; do
 
@@ -49,6 +52,24 @@ else
         echo "Decompiling: $filename"
         apktool d "$(pwd)/input/$filename" -o "$(pwd)/output/$filename" -f
 
-        grep -i "firebase.io" "$(pwd)/output/$filename/res/values/strings.xml"
+        # https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting
+
+        echo "= $filename =" > "$(pwd)/output/results.txt"
+        
+        # Check if application is debbugeable
+        grep -i "debuggable=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml"
+        grep -i "debuggable=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+
+        # Check if application make a backup
+        grep -i "android:allowBackup=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml"
+        grep -i "android:allowBackup=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+
+        # Check if application has Api Keys
+        grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml"
+        grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+
+        # Check URL for firebase
+        grep -i "firebase_database_url" "$(pwd)/output/$filename/res/values/strings.xml"
+        grep -i "firebase_database_url" "$(pwd)/output/$filename/res/values/strings.xml" >> "$(pwd)/output/results.txt"
     done
 fi
