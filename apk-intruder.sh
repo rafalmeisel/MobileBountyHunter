@@ -1,4 +1,6 @@
-if [ ! -f /usr/local/bin/apktool.jar ] 
+#!/bin/bash
+
+if [ ! -f /usr/local/bin/apktool.jar ]
 then
     echo "ApkTool is not installed. Start installing..."
 
@@ -43,13 +45,21 @@ else
 
     # Create result file
     echo "=== Results ===" > "$(pwd)/output/results.txt"
+    chmod 766 "$(pwd)/output/results.txt"
 
     # Decompile all apks in "input" directory and run tests
     for files in ./input/*; do
 
         filename=$(basename -- "$files")
 
+        echo ""
+        echo "########################################"
+        echo "##### $filename"
+        echo "########################################"
+        echo ""
+        
         echo "Decompiling: $filename"
+
         apktool d "$(pwd)/input/$filename" -o "$(pwd)/output/$filename" -f
 
         # https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting
@@ -57,19 +67,40 @@ else
         echo "= $filename =" > "$(pwd)/output/results.txt"
         
         # Check if application is debbugeable
-        grep -i "debuggable=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml"
-        grep -i "debuggable=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+        grep -i 'debuggable="true"' "$(pwd)/output/$filename/AndroidManifest.xml"
+        grep -i 'debuggable="true"' "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
 
         # Check if application make a backup
-        grep -i "android:allowBackup=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml"
-        grep -i "android:allowBackup=\"true\"" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+        grep -i 'android:allowBackup="true"' "$(pwd)/output/$filename/AndroidManifest.xml"
+        grep -i 'android:allowBackup="true"' "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
 
         # Check if application has Api Keys
         grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml"
         grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
 
         # Check URL for firebase
-        grep -i "firebase_database_url" "$(pwd)/output/$filename/res/values/strings.xml"
-        grep -i "firebase_database_url" "$(pwd)/output/$filename/res/values/strings.xml" >> "$(pwd)/output/results.txt"
+        FIREBASE_DATABASE_URL="$(grep -o https.*firebaseio.com "$(pwd)/output/$filename/res/values/strings.xml")"
+
+        echo "FIREBASE_DATABASE_URL=$FIREBASE_DATABASE_URL"
+
+        # Test curl
+        FIREBASE_DATABASE_JSON=$FIREBASE_DATABASE_URL"/.json"
+
+        FIREBASE_DATABASE_RESPONSE="$(curl --silent $FIREBASE_DATABASE_JSON)"
+        FIREBASE_DATABASE_RESPONSE_BODY="$(grep -o {[\r\n].*[\r\n]+} "$FIREBASE_DATABASE_RESPONSE")"
+        
+        # echo "$FIREBASE_DATABASE_RESPONSE_BODY"
+
+        if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
+            echo "$FIREBASE_DATABASE_URL: is not vulnerable..."
+            echo "$FIREBASE_DATABASE_URL: is not vulnerable..." >> "$(pwd)/output/results.txt"
+        else
+            echo "$FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY"  
+            echo "$FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable!!!" >> "$(pwd)/output/results.txt"
+
+            echo "$(pwd)/output/results.txt"
+            echo "FIREBASE_DATABASE_RESPONSE: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$(pwd)/output/results.txt"
+        fi
+
     done
 fi
