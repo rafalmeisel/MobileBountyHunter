@@ -1,67 +1,101 @@
 #!/bin/bash
 
-checksDebuggable () {
-    filename=$1
+RED='\e[1;31m'
+BLUE='\e[1;34m'
+CLEAR_COLOR='\e[0m' # No Color
 
-    # Check if application is debbugeable
-    if grep -i 'debuggable="true"' "$(pwd)/output/$filename/AndroidManifest.xml"; then
-        echo "$filename: debuggable=true"
-        grep -i 'debuggable="true"' "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+# Worth to check
+# - google_api_key
+# - google_app_id
+# - google_crash_reporting_api_key
+# - google_storage_bucket
+# - MAPS_API_KEY
+
+checksAndroidManifestDebuggable () {
+    filename=$1
+    if grep --silent -i 'debuggable="true"' "$(pwd)/output/$filename/AndroidManifest.xml"; then
+        echo -e "$filename: AndroidManifest: ${RED}debuggable=true${CLEAR_COLOR}\n"
+
+        echo -e "$filename : debuggable=\"true\" : $(pwd)/output/$filename/AndroidManifest.xml" >> "./results.txt"
+        grep -n -i 'debuggable="true"' "$(pwd)/output/$filename/AndroidManifest.xml" >> "./results.txt"
+        echo -e "\n" >> "./results.txt"
     else
-        echo "$filename: debuggable=false"
+        echo -e "$filename: AndroidManifest: ${BLUE}debuggable=false${CLEAR_COLOR}\n"
     fi
 }
 
-checksAllowBackup () {
+checksAndroidManifestAllowBackup () {
     filename=$1
-    #TODO: Check grep output -> Reduce message
-    #Check if application make a backup
-    if grep -i 'allowBackup="true"' "$(pwd)/output/$filename/AndroidManifest.xml"; then
-        echo "$filename: allowBackup=true"
-        grep -i 'allowBackup="true"' "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+    if grep --silent -i 'allowBackup="true"' "$(pwd)/output/$filename/AndroidManifest.xml"; then
+        echo -e "$filename: AndroidManifest: ${RED}allowBackup=true${CLEAR_COLOR}\n"
+
+        echo -e "$filename : allowBackup=\"true\" : $(pwd)/output/$filename/AndroidManifest.xml" >> "./results.txt"
+        grep -n -i 'allowBackup="true"' "$(pwd)/output/$filename/AndroidManifest.xml" >> "./results.txt"
+        echo -e "\n" >> "./results.txt"
     else
-        echo "$filename: allowBackup=false"
+        printf "$filename: AndroidManifest: ${BLUE}allowBackup=false${CLEAR_COLOR}\n"
     fi
 }
 
-checksAPIkeys (){
-    filename=$1
+# checksValuesStringGoogleApiKey () {
+#     echo "-> checksValuesStringGoogleApiKey"
+#     if grep -silent -i 'google_api_key' "$(pwd)/output/$filename/res/values/strings.xml"; then
+#         google_api_key="$(grep --silent -o -i 'google_api_key')"
+#         echo "$filename: google_api_key = ${LIGHT_BLUE}$google_api_key${NC}"
+#         grep "$filename: ${LIGHT_BLUE}$google_api_key${NC}" >> "$(pwd)/output/results.txt"
+#     fi
+# }
 
-     # Check if application has Api Keys
-    grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml"
-    grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
-}
+# checksAPIkeys (){
+#     filename=$1
+#     # grep -i "apikey" "$(pwd)/output/$filename/res/values/strings.xml"
+#     # grep -i "apikey" "$(pwd)/output/$filename/AndroidManifest.xml" >> "$(pwd)/output/results.txt"
+# }
 
-checksFirebasePermission (){
+# checksFirebasePermission (){
+#     filename=$1
+    
+#     # Check URL for firebase
+#     FIREBASE_DATABASE_URL="$(grep --silent -o https.*firebaseio.com "$(pwd)/output/$filename/res/values/strings.xml")"
+
+    
+
+#     # Test curl
+#     FIREBASE_DATABASE_JSON=$FIREBASE_DATABASE_URL"/.json"
+
+#     echo "echo $filename: $FIREBASE_DATABASE_JSON"
+
+#     FIREBASE_DATABASE_RESPONSE="$(curl --silent $FIREBASE_DATABASE_JSON)"
+#     FIREBASE_DATABASE_RESPONSE_BODY="$(grep --silent -o {[\r\n].*[\r\n]+} "$FIREBASE_DATABASE_RESPONSE")"
+    
+#     # echo "$FIREBASE_DATABASE_RESPONSE_BODY"
+
+#     echo "echo $filename: $FIREBASE_DATABASE_RESPONSE_BODY"
+
+#     if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
+#         echo "$FIREBASE_DATABASE_URL: is not vulnerable..."
+#         echo "$FIREBASE_DATABASE_URL: is not vulnerable..." >> "$(pwd)/output/results.txt"
+#     else
+#         echo "$FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY"  
+#         echo "$FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable!!!" >> "$(pwd)/output/results.txt"
+
+#         echo "$(pwd)/output/results.txt"
+#         echo "FIREBASE_DATABASE_RESPONSE: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$(pwd)/output/results.txt"
+#     fi
+
+# }
+
+runTests (){
     filename=$1
     
-    # Check URL for firebase
-    FIREBASE_DATABASE_URL="$(grep -o https.*firebaseio.com "$(pwd)/output/$filename/res/values/strings.xml")"
-
-    echo "FIREBASE_DATABASE_URL=$FIREBASE_DATABASE_URL"
-
-    # Test curl
-    FIREBASE_DATABASE_JSON=$FIREBASE_DATABASE_URL"/.json"
-
-    FIREBASE_DATABASE_RESPONSE="$(curl --silent $FIREBASE_DATABASE_JSON)"
-    FIREBASE_DATABASE_RESPONSE_BODY="$(grep -o {[\r\n].*[\r\n]+} "$FIREBASE_DATABASE_RESPONSE")"
-    
-    # echo "$FIREBASE_DATABASE_RESPONSE_BODY"
-
-    if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
-        echo "$FIREBASE_DATABASE_URL: is not vulnerable..."
-        echo "$FIREBASE_DATABASE_URL: is not vulnerable..." >> "$(pwd)/output/results.txt"
-    else
-        echo "$FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY"  
-        echo "$FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable!!!" >> "$(pwd)/output/results.txt"
-
-        echo "$(pwd)/output/results.txt"
-        echo "FIREBASE_DATABASE_RESPONSE: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$(pwd)/output/results.txt"
-    fi
-
+    checksAndroidManifestDebuggable $filename
+    checksAndroidManifestAllowBackup $filename
+    # checksValuesStringGoogleApiKey $filename
+    # checksAPIkeys $filename
+    # checksFirebasePermission $filename
 }
 
-while getopts 'd' OPTION; do
+while getopts 'df' OPTION; do
   case "$OPTION" in
     d)
       echo "Download apks from file"
@@ -147,46 +181,53 @@ if [ "$downloadAndDecompileApksFromInput" ] ; then
         echo "Start downloading: $apkToDownload"
         apkeep -a $apkToDownload ./newApks/
     done < "$PATH_TO_LIST"
+    
 fi
+
+for files in $PATH_TO_APKS; do
+    filename=$(basename -- "$files")
+    filenameWithoutWhiteSpace="${filename// /.}"
+
+    mv -vn "$(pwd)/input/$filename" "$(pwd)/input/$filenameWithoutWhiteSpace"
+done
 
 # Create result file
 echo "=== Results ===" > "$(pwd)/output/results.txt"
-chmod 766 "$(pwd)/output/results.txt"
+chmod 766 "$(pwd)/results.txt"
 
-# Decompile all apks in "input" directory and run tests
-for files in $PATH_TO_APKS; do
+if [scanSpecificApk]; then
+    runTests $filename
+else
 
-    filename=$(basename -- "$files")
-    extension="${filename##*.}"
-    echo "Extention is: $extension"
-    
-    if [ "$extension" == "xapk" ]; then
-        echo "File has XAPK format. Skip analyze."
-    else
-        echo ""
-        echo "########################################"
-        echo "##### $filename"
-        echo "########################################"
-        echo ""
+    # Decompile all apks in "input" directory and run tests
+    for files in $PATH_TO_APKS; do
+
+        filename=$(basename -- "$files")
+        extension="${filename##*.}"
+        echo "Extention is: $extension"
         
-        echo "Decompiling: $filename"
-        
-        if [ "$downloadAndDecompileApksFromInput" ]; then
-            mv "$(pwd)/newApks/$filename" "$(pwd)/input/$filename"
+        if [ "$extension" == "xapk" ]; then
+            echo "File has XAPK format. Skip analyze."
+        else
+            echo ""
+            echo "########################################"
+            echo "##### $filename"
+            echo "########################################"
+            echo ""
+            
+            echo "Decompiling: $filename"
+            
+            if [ "$downloadAndDecompileApksFromInput" ]; then
+                mv "$(pwd)/newApks/$filename" "$(pwd)/input/$filename"
+            fi
+
+            apktool d "$(pwd)/input/$filename" -o "$(pwd)/output/$filename" -f
+
+            # https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting
+            
+            runTests $filename
         fi
-
-        apktool d "$(pwd)/input/$filename" -o "$(pwd)/output/$filename" -f
-
-        # https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting
-
-        echo "= $filename =" > "$(pwd)/output/results.txt"
-        
-        checksDebuggable $filename
-        checksAllowBackup $filename
-        checksAPIkeys $filename
-        checksFirebasePermission $filename
-    fi
-done
-
+    done
+fi
 
 
