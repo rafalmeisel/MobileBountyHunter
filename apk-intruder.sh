@@ -59,8 +59,7 @@ checksAndroidManifestAllowBackup () {
 
 findFirebaseUrl (){
     filename=$1
-
-    FIREBASE_DATABASE_URL="$(grep -o https.*firebaseio.com "$OUTPUT_PATH/$filename/res/values/strings.xml")"
+    FIREBASE_DATABASE_URL="$(grep -oP 'https.*firebaseio.com' $OUTPUT_PATH/$filename/res/values/strings.xml)"
 }
 
 prepareFirebaUrlJson (){
@@ -71,13 +70,7 @@ prepareFirebaUrlJson (){
 getFirebaseResponseBodyContent (){
     FIREBASE_DATABASE_JSON=$1
     FIREBASE_DATABASE_RESPONSE="$(curl -s $FIREBASE_DATABASE_JSON)"
-
-    # FIX FIREBASE_DATABASE_RESPONSE_BODY GREP with Regex
-    # FIREBASE_DATABASE_RESPONSE_BODY="$(echo $FIREBASE_DATABASE_RESPONSE | grep '".*"')"
-    FIREBASE_DATABASE_RESPONSE_BODY="$(grep -E '".*"' $FIREBASE_DATABASE_RESPONSE)"
-
-    echo "$filename: FIREBASE_DATABASE_RESPONSE : $FIREBASE_DATABASE_RESPONSE"
-    echo "$filename: FIREBASE_DATABASE_RESPONSE_BODY : $FIREBASE_DATABASE_RESPONSE_BODY"
+    FIREBASE_DATABASE_RESPONSE_BODY=$(echo "$FIREBASE_DATABASE_RESPONSE" | grep -oP '".*"')
 }
 
 checksFirebasePermission (){
@@ -88,8 +81,9 @@ checksFirebasePermission (){
     local FIREBASE_DATABASE_RESPONSE_BODY=""
 
     findFirebaseUrl $filename
-    prepareFirebaUrlJson $FIREBASE_DATABASE_URL
+    prepareFirebaUrlJson $FIREBASE_DATABASE_URL 
     getFirebaseResponseBodyContent $FIREBASE_DATABASE_URL_JSON
+    
 
     if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
         echo -e "\n$filename : $FIREBASE_DATABASE_URL: ${BLUE}Permission denied${CLEAR_COLOR}"
@@ -254,7 +248,7 @@ main (){
     createOutputDirectory
     createResultFile
     
-    if "$downloadApkMode" = true; then
+    if [["$downloadApkMode" = true]]; then
         downloadApks
     fi
 
