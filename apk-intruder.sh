@@ -6,6 +6,8 @@ CLEAR_COLOR='\e[0m' # No Color
 RESULT_FILE="./results.txt"
 INPUT_PATH="./input"
 OUTPUT_PATH="./output"
+INPUT_ANALYZED_PATH="./input_analyzed"
+OUTPUT_ANALYZED_PATH="./output_analyzed"
 
 # Worth to check
 # - google_api_key
@@ -14,33 +16,53 @@ OUTPUT_PATH="./output"
 # - google_storage_bucket
 # - MAPS_API_KEY
 
+# TODO:
+# SMILES_API_KEY / strings.xml
+# pushioAppKey [Example: pio-ABEgeX-sNNnkNqc2NRl0m6TUw] / strings.xml
+
 # https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting
 
 checksAndroidManifestDebuggable () {
     filename=$1
     if grep --silent -i 'debuggable="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
-        echo -e "$filename: AndroidManifest: ${RED}debuggable=true${CLEAR_COLOR}"
+        printf "$filename: AndroidManifest: ${RED}debuggable=true${CLEAR_COLOR}\n"
 
         echo -e "$filename : debuggable=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         grep -n -i 'debuggable="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
-        echo -e "$filename: AndroidManifest: ${BLUE}debuggable=false${CLEAR_COLOR}"
+        printf "$filename: AndroidManifest: ${BLUE}debuggable=false${CLEAR_COLOR}\n"
     fi
 }
 
+# Application store additional data as backup as it's running or closed
 checksAndroidManifestAllowBackup () {
     filename=$1
     if grep --silent -i 'allowBackup="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
-        echo -e "$filename: AndroidManifest: ${RED}allowBackup=true${CLEAR_COLOR}"
+        printf "$filename: AndroidManifest: ${RED}allowBackup=true${CLEAR_COLOR}\n"
 
         echo -e "$filename : allowBackup=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         grep -n -i 'allowBackup="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
-        printf "$filename: AndroidManifest: ${BLUE}allowBackup=false${CLEAR_COLOR}"
+        printf "$filename: AndroidManifest: ${BLUE}allowBackup=false${CLEAR_COLOR}\n"
     fi
 }
+
+# Activity can be accessed from outside the application
+checksAndroidManifestExported () {
+    filename=$1
+    if grep --silent -i 'exported="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
+        printf "$filename: AndroidManifest: ${RED}exported=true${CLEAR_COLOR}\n"
+
+        echo -e "$filename : exported=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        grep -n -i 'exported="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        echo -e "\n" >> "$RESULT_FILE"
+    else
+        printf "$filename: AndroidManifest: ${BLUE}exported=false${CLEAR_COLOR}\n"
+    fi
+}
+
 
 # checksValuesStringGoogleApiKey () {
 #     echo "-> checksValuesStringGoogleApiKey"
@@ -60,11 +82,13 @@ checksAndroidManifestAllowBackup () {
 findFirebaseUrl (){
     filename=$1
     FIREBASE_DATABASE_URL="$(grep -oP 'https.*firebaseio.com' $OUTPUT_PATH/$filename/res/values/strings.xml)"
+    # echo "findFirebaseUrl : FIREBASE_DATABASE_URL : $FIREBASE_DATABASE_URL"
 }
 
 prepareFirebaUrlJson (){
     FIREBASE_DATABASE_URL=$1
     FIREBASE_DATABASE_URL_JSON=$FIREBASE_DATABASE_URL"/.json"
+    # echo "prepareFirebaUrlJson : FIREBASE_DATABASE_URL_JSON : $FIREBASE_DATABASE_URL_JSON"
 }
 
 getFirebaseResponseBodyContent (){
@@ -81,28 +105,79 @@ checksFirebasePermission (){
     local FIREBASE_DATABASE_RESPONSE_BODY=""
 
     findFirebaseUrl $filename
-    prepareFirebaUrlJson $FIREBASE_DATABASE_URL 
-    getFirebaseResponseBodyContent $FIREBASE_DATABASE_URL_JSON
+    
+    if [[ $FIREBASE_DATABASE_URL == "" ]]; then
+        printf "$filename: Strings: No Firebase URL found.\n"
+    else
+        prepareFirebaUrlJson $FIREBASE_DATABASE_URL 
+        getFirebaseResponseBodyContent $FIREBASE_DATABASE_URL_JSON
+        
+        
+        if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
+            printf "$filename: $FIREBASE_DATABASE_URL: ${BLUE}Permission denied${CLEAR_COLOR}\n"
+            echo -e "$filename: $FIREBASE_DATABASE_URL: Permission denied" >> "$RESULT_FILE"
+        else
+            printf "$filename: $FIREBASE_DATABASE_URL: is POTENTIALLY ${RED}vulnerable${CLEAR_COLOR}: $FIREBASE_DATABASE_RESPONSE_BODY\n"
+            echo -e "$filename: $FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$RESULT_FILE"
+        fi
+    fi
+}
+
+# findAwsData () {
+#     filename=$1
     
 
-    if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
-        echo -e "\n$filename : $FIREBASE_DATABASE_URL: ${BLUE}Permission denied${CLEAR_COLOR}"
-        echo -e "$filename : $FIREBASE_DATABASE_URL: Permission denied" >> "$RESULT_FILE"
-    else
-        echo -e "\n$filename : $FIREBASE_DATABASE_URL: is POTENTIALLY ${RED}vulnerable${CLEAR_COLOR}: $FIREBASE_DATABASE_RESPONSE_BODY"
-        echo -e "$filename : $FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$RESULT_FILE"
-    fi
+#     if grep --silent -i 'aws' "$OUTPUT_PATH/$filename/res/values/strings.xml"; then
 
-}
+#         AWS_DATA="$(grep -i 'aws' $OUTPUT_PATH/$filename/res/values/strings.xml)"
+#         echo -e "$filename: AWS Data: $AWS_DATA"
+#         echo -e "$filename : $AWS_DATA" >> "$RESULT_FILE"
+#         echo -e "\n" >> "$RESULT_FILE"
+#     else
+#         echo -e "$filename: AndroidManifest: ${BLUE}exported=false${CLEAR_COLOR}"
+#     fi
+# }
+
+# findHttpUrls() {
+#     filename=$1
+    
+#     if grep --silent -inr 'http://' "$OUTPUT_PATH/$filename" --exlude-dir=lib; then
+
+#         httpUrls="$(grep -inr 'http://' $OUTPUT_PATH/$filename --exlude-dir=lib)"
+#         echo -e "$filename: HTTP Urls: $httpUrls"
+#         echo -e "$filename : $httpUrls" >> "$RESULT_FILE"
+#         echo -e "\n" >> "$RESULT_FILE"
+#     else
+#         echo -e "$filename: HTTP Urls: None"
+#     fi
+# }
+
+# findHttpsUrls() {
+#     filename=$1
+    
+#     if grep --silent -inr 'https://' "$OUTPUT_PATH/$filename" --exlude-dir=lib; then
+
+#         httpsUrls="$(grep -inr 'https://' $OUTPUT_PATH/$filename --exlude-dir=lib)"
+#         echo -e "$filename: HTTPS Urls: $httpsUrls"
+#         echo -e "$filename : $httpsUrls" >> "$RESULT_FILE"
+#         echo -e "\n" >> "$RESULT_FILE"
+#     else
+#         echo -e "$filename: HTTPS Urls: None"
+#     fi
+# }
 
 runTests (){
     filename=$1
     
     checksAndroidManifestDebuggable $filename
     checksAndroidManifestAllowBackup $filename
+    checksAndroidManifestExported $filename
     # checksValuesStringGoogleApiKey $filename
     # checksAPIkeys $filename
     checksFirebasePermission $filename
+    # findAwsData $filename
+    # findHttpUrls $filename
+    # findHttpsUrls $filename
 }
 
 installApkTools (){
@@ -187,19 +262,30 @@ replaceWhitespaceWithDots (){
 updateApkFilename (){
     filename=$1
     filenameWithoutWhiteSpace=$2
-    mv -vn "$INPUT_PATH/$filename" "$INPUT_PATH$filenameWithoutWhiteSpace"
+    mv -vn "$INPUT_PATH/$filename" "$INPUT_PATH/$filenameWithoutWhiteSpace"
 }
 
+checkApkListIsEmpty (){
+    PATH_TO_LIST=$1
+
+    # Apks List File is empty. -s return True if FILE exists and has a size greater than zero.
+    if [ ! -s $PATH_TO_LIST ]; then    
+        echo "Please provide apks names in file: $PATH_TO_LIST"
+        exit 0
+    fi
+}
 
 downloadApks (){
+    PATH_TO_LIST=$1
+
     local filename=""
     local filenameWithoutWhiteSpace=""
 
-    PATH_TO_LIST="./apksList.txt"
+    checkApkListIsEmpty $PATH_TO_LIST
 
     while read apkToDownload; do
         echo "Start downloading: $apkToDownload"
-        apkeep -a $apkToDownload $INPUT_PATH
+        apkeep -a $apkToDownload "$INPUT_PATH/"
     done < "$PATH_TO_LIST"
 
     for files in "$INPUT_PATH"/*; do
@@ -227,17 +313,15 @@ runApkTool (){
 }
 
 main (){
-    ### Main script ###
 
-    while getopts 'df' OPTION; do
-        case "$OPTION" in
-            d)
-            echo "Download apks from file"
-            downloadApkMode=true
-            ;;
-        esac
-    done
+    pathToApksList=$1
 
+    apksListExtension=".txt"
+    pathToApksListWithoutExtention=${pathToApksList::-4} 
+    pathToApksListAnalyzed="$pathToApksListWithoutExtention"_analyzed"$apksListExtension"
+
+    downloadApkMode=$2
+   
     local filename=""
     local extension=""
 
@@ -248,14 +332,11 @@ main (){
     createOutputDirectory
     createResultFile
     
-    if [["$downloadApkMode" = true]]; then
-        downloadApks
+    if [[ "$downloadApkMode" == true ]] ; then
+        downloadApks $pathToApksList
     fi
 
-
-
     # Decompile all apks in "input" directory and run tests
-
     for files in "$INPUT_PATH"/*; do
     
 
@@ -263,16 +344,38 @@ main (){
         getExtension $files
                 
         if [ "$extension" == "xapk" ]; then
-            echo "File has XAPK format. Skip analyze."
+            echo "$filename: File has XAPK format. Skip analyze."
         else         
             echo "Decompiling: $filename"
 
             runApkTool $filename
             runTests $filename
-        fi
 
-        echo -e "\n"
+            mv "$INPUT_PATH/$filename" "$INPUT_ANALYZED_PATH/$filename"
+            mv "$OUTPUT_PATH/$filename" "$OUTPUT_ANALYZED_PATH/$filename"            
+        fi
+        
+        # New line between application for better readability
+        printf "\n"
+
+        # Move current apk line from apksList to apksList_analyzed
+        lines=1
+        head -n $lines $pathToApksList >> $pathToApksListAnalyzed
+        sed -i -e "1,$lines d" $pathToApksList
+    
     done
 }
 
-main
+profilePath="./apksList-default.txt"
+
+ while getopts "df:" OPTIONS; do
+        case "${OPTIONS}" in
+            f) 
+                profilePath="${OPTARG}" ;;
+            d)
+                downloadApkMode=true
+
+        esac
+    done
+
+main $profilePath $downloadApkMode
