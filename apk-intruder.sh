@@ -142,6 +142,7 @@ checksAws (){
 }
 
 # Oracle Push Cloud Service / Push IO application identifier
+# https://us.v-cdn.net/6032259/uploads/jive_attachments/2/7/3/27334154ydoByranib.pdf
 checksAndroidManifestPushIoApplicationIdentifier () {
     filename=$1
 
