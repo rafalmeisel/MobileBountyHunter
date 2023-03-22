@@ -2,3 +2,6 @@ input/
 input_analyzed/
 output/
 output_analyzed/
+check-rules/
+AndroidManifext.xml
+strings.xml
