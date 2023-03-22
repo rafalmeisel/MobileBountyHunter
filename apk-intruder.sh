@@ -9,6 +9,7 @@ INPUT_PATH="./input"
 OUTPUT_PATH="./output"
 INPUT_ANALYZED_PATH="./input_analyzed"
 OUTPUT_ANALYZED_PATH="./output_analyzed"
+APKS_LIST_DEFAULT_PATH="./apksList-default.txt"
 
 # Worth to check
 # - google_api_key
@@ -420,7 +421,29 @@ runApkTool (){
     apktool d "$INPUT_PATH/$filename" -o "$OUTPUT_PATH/$filename" -f --quiet
 }
 
+retrieveApkNamesfromDeveloperProfileUrl (){
+    developerUrl=$1
+    
+    developerUrlResponseContentFilename="developerUrlResponseContent.txt"
+    
+    curl $developerUrl > $developerUrlResponseContentFilename
+
+    apkNameRegex='"\/store\/apps\/details\?id=(.*?)"'
+
+    grep -oP $apkNameRegex $developerUrlResponseContentFilename > $APKS_LIST_DEFAULT_PATH
+
+    sed -i 's@/store/apps/details?id=@@' $APKS_LIST_DEFAULT_PATH
+    sed -i 's@"@@' $APKS_LIST_DEFAULT_PATH
+    sed -i 's@"@@' $APKS_LIST_DEFAULT_PATH
+
+}
+
 main (){
+
+    # developerUrl="https://play.google.com/store/apps/dev?id=7745268094426388671"
+    developerUrl="https://play.google.com/store/apps/dev?id=7908612043055486674"
+    
+    retrieveApkNamesfromDeveloperProfileUrl $developerUrl
 
     pathToApksList=$1
 
