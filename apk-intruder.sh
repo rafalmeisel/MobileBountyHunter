@@ -1,8 +1,9 @@
 #!/bin/bash
 
 RED='\e[1;31m'
+YELLOW='\e[1;33m'
 BLUE='\e[1;34m'
-CLEAR_COLOR='\e[0m' # No Color
+NO_COLOR='\e[0m' # No Color
 RESULT_FILE="./results.txt"
 INPUT_PATH="./input"
 OUTPUT_PATH="./output"
@@ -25,13 +26,13 @@ OUTPUT_ANALYZED_PATH="./output_analyzed"
 checksAndroidManifestDebuggable () {
     filename=$1
     if grep --silent -i 'debuggable="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
-        printf "$filename: AndroidManifest: ${RED}debuggable=true${CLEAR_COLOR}\n"
+        printf "$filename: AndroidManifest: ${RED}debuggable=true${NO_COLOR}\n"
 
         echo -e "$filename : debuggable=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         grep -n -i 'debuggable="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
-        printf "$filename: AndroidManifest: ${BLUE}debuggable=false${CLEAR_COLOR}\n"
+        printf "$filename: AndroidManifest: ${BLUE}debuggable=false${NO_COLOR}\n"
     fi
 }
 
@@ -39,13 +40,13 @@ checksAndroidManifestDebuggable () {
 checksAndroidManifestAllowBackup () {
     filename=$1
     if grep --silent -i 'allowBackup="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
-        printf "$filename: AndroidManifest: ${RED}allowBackup=true${CLEAR_COLOR}\n"
+        printf "$filename: AndroidManifest: ${RED}allowBackup=true${NO_COLOR}\n"
 
         echo -e "$filename : allowBackup=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         grep -n -i 'allowBackup="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
-        printf "$filename: AndroidManifest: ${BLUE}allowBackup=false${CLEAR_COLOR}\n"
+        printf "$filename: AndroidManifest: ${BLUE}allowBackup=false${NO_COLOR}\n"
     fi
 }
 
@@ -53,16 +54,87 @@ checksAndroidManifestAllowBackup () {
 checksAndroidManifestExported () {
     filename=$1
     if grep --silent -i 'exported="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
-        printf "$filename: AndroidManifest: ${RED}exported=true${CLEAR_COLOR}\n"
+        printf "$filename: AndroidManifest: ${RED}exported=true${NO_COLOR}\n"
 
         echo -e "$filename : exported=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         grep -n -i 'exported="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
-        printf "$filename: AndroidManifest: ${BLUE}exported=false${CLEAR_COLOR}\n"
+        printf "$filename: AndroidManifest: ${BLUE}exported=false${NO_COLOR}\n"
     fi
 }
 
+checksStringsAwsAkid () {
+    filename=$1
+    awsAkidRegex=">(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])<"
+    
+    if grep --silent -oP "$awsAkidRegex" "$filename/res/values/strings.xml"; then
+        
+        AWS_AKID="$(grep -oP "$awsAkidRegex" "$filename/res/values/strings.xml")"
+        AWS_AKID="${AWS_AKID:1:-1}"
+
+        printf "$filename: AWS_AKID: ${RED}$AWS_AKID${NO_COLOR}\n"
+
+        echo -e "$filename : AWS_AKID: $AWS_AKID : $filename/res/values/strings.xml" >> "$RESULT_FILE"
+        grep -n -oP "$awsAkidRegex" "$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        echo -e "\n" >> "$RESULT_FILE"
+    else
+        printf "$filename: AWS_AKID: ${BLUE}Not found${NO_COLOR}\n"
+    fi
+}
+
+checksStringsAwsSecretKey () {
+    filename=$1
+    awsSecretKeyRegex=">(?<![A-Za-z0-9+=])[A-Za-z0-9+=]{40}(?![A-Za-z0-9+=])<"
+
+    if grep --silent -oP "$awsSecretKeyRegex" "$filename/res/values/strings.xml"; then
+        
+        AWS_SECRET_KEY="$(grep -oP "$awsSecretKeyRegex" "$filename/res/values/strings.xml")"
+        AWS_SECRET_KEY="${AWS_SECRET_KEY:1:-1}"
+
+        printf "$filename: AWS_SECRET_KEY: ${RED}$AWS_SECRET_KEY${NO_COLOR}\n"
+
+        echo -e "$filename : AWS_SECRET_KEY: $AWS_SECRET_KEY : $filename/res/values/strings.xml" >> "$RESULT_FILE"
+        grep -n -oP "$awsSecretKeyRegex" "$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        echo -e "\n" >> "$RESULT_FILE"
+    else
+        printf "$filename: AWS_SECRET_KEY: ${BLUE}Not found${NO_COLOR}\n"
+    fi
+}
+
+checksStringsAwsUrl () {
+    filename=$1
+    awsUrlRegex="http.*amazonaws.com"
+
+    if grep --silent -oP "$awsUrlRegex" "$filename/res/values/strings.xml"; then
+        
+        AWS_URL="$(grep -oP "$awsUrlRegex" "$filename/res/values/strings.xml")"
+
+        printf "$filename: AWS_URL: ${RED}$AWS_URL${NO_COLOR}\n"
+
+        echo -e "$filename : AWS_URL: $AWS_URL : $filename/res/values/strings.xml" >> "$RESULT_FILE"
+        grep -n -oP "$awsUrlRegex" "$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        echo -e "\n" >> "$RESULT_FILE"
+    else
+        printf "$filename: AWS_URL: ${BLUE}Not found${NO_COLOR}\n"
+    fi
+}
+
+
+checksAws (){
+    filename=$1
+    
+    local AWS_AKID=""
+    local AWS_SECRET_KEY=""
+    local AWS_URL=""
+
+    checksStringsAwsAkid $filename
+    checksStringsAwsSecretKey $filename
+    checksStringsAwsUrl $filename
+
+    # TODO:
+    # Add verification for AWS Database
+}
 
 # checksValuesStringGoogleApiKey () {
 #     echo "-> checksValuesStringGoogleApiKey"
@@ -114,11 +186,16 @@ checksFirebasePermission (){
         
         
         if [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"Permission denied"* ]]; then
-            printf "$filename: $FIREBASE_DATABASE_URL: ${BLUE}Permission denied${CLEAR_COLOR}\n"
-            echo -e "$filename: $FIREBASE_DATABASE_URL: Permission denied" >> "$RESULT_FILE"
+            printf "$filename: Strings: $FIREBASE_DATABASE_URL: ${BLUE}Permission denied${NO_COLOR}\n"
+            echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: Permission denied" >> "$RESULT_FILE"
+
+        elif [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"has been deactivated"* ]]; then
+            printf "$filename: Strings: $FIREBASE_DATABASE_URL: ${YELLOW}Database has been deactivated${NO_COLOR}\n"
+            echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: Permission denied" >> "$RESULT_FILE"
+
         else
-            printf "$filename: $FIREBASE_DATABASE_URL: is POTENTIALLY ${RED}vulnerable${CLEAR_COLOR}: $FIREBASE_DATABASE_RESPONSE_BODY\n"
-            echo -e "$filename: $FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$RESULT_FILE"
+            printf "$filename: Strings: $FIREBASE_DATABASE_URL: is POTENTIALLY ${RED}vulnerable${NO_COLOR}: $FIREBASE_DATABASE_RESPONSE_BODY\n"
+            echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$RESULT_FILE"
         fi
     fi
 }
@@ -134,7 +211,7 @@ checksFirebasePermission (){
 #         echo -e "$filename : $AWS_DATA" >> "$RESULT_FILE"
 #         echo -e "\n" >> "$RESULT_FILE"
 #     else
-#         echo -e "$filename: AndroidManifest: ${BLUE}exported=false${CLEAR_COLOR}"
+#         echo -e "$filename: AndroidManifest: ${BLUE}exported=false${NO_COLOR}"
 #     fi
 # }
 
@@ -178,6 +255,7 @@ runTests (){
     # findAwsData $filename
     # findHttpUrls $filename
     # findHttpsUrls $filename
+    checksAws $filename
 }
 
 installApkTools (){
@@ -226,10 +304,16 @@ installRust (){
 
 installApkeep (){
     if [ ! -f /home/kali/.cargo/bin/apkeep ]; then
-    sudo apt install libssl-dev
-    sudo apt install pkg-config -y
-    cargo install apkeep --locked
-fi
+        sudo apt install libssl-dev
+        sudo apt install pkg-config -y
+        cargo install apkeep --locked
+    fi
+}
+
+installAwsCli (){
+    if [ ! -f /home/kali/.cargo/bin/apkeep ]; then
+        sudo apt install awscli -y
+    fi
 }
 
 createInputDirectory (){
@@ -351,8 +435,8 @@ main (){
             runApkTool $filename
             runTests $filename
 
-            mv "$INPUT_PATH/$filename" "$INPUT_ANALYZED_PATH/$filename"
-            mv "$OUTPUT_PATH/$filename" "$OUTPUT_ANALYZED_PATH/$filename"            
+            mv "$INPUT_PATH/$filename" "$INPUT_ANALYZED_PATH/$filename" 1>/dev/null
+            mv "$OUTPUT_PATH/$filename" "$OUTPUT_ANALYZED_PATH/$filename" 1>/dev/null
         fi
         
         # New line between application for better readability
