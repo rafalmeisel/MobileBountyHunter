@@ -24,11 +24,13 @@ OUTPUT_ANALYZED_PATH="./output_analyzed"
 
 checksAndroidManifestDebuggable () {
     filename=$1
-    if grep --silent -i 'debuggable="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
+
+    debuggableRegex='debuggable="true"'
+    if grep --silent -i "$debuggableRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
         printf "$filename: AndroidManifest: ${RED}debuggable=true${NO_COLOR}\n"
 
-        echo -e "$filename : debuggable=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
-        grep -n -i 'debuggable="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        echo -e "$filename : $debuggableRegex : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        grep -n -i "$debuggableRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
         printf "$filename: AndroidManifest: ${BLUE}debuggable=false${NO_COLOR}\n"
@@ -38,11 +40,13 @@ checksAndroidManifestDebuggable () {
 # Application store additional data as backup as it's running or closed
 checksAndroidManifestAllowBackup () {
     filename=$1
-    if grep --silent -i 'allowBackup="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
+
+    allowBackupRegex='allowBackup="true"'
+    if grep --silent -i "$allowBackupRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
         printf "$filename: AndroidManifest: ${RED}allowBackup=true${NO_COLOR}\n"
 
-        echo -e "$filename : allowBackup=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
-        grep -n -i 'allowBackup="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        echo -e "$filename : $allowBackupRegex : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        grep -n -i "$allowBackupRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
         printf "$filename: AndroidManifest: ${BLUE}allowBackup=false${NO_COLOR}\n"
@@ -52,11 +56,13 @@ checksAndroidManifestAllowBackup () {
 # Activity can be accessed from outside the application
 checksAndroidManifestExported () {
     filename=$1
-    if grep --silent -i 'exported="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
+
+    exportedRegex='exported="true"'
+    if grep --silent -i "$exportedRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
         printf "$filename: AndroidManifest: ${RED}exported=true${NO_COLOR}\n"
 
-        echo -e "$filename : exported=\"true\" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
-        grep -n -i 'exported="true"' "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        echo -e "$filename : "$exportedRegex" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        grep -n -i "$exportedRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
         printf "$filename: AndroidManifest: ${BLUE}exported=false${NO_COLOR}\n"
