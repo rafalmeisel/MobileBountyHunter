@@ -19,7 +19,6 @@ OUTPUT_ANALYZED_PATH="./output_analyzed"
 
 # TODO:
 # SMILES_API_KEY / strings.xml
-# pushioAppKey [Example: pio-ABEgeX-sNNnkNqc2NRl0m6TUw] / strings.xml
 
 # https://book.hacktricks.xyz/mobile-pentesting/android-app-pentesting
 
@@ -134,6 +133,23 @@ checksAws (){
 
     # TODO:
     # Add verification for AWS Database
+}
+
+# Oracle Push Cloud Service / Push IO application identifier
+checksAndroidManifestPushIoApplicationIdentifier () {
+    filename=$1
+
+    pushIoApplicationIdentifierRegex='"pio-.*"'
+
+    if grep --silent -i "$pushIoApplicationIdentifierRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml"; then
+        printf "$filename: AndroidManifest: ${RED}PushIO=$pushIoApplicationIdentifierRegex${NO_COLOR}\n"
+
+        echo -e "$filename : "$pushIoApplicationIdentifierRegex" : $OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        grep -n -i "$pushIoApplicationIdentifierRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
+        echo -e "\n" >> "$RESULT_FILE"
+    else
+        printf "$filename: AndroidManifest: ${BLUE}PushIO not found.${NO_COLOR}\n"
+    fi
 }
 
 # checksValuesStringGoogleApiKey () {
@@ -256,6 +272,7 @@ runTests (){
     # findHttpUrls $filename
     # findHttpsUrls $filename
     checksAws $filename
+    checksAndroidManifestPushIoApplicationIdentifier $filename
 }
 
 installApkTools (){
