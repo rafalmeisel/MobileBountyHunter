@@ -1,0 +1,8 @@
+pl.asseco.mpromak.android.app.bre
+pl.mbank.mtoken
+pl.mbank.mjunior
+pl.mbank.bmmobile
+eu.eleader.mobilebanking.bre
+sk.mbank
+cz.mbank
+pl.mbank

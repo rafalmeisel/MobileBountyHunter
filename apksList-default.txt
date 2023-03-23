@@ -1,0 +1,16 @@
+com.ubs.coo
+com.ubs.prod.intune.myhubmobile
+com.ubs.safe
+com.ubs.intune.prod.cachat
+com.supercell.clashofclans
+com.supercell.clashofclans
+com.supercell.clashroyale
+com.supercell.brawlstars
+com.supercell.hayday
+com.supercell.boombeach
+com.empik.empikapp
+com.empik.empikfoto
+com.empik.empikgo
+com.alibaba.aliexpresshd
+com.alibaba.intl.android.apps.poseidon
+com.alibaba.icbu.app.seller

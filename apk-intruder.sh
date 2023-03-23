@@ -18,6 +18,10 @@ GOOGLE_PLAY_DEVELOPER_URLS_PATH="./googlePlayDeveloperUrls.txt"
 # - google_crash_reporting_api_key
 # - google_storage_bucket
 # - MAPS_API_KEY
+# - google_maps_key
+#    <string name="google_app_id">1:29214538191:android:b015167148ac2d1a</string>
+    # <string name="google_crash_reporting_api_key">AIzaSyAPLdpY-C8H-n37wvHEH8Q2Eb3SmaGOStY</string>
+    # <string name="google_maps_key">AIzaSyDJO2ipsSxatb0eLkZnoLmbRg9GDzZRn6I</string>
 
 # TODO:
 # SMILES_API_KEY / strings.xml
@@ -216,7 +220,7 @@ checksFirebasePermission (){
 
         elif [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"has been deactivated"* ]]; then
             printf "$filename: Strings: $FIREBASE_DATABASE_URL: ${YELLOW}Database has been deactivated${NO_COLOR}\n"
-            echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: Permission denied" >> "$RESULT_FILE"
+            echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: Database has been deactivated" >> "$RESULT_FILE"
 
         else
             printf "$filename: Strings: $FIREBASE_DATABASE_URL: is POTENTIALLY ${RED}vulnerable${NO_COLOR}: $FIREBASE_DATABASE_RESPONSE_BODY\n"
