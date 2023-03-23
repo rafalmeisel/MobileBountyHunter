@@ -456,6 +456,7 @@ retrieveApkNamesfromDeveloperProfileUrl (){
     sed -i 's@"@@' $APKS_LIST_DEFAULT_PATH
     sed -i 's@"@@' $APKS_LIST_DEFAULT_PATH
 
+    echo "APKS_LIST_DEFAULT_PATH: $APKS_LIST_DEFAULT_PATH"
 }
 
 readUrlFromGooglePlayDeveloperUrlFile (){
@@ -544,4 +545,4 @@ apksListDefault="./apksList-default.txt"
         esac
     done
 
-main $profilePath $downloadApkMode
+main $apksListDefault $downloadApkMode
