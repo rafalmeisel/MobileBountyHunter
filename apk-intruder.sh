@@ -19,9 +19,24 @@ GOOGLE_PLAY_DEVELOPER_URLS_PATH="./googlePlayDeveloperUrls.txt"
 # - google_storage_bucket
 # - MAPS_API_KEY
 # - google_maps_key
+
 #    <string name="google_app_id">1:29214538191:android:b015167148ac2d1a</string>
     # <string name="google_crash_reporting_api_key">AIzaSyAPLdpY-C8H-n37wvHEH8Q2Eb3SmaGOStY</string>
     # <string name="google_maps_key">AIzaSyDJO2ipsSxatb0eLkZnoLmbRg9GDzZRn6I</string>
+    # <string name="datami_sdk_key">34e9487858e593b004394a1561451dc714edfaca</string>
+        # <string name="google_storage_bucket">uberdevmobile-api.appspot.com</string>
+
+            # <string name="ub__cardio_encryption_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwmqt+/krR8ZjzuoweZ5QcV/gqZT74bHB21EAeM/RvxjRamG7yIjhnoSM1IR0Ofa2GmNg/CW7XH/cpPCbTsDV8I/yCqLUtGPLUsOnU26joIJ99UTX/MSkT1aJjmW8ixry13UfOwgUCaDSH5xvVx7/OsBczgiwC0nZ2t/YBaxe6Iqh3u/AkzQ08ZCDH6xXn42hoyPi6blyvFsnlg2G6WTfi1PlfgEbMQihn53FiUVn9Z7w8Nd6MJpJlFAKH2Yj0mstHMtT1RA6BY2ufLKKcZBAdrHIk0LkeeDnqUW0kgONa8UZQnHjrh0lZLmbVKH7EE+Cv8k+/sSRs4W18qjaAtYOGQIDAQAB</string>
+    # <string name="ub__payment_braintree_key_production">MIIBCgKCAQEA2YRfM1bcfLB786t2sV7W4jeeWJDmGtK3MGfmIwzjdgKM8hZa9bR28iZKwgxy9aErnkuhdXLLnmUz+kJ1dIF6uebyKrFWwpJmkeE3QP74ImUVaR3w0qC4MJyNdKJjrL42uYkURjfx6ymDs8DD61EiytETYunq3HfUCpw+JtLQBAEvPc2Zhz52E9hBPWbeh0k7lylLkOC1KcTxJgYQ5LAp3zvy+xPCwwAv1GWCkjHgbV5YF10zasERU4mBTozsI99lbxizkrzR7AnwQzHx3/7iTQ16i0EQf+LxrMTVsVSdqzpnnrZRSHnH29KKbB080k2I/v2tbS1CjHC9DkyufKxLfwIDAQAB</string>
+
+    #     <string name="ub__payment_braintree_tokenization_key_production">production_s4sq9dp3_27m9gvdh2fdm8t4x</string>
+    # <string name="ub__payment_braintree_tokenization_key_sandbox">sandbox_674xh35c_rcrbx3drr2p62gdp</string>
+
+    #  <string name="ub__payment_paytm_key_production">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkOdqNPYOXUuK1S3AxR2W3V7LQ1Df991ikH1oQsdCcQ+QDPA6TFFS2IeEGD1r1Dqbr0SvZE0cg4rzMj7C6tCeanm+9xItIG4gfkbNECRYxf7kcXyDusdZTKV9YvKxVroFFJtG9oayTSCsvTKIVpIghX0JvgXJ2YxWsJu20jkwqnNoQFqN1QzUpgbsFHJhdy6gG4xLn6n0QU5hHUyvdqo84csS1fBx7LxBMthwPDXaVV7RbeWgafU+aacAPfE1evpIbc7n5sIZ8QjvU39kFZe9+6pgU5JWE22Uu3AYbKIHiJDykWENFpiMxLFjcOMhCAkBH9N+sA/2934WqywMt/b2fQIDAQAB</string>
+    # <string name="ub__payment_paytm_key_sandbox">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmXwZ7NOkH6W967MWhXPrmpFPU2wkXU83Xqnk1q+S59JlpcpJZFxtcfK1syyCzjmZgmaRKMVg0aFOiETONSmISNP+3m8IlgBuy5FXhwWFKtp+71rttCnVLs27HQ+pmFwE4y5TmE1GnOj4LLvuIa6BJQsVNFZuACg8zg/mvzArJ1eUicGBwRoFe6SWSx33inSyjcWx7Fu3Gtt0Ro6L4WllLSiEKvI5UKAYDO4xqHXBaJHihrlBVWy2mBhKs/k7fAGn2sxWkvrkK29Rkkm5Ut6MxmW1iEmQDXRTSmtk0twxpBQ+HX8uclPa5yssOvlb90vWvw3AbCi6w8HdmEXVgVIinwIDAQAB</string>
+    # <string name="ub__payment_paytmpg_key_production">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmCF5pHvyx7vWEoOts6CS5n9cl3xGRDldJ8+/Tbmm8rE9WnB6GaclP3yYZx0p3txQYouN+NGGuXAKzjqWIe8ert8SkP/0mTL2gznpmAiYKR3SQAbh/euHrrocuiL2f9V6DqBvDcabwjGjE5iBvwScZXXvwIrGJCu6JyaXFiQbsHBdFy3yigi6BZkFb8R6TAsA4Mv8lY+pc8NEMz4bqIgB3l59nKxkTP166CFslaViNhKkyDOFEfozRHdCcQ7ouwQyepvhuDyS0Tup7CuqFsXuTPBcAQN2ELC3EvEV+3wcN6u+X3weSnfd6+4HPe/2/QTZtwLnashTzf5ld4a9mbo5BQIDAQAB</string>
+    #    <string name="ub__payment_zaakpay_key_production">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzu9CLS9jRKgmcgt2sIFZjxRct/UPWyuZHNh7xuKbwpHgEAUtOE1zVbJbVnihkYpF9i4SIclQ37myVYoY93Z7Z58yOBT5PmURgbQYSIupRIF2JzsES6h/iXQgJotck+EF+0e1Ulh1QMc4WFV+UcxoxE7QSOonMzlIJqFBWi6obC+Xmg8X3W4DAYRfTx8EH45ZApqutHks1CTZnWN/4FhFF6pEVQ4oNmE42LGLDULR+cHIOGvjqKmyutKICBvWv5emqW5A/0H/6TqqCkrMBrbIyu4mhBzQ0aECvgfgKNxgu5CL2ToJ7TnA0nYh0dD6+a+/AofoSGWzZerhtoTFBpQCswIDAQAB</string>
+    # <string name="ub__payment_zaakpay_key_sandbox">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0HXL0xob2HTG+w0OYVJyWhU7PjxD4PnrQdup2mk89GDeo6teBuA2BC6/iG0xzPGlAKDsk96fTym4D66BEsLcHcplqRDq4fKDcVBwb8unQzozmGwBLC4w6j5oMgsZnI90fMP8L6jGDZk+ohTVnUYK6eO1Z91nNl3PG0OUakDKHnnmvbTKxDUT2gR4Fat/cgRfNmSSUe4zWoiLeMdZ/KmQIK7V9N8/o97ReEG3aA3ZbnODqj5hEsNbuOwGd+8M7HYTRQrZ/DFPrahK9Bg71L2jdwHlcgTIYwSzZ4SjVUO/E0egfkBc378rry2MBDoafSnLxQdr27mcHwfP0tO2LeQnZQIDAQAB</string>
 
 # TODO:
 # SMILES_API_KEY / strings.xml
@@ -456,13 +471,8 @@ readUrlFromGooglePlayDeveloperUrlFile (){
 main (){   
 
     pathToApksList=$1
-
-    apksListExtension=".txt"
-    pathToApksListWithoutExtention=${pathToApksList::-4} 
-    pathToApksListAnalyzed="$pathToApksListWithoutExtention"_analyzed"$apksListExtension"
-
     downloadApkMode=$2
-   
+
     local filename=""
     local extension=""
 
@@ -471,12 +481,23 @@ main (){
     installApkeep
     createInputDirectory
     createOutputDirectory
-    createResultFile
+    
+    if [ ! -f "$RESULT_FILE" ]; then
+        createResultFile
+    fi
+    
     readUrlFromGooglePlayDeveloperUrlFile
     
     if [[ "$downloadApkMode" == true ]] ; then
         downloadApks $pathToApksList
     fi
+
+    apksListExtension=".txt"
+    pathToApksListWithoutExtention=${pathToApksList::-4} 
+    pathToApksListAnalyzed="$pathToApksListWithoutExtention"_analyzed"$apksListExtension"
+
+    pathToGooglePlayDeveloperUrlsFileWithoutExtention=${GOOGLE_PLAY_DEVELOPER_URLS_PATH::-4} 
+    pathToGooglePlayDeveloperUrlsFileAnalyzed="$pathToGooglePlayDeveloperUrlsFileWithoutExtention"_analyzed"$apksListExtension"
 
     # Decompile all apks in "input" directory and run tests
     for files in "$INPUT_PATH"/*; do
@@ -505,15 +526,18 @@ main (){
         head -n $lines $pathToApksList >> $pathToApksListAnalyzed
         sed -i -e "1,$lines d" $pathToApksList
     
+        head -n $lines $GOOGLE_PLAY_DEVELOPER_URLS_PATH >> $pathToGooglePlayDeveloperUrlsFileAnalyzed
+        sed -i -e "1,$lines d" $GOOGLE_PLAY_DEVELOPER_URLS_PATH
+
     done
 }
 
-profilePath="./apksList-default.txt"
+apksListDefault="./apksList-default.txt"
 
  while getopts "df:" OPTIONS; do
         case "${OPTIONS}" in
             f) 
-                profilePath="${OPTARG}" ;;
+                apksListDefault="${OPTARG}" ;;
             d)
                 downloadApkMode=true
 
