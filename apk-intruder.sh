@@ -10,6 +10,7 @@ OUTPUT_PATH="./output"
 INPUT_ANALYZED_PATH="./input_analyzed"
 OUTPUT_ANALYZED_PATH="./output_analyzed"
 APKS_LIST_DEFAULT_PATH="./apksList-default.txt"
+GOOGLE_PLAY_DEVELOPER_URLS_PATH="./googlePlayDeveloperUrls.txt"
 
 # Worth to check
 # - google_api_key
@@ -74,15 +75,15 @@ checksStringsAwsAkid () {
     filename=$1
     awsAkidRegex=">(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])<"
     
-    if grep --silent -oP "$awsAkidRegex" "$filename/res/values/strings.xml"; then
+    if grep --silent -oP "$awsAkidRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml"; then
         
-        AWS_AKID="$(grep -oP "$awsAkidRegex" "$filename/res/values/strings.xml")"
+        AWS_AKID="$(grep -oP "$awsAkidRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml")"
         AWS_AKID="${AWS_AKID:1:-1}"
 
         printf "$filename: AWS_AKID: ${RED}$AWS_AKID${NO_COLOR}\n"
 
-        echo -e "$filename : AWS_AKID: $AWS_AKID : $filename/res/values/strings.xml" >> "$RESULT_FILE"
-        grep -n -oP "$awsAkidRegex" "$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        echo -e "$filename : AWS_AKID: $AWS_AKID : $OUTPUT_PATH/$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        grep -n -oP "$awsAkidRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
         printf "$filename: AWS_AKID: ${BLUE}Not found${NO_COLOR}\n"
@@ -93,15 +94,15 @@ checksStringsAwsSecretKey () {
     filename=$1
     awsSecretKeyRegex=">(?<![A-Za-z0-9+=])[A-Za-z0-9+=]{40}(?![A-Za-z0-9+=])<"
 
-    if grep --silent -oP "$awsSecretKeyRegex" "$filename/res/values/strings.xml"; then
+    if grep --silent -oP "$awsSecretKeyRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml"; then
         
-        AWS_SECRET_KEY="$(grep -oP "$awsSecretKeyRegex" "$filename/res/values/strings.xml")"
+        AWS_SECRET_KEY="$(grep -oP "$awsSecretKeyRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml")"
         AWS_SECRET_KEY="${AWS_SECRET_KEY:1:-1}"
 
         printf "$filename: AWS_SECRET_KEY: ${RED}$AWS_SECRET_KEY${NO_COLOR}\n"
 
-        echo -e "$filename : AWS_SECRET_KEY: $AWS_SECRET_KEY : $filename/res/values/strings.xml" >> "$RESULT_FILE"
-        grep -n -oP "$awsSecretKeyRegex" "$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        echo -e "$filename : AWS_SECRET_KEY: $AWS_SECRET_KEY : $OUTPUT_PATH/$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        grep -n -oP "$awsSecretKeyRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
         printf "$filename: AWS_SECRET_KEY: ${BLUE}Not found${NO_COLOR}\n"
@@ -112,14 +113,14 @@ checksStringsAwsUrl () {
     filename=$1
     awsUrlRegex="http.*amazonaws.com"
 
-    if grep --silent -oP "$awsUrlRegex" "$filename/res/values/strings.xml"; then
+    if grep --silent -oP "$awsUrlRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml"; then
         
-        AWS_URL="$(grep -oP "$awsUrlRegex" "$filename/res/values/strings.xml")"
+        AWS_URL="$(grep -oP "$awsUrlRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml")"
 
         printf "$filename: AWS_URL: ${RED}$AWS_URL${NO_COLOR}\n"
 
-        echo -e "$filename : AWS_URL: $AWS_URL : $filename/res/values/strings.xml" >> "$RESULT_FILE"
-        grep -n -oP "$awsUrlRegex" "$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        echo -e "$filename : AWS_URL: $AWS_URL : $OUTPUT_PATH/$filename/res/values/strings.xml" >> "$RESULT_FILE"
+        grep -n -oP "$awsUrlRegex" "$OUTPUT_PATH/$filename/res/values/strings.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
         printf "$filename: AWS_URL: ${BLUE}Not found${NO_COLOR}\n"
@@ -430,7 +431,7 @@ retrieveApkNamesfromDeveloperProfileUrl (){
 
     apkNameRegex='"\/store\/apps\/details\?id=(.*?)"'
 
-    grep -oP $apkNameRegex $developerUrlResponseContentFilename > $APKS_LIST_DEFAULT_PATH
+    grep -oP $apkNameRegex $developerUrlResponseContentFilename >> $APKS_LIST_DEFAULT_PATH
 
     sed -i 's@/store/apps/details?id=@@' $APKS_LIST_DEFAULT_PATH
     sed -i 's@"@@' $APKS_LIST_DEFAULT_PATH
@@ -438,12 +439,17 @@ retrieveApkNamesfromDeveloperProfileUrl (){
 
 }
 
-main (){
+readUrlFromGooglePlayDeveloperUrlFile (){
 
-    # developerUrl="https://play.google.com/store/apps/dev?id=7745268094426388671"
-    developerUrl="https://play.google.com/store/apps/dev?id=7908612043055486674"
-    
-    retrieveApkNamesfromDeveloperProfileUrl $developerUrl
+    while read googlePlayDeveloperUrl; do
+        
+        developerUrl="$(echo $googlePlayDeveloperUrl | cut -f1 -d"#")"
+        retrieveApkNamesfromDeveloperProfileUrl $developerUrl
+
+    done < "$GOOGLE_PLAY_DEVELOPER_URLS_PATH"
+}
+
+main (){   
 
     pathToApksList=$1
 
@@ -462,6 +468,7 @@ main (){
     createInputDirectory
     createOutputDirectory
     createResultFile
+    readUrlFromGooglePlayDeveloperUrlFile
     
     if [[ "$downloadApkMode" == true ]] ; then
         downloadApks $pathToApksList
