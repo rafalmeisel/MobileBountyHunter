@@ -176,7 +176,7 @@ checksAndroidManifestPushIoApplicationIdentifier () {
         grep -n -i "$pushIoApplicationIdentifierRegex" "$OUTPUT_PATH/$filename/AndroidManifest.xml" >> "$RESULT_FILE"
         echo -e "\n" >> "$RESULT_FILE"
     else
-        printf "$filename: AndroidManifest: ${BLUE}PushIO not found.${NO_COLOR}\n"
+        printf "$filename: PushIO: ${BLUE}Not found${NO_COLOR}\n"
     fi
 }
 
@@ -237,6 +237,9 @@ checksFirebasePermission (){
             printf "$filename: Strings: $FIREBASE_DATABASE_URL: ${YELLOW}Database has been deactivated${NO_COLOR}\n"
             echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: Database has been deactivated" >> "$RESULT_FILE"
 
+        elif [[ $FIREBASE_DATABASE_RESPONSE_BODY == *"404 Not Found"* ]]; then
+            printf "$filename: Strings: $FIREBASE_DATABASE_URL: ${YELLOW}404 Not Found${NO_COLOR}\n"
+            echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: 404 Not Found" >> "$RESULT_FILE"
         else
             printf "$filename: Strings: $FIREBASE_DATABASE_URL: is POTENTIALLY ${RED}vulnerable${NO_COLOR}: $FIREBASE_DATABASE_RESPONSE_BODY\n"
             echo -e "$filename: Strings: $FIREBASE_DATABASE_URL: is POTENTIALLY vulnerable: $FIREBASE_DATABASE_RESPONSE_BODY" >> "$RESULT_FILE"
