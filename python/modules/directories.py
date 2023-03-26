@@ -41,10 +41,23 @@ def createResultFile(RESULT_FILE_PATH):
         os.chmod(RESULT_FILE_PATH, 766)
         print("Created file: " + RESULT_FILE_PATH)
 
-def createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
+def createGooglePlayDeveloperProfileUrlsFile(GOOGLE_PLAY_DEVELOPERS_URLS_FILE_PATH):
 
-    createInputDirectory(INPUT_DIRECTORY_PATH)
-    createInputAnalyzedDirectory(INPUT_ANALYZED_DIRECTORY_PATH)
-    createOutputDirectory(OUTPUT_DIRECTORY_PATH)
-    createOutputAnalyzedDirectory(OUTPUT_ANALYZED_DIRECTORY_PATH)
-    createResultFile(RESULT_FILE_PATH)
+    if os.path.exists(GOOGLE_PLAY_DEVELOPERS_URLS_FILE_PATH):
+        print("Detected file: " + GOOGLE_PLAY_DEVELOPERS_URLS_FILE_PATH)
+
+    else:
+        f = open(GOOGLE_PLAY_DEVELOPERS_URLS_FILE_PATH, "r")
+        os.chmod(GOOGLE_PLAY_DEVELOPERS_URLS_FILE_PATH, 766)
+        print("Created file: " + GOOGLE_PLAY_DEVELOPERS_URLS_FILE_PATH + " - Please provide the Developers Urls from Google Play in this file.")
+
+
+
+
+# def createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
+
+#     createInputDirectory(INPUT_DIRECTORY_PATH)
+#     createInputAnalyzedDirectory(INPUT_ANALYZED_DIRECTORY_PATH)
+#     createOutputDirectory(OUTPUT_DIRECTORY_PATH)
+#     createOutputAnalyzedDirectory(OUTPUT_ANALYZED_DIRECTORY_PATH)
+#     createResultFile(RESULT_FILE_PATH)

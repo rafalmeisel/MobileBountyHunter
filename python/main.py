@@ -1,19 +1,9 @@
 # from modules.environment import *
-from modules.environment import prepareEnvironment
-from modules.directories import createDirectories
+from modules.thirdPartySoftware import installThirdPartySoftware
+from modules.applicationManager import prepareAppplicationListFileFromDevelopersUrlsProfileFile
 
 import sys
 import getopt
-
-INPUT_DIRECTORY_PATH = "./workspace/input"
-INPUT_ANALYZED_DIRECTORY_PATH = "./workspace/input_analyzed"
-OUTPUT_DIRECTORY_PATH = "./workspace/output"
-OUTPUT_ANALYZED_DIRECTORY_PATH = "./workspace/output_analyzed"
-RESULT_FILE_PATH = "./workspace/results.txt"
-APKS_LIST_FILE="./workspace/apksList.txt"
-DEVELOPERS_URLS_PROFILE_FILE="./workspace/developersUrls.txt"
-APK_FILE=""
-STORE_URL=""
 
 # Parameters:
 # -h / help - show help
@@ -25,6 +15,20 @@ STORE_URL=""
 # -u / storeUrl - analyze specified URL - can be url to specified android/ios apk, specified android/ios developer
 
 def main(argv):
+    
+    INPUT_DIRECTORY_PATH = "./workspace/input"
+    INPUT_ANALYZED_DIRECTORY_PATH = "./workspace/input_analyzed"
+    OUTPUT_DIRECTORY_PATH = "./workspace/output"
+    OUTPUT_ANALYZED_DIRECTORY_PATH = "./workspace/output_analyzed"
+    RESULT_FILE_PATH = "./workspace/results.txt"
+    APPLICATION_LIST_FILE = "./workspace/apksList.txt"
+    DEVELOPERS_URLS_PROFILE_FILE = "./workspace/developersUrlsProfile.txt"
+    APK_FILE = ""
+    STORE_URL = ""
+
+
+    print("APPLICATION_LIST_FILE" + APPLICATION_LIST_FILE)
+    print("DEVELOPERS_URLS_PROFILE_FILE" + DEVELOPERS_URLS_PROFILE_FILE)
 
     opts, args = getopt.getopt(argv,"hf:i:o:l:p:u:",["apkFile=", "inputDirectory=", "outputDirectory=", "apksListFile=", "developersUrlsProfileFile=", "storeUrl="])
    
@@ -39,15 +43,15 @@ def main(argv):
         elif opt in ("-o", "--outputDirectory"):
             OUTPUT_DIRECTORY_PATH = arg
         elif opt in ("-l", "--apksListFile"):
-            APKS_LIST_FILE = arg
+            APPLICATION_LIST_FILE = arg
         elif opt in ("-p", "--developersUrlsProfileFile"):
             DEVELOPERS_URLS_PROFILE_FILE = arg
         elif opt in ("-u", "--storeUrl"):
             STORE_URL = arg
 
-    prepareEnvironment()
-    createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
-
+    installThirdPartySoftware()
+    # createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+    prepareAppplicationListFileFromDevelopersUrlsProfileFile(APPLICATION_LIST_FILE, DEVELOPERS_URLS_PROFILE_FILE)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

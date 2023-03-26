@@ -75,7 +75,7 @@ def installAwsCli():
     else:
         os.system("apt install awscli -y")
 
-def prepareEnvironment():
+def installThirdPartySoftware():
     
     installApkTools()
     installRust()
