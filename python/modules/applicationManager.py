@@ -5,9 +5,11 @@ import requests
 IS_GOOGLE_PLAY_APPLICATION_URL=False
 IS_GOOGLE_PLAY_DEVELOPER_URL=False
 GOOGLE_PLAY_URL_REGEX="https://play.google.com/"
-GOOGLE_PLAY_APPLICATION_URL_SCHEMA="https://play.google.com/store/apps/details?id="
-GOOGLE_PLAY_DEVELOPER_URL_SCHEMA="https://play.google.com/store/apps/dev?id="
-GOOGLE_PLAY_APPLICATION_PACKAGE_NAME_REGEX=r'\"\/store\/apps\/details\?id=(.*?)\"'
+GOOGLE_PLAY_APPLICATION_URL_SCHEMA="https://play.google.com/store/apps/details"
+GOOGLE_PLAY_DEVELOPER_URL_SCHEMA="https://play.google.com/store/apps/dev"
+GOOGLE_PLAY_APPLICATION_PACKAGE_NAME_REGEX=r"\/store\/apps\/details\?id=([^&\"]+)"
+GOOGLE_PLAY_DEVELOPER_BASE_URL_REGEX=r"(.+?)\?"
+GOOGLE_PLAY_DEVELOPER_NAME_REGEX=r"id=(.+)"
 
 IS_APP_STORE_APPLICATION_URL=False
 IS_APP_STORE_DEVELOPER_URL=False
@@ -17,7 +19,7 @@ APP_STORE_DEVELOPER_URL_SCHEMA="https://apps.apple.com/pl/developer/apple/id"
 
 def retrieveApplicationPackageNameFromGooglePlayApplication(APPLICATION_LIST_FILE, urlToAnalyze):
 
-    googlePlayUrlApplicationRegexCompiled=re.compile(GOOGLE_PLAY_APPLICATION_URL_REGEX)
+    googlePlayUrlApplicationRegexCompiled=re.compile(GOOGLE_PLAY_APPLICATION_URL_SCHEMA)
     applicationPackageName = re.search(googlePlayUrlApplicationRegexCompiled, urlToAnalyze)
 
     print("[Google Play][Application] Retrieved name: " + applicationPackageName)
@@ -27,21 +29,25 @@ def retrieveApplicationPackageNameFromGooglePlayApplication(APPLICATION_LIST_FIL
     resultFile.close()
 
 def retrieveApplicationPackageNameFromGooglePlayDeveloperProfile(APPLICATION_LIST_FILE, urlToAnalyze):
-    # os.system("curl --silent "+urlToAnalyze+" --output ./response.txt")
+    # Examples:
+    # https://play.google.com/store/apps/dev?id=5360036014478858866
+    # https://play.google.com/store/apps/developer?id=Bethesda+Softworks+LLC
+    
+    # From string 'https://play.google.com/store/apps/developer?id=Developer' retrieve 'Developer'
+    print("Analyzing: " + urlToAnalyze)
+
+    androidDeveloperBaseUrlMatch=re.search(GOOGLE_PLAY_DEVELOPER_BASE_URL_REGEX, urlToAnalyze)
+    androidDeveloperBaseUrl=str(androidDeveloperBaseUrlMatch.group(1))
+
+    androidDeveloperNameMatch=re.search(GOOGLE_PLAY_DEVELOPER_NAME_REGEX, urlToAnalyze)
+    androidDeveloperName=str(androidDeveloperNameMatch.group(1))
+    androidDeveloperName=androidDeveloperName.replace("+", " ")
 
     params = {
-    'id': '8352141510294024214',
+    'id': androidDeveloperName,
     }
 
-    googlePlayHttpResponse = requests.get('https://play.google.com/store/apps/dev', params=params)
-
-    # url = "https://play.google.com/store/search" # to jest adres URL Google Play
-    # params = {"q": "python", "c": "apps"} # to są parametry zapytania
-    # response = requests.get(urlToAnalyze) # to jest żądanie GET do Google Play
-    # result = response.text # to jest tekstowa reprezentacja odpowiedzi
-    # print(result) # to jest zmienna, która zawiera wynik zapytania
-
-    # response = requests.get(urlToAnalyze)
+    googlePlayHttpResponse = requests.get(androidDeveloperBaseUrl, params=params)
     
     googlePlayHttpResponseCode = str(googlePlayHttpResponse.status_code)
     googlePlayHttpResponseContent = str(googlePlayHttpResponse.content)  
@@ -49,11 +55,16 @@ def retrieveApplicationPackageNameFromGooglePlayDeveloperProfile(APPLICATION_LIS
     if googlePlayHttpResponseCode == "200":
        
         matches = re.findall(GOOGLE_PLAY_APPLICATION_PACKAGE_NAME_REGEX, googlePlayHttpResponseContent)
+        
+        retrievedApplicationsPackageName=""
 
         resultFile = open(APPLICATION_LIST_FILE, "a")
         for applicationPackageName in matches:
             resultFile.write(applicationPackageName+"\n")
+            retrievedApplicationsPackageName = retrievedApplicationsPackageName + applicationPackageName
         resultFile.close()
+
+        print("Retrieved: " + retrievedApplicationsPackageName)
     else :
         print(urlToAnalyze + ": http response code: " + googlePlayHttpResponseCode)
 
