@@ -1,6 +1,7 @@
 # from modules.environment import *
 from modules.thirdPartySoftware import installThirdPartySoftware
-from modules.applicationManager import prepareAppplicationListFileFromDevelopersUrlsProfileFile
+from modules.directories import createDirectories
+from modules.applicationManager import prepareAppplicationsFromListToOutput
 
 import sys
 import getopt
@@ -50,8 +51,7 @@ def main(argv):
             STORE_URL = arg
 
     installThirdPartySoftware()
-    # createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
-    prepareAppplicationListFileFromDevelopersUrlsProfileFile(APPLICATION_LIST_FILE, DEVELOPERS_URLS_PROFILE_FILE)
-
+    createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+    prepareAppplicationsFromListToOutput(APPLICATION_LIST_FILE, DEVELOPERS_URLS_PROFILE_FILE, INPUT_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH)
 if __name__ == '__main__':
     main(sys.argv[1:])
