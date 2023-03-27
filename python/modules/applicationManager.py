@@ -1,7 +1,7 @@
 import os
 import re
 import requests
-from modules.directories import cleaApplicationListFile
+from modules.directories import clearApplicationListFile
 import zipfile
 import shutil
 
@@ -58,17 +58,15 @@ def retrieveApplicationPackageNameFromGooglePlayDeveloperProfile(APPLICATION_LIS
        
         matches = re.findall(GOOGLE_PLAY_APPLICATION_PACKAGE_NAME_REGEX, googlePlayHttpResponseContent)
         
-        retrievedApplicationsPackageName=""
+        retrievedApplicationsPackageNameConcatenation=""
 
-        cleaApplicationListFile(APPLICATION_LIST_FILE)
-
-        resultFile = open(APPLICATION_LIST_FILE, "a")
+        applicationListFile = open(APPLICATION_LIST_FILE, "a")
         for applicationPackageName in matches:
-            resultFile.write(applicationPackageName+"\n")
-            retrievedApplicationsPackageName = retrievedApplicationsPackageName + applicationPackageName
-        resultFile.close()
+            applicationListFile.write(applicationPackageName+"\n")
+            retrievedApplicationsPackageNameConcatenation = retrievedApplicationsPackageNameConcatenation + " " + applicationPackageName
+        applicationListFile.close()
 
-        print("Retrieved: " + retrievedApplicationsPackageName)
+        print("Retrieved: " + retrievedApplicationsPackageNameConcatenation)
     else :
         print(urlToAnalyze + ": http response code: " + googlePlayHttpResponseCode)
 
@@ -176,7 +174,9 @@ def prepareAppplicationListFileFromDevelopersUrlsProfileFile(APPLICATION_LIST_FI
 
     developerUrlsProfileFile = open(DEVELOPERS_URLS_PROFILE_FILE, 'r')
     developerUrlsProfileFileLines = developerUrlsProfileFile.readlines()
-
+    
+    clearApplicationListFile(APPLICATION_LIST_FILE)
+    
     for urlToAnalyze in developerUrlsProfileFileLines:
         
         checkIfUrlLeadsToDeveloperOrApplication(urlToAnalyze)

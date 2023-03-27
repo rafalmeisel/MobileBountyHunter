@@ -62,7 +62,7 @@ def clearResultFile(RESULT_FILE_PATH):
     resultFile.truncate(0)
     resultFile.close()
 
-def cleaApplicationListFile(APPLICATION_LIST_FILE):
+def clearApplicationListFile(APPLICATION_LIST_FILE):
 
     resultFile = open(APPLICATION_LIST_FILE, "r+")
     resultFile.truncate(0)
