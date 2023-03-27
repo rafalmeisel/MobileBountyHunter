@@ -2,7 +2,7 @@
 from modules.thirdPartySoftware import installThirdPartySoftware
 from modules.directories import createDirectories
 from modules.applicationManager import prepareAppplicationsFromListToOutput
-
+from modules.androidApplicationTester import runAndroidTests
 import sys
 import getopt
 
@@ -17,10 +17,10 @@ import getopt
 
 def main(argv):
     
-    INPUT_DIRECTORY_PATH = "./workspace/input"
-    INPUT_ANALYZED_DIRECTORY_PATH = "./workspace/input_analyzed"
-    OUTPUT_DIRECTORY_PATH = "./workspace/output"
-    OUTPUT_ANALYZED_DIRECTORY_PATH = "./workspace/output_analyzed"
+    INPUT_DIRECTORY_PATH = "./workspace/input/"
+    INPUT_ANALYZED_DIRECTORY_PATH = "./workspace/input_analyzed/"
+    OUTPUT_DIRECTORY_PATH = "./workspace/output/"
+    OUTPUT_ANALYZED_DIRECTORY_PATH = "./workspace/output_analyzed/"
     RESULT_FILE_PATH = "./workspace/results.txt"
     APPLICATION_LIST_FILE = "./workspace/apksList.txt"
     DEVELOPERS_URLS_PROFILE_FILE = "./workspace/developersUrlsProfile.txt"
@@ -53,5 +53,7 @@ def main(argv):
     installThirdPartySoftware()
     createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
     prepareAppplicationsFromListToOutput(APPLICATION_LIST_FILE, DEVELOPERS_URLS_PROFILE_FILE, INPUT_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH)
+    runAndroidTests(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+
 if __name__ == '__main__':
     main(sys.argv[1:])

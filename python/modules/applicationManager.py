@@ -108,7 +108,7 @@ def downloadApplicationFromStore(APPLICATION_LIST_FILE, INPUT_DIRECTORY_PATH):
     for applicationPackageName in applicationPackageNames:
         applicationPackageName = applicationPackageName.replace("\n","")
         print("Start downloading: " + applicationPackageName + " to directory " + INPUT_DIRECTORY_PATH)
-        os.system("apkeep -a " + applicationPackageName + " " + INPUT_DIRECTORY_PATH + "/")
+        os.system("apkeep -a " + applicationPackageName + " " + INPUT_DIRECTORY_PATH)
 
 
 def replaceWhiteSpaceWithDotsInApplicationPackageNames(INPUT_DIRECTORY_PATH):
@@ -118,37 +118,37 @@ def replaceWhiteSpaceWithDotsInApplicationPackageNames(INPUT_DIRECTORY_PATH):
         os.rename(os.path.join(INPUT_DIRECTORY_PATH, filename), os.path.join(INPUT_DIRECTORY_PATH, filename.replace(' ', '.').lower()))
 
 def changeApplicationNameFromXapkToApk(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
-    os.rename(INPUT_DIRECTORY_PATH + "/XAPK_TEMP/" + APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH + "/XAPK_TEMP/" + APPLICATION_PACKAGE_NAME.replace(".xapk", ".apk"))
+    os.rename(INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME.replace(".xapk", ".apk"))
 
 def unzipXapkFile(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
-    print("unzipXapkFile: " + INPUT_DIRECTORY_PATH + "/" + APPLICATION_PACKAGE_NAME)
+    print("unzipXapkFile: " + INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME)
 
-    with zipfile.ZipFile(INPUT_DIRECTORY_PATH + "/" + APPLICATION_PACKAGE_NAME, "r") as zip_ref:
-            zip_ref.extractall(INPUT_DIRECTORY_PATH + "/XAPK_TEMP/" + APPLICATION_PACKAGE_NAME)
+    with zipfile.ZipFile(INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME, "r") as zip_ref:
+            zip_ref.extractall(INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME)
 
     changeApplicationNameFromXapkToApk(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME)
 
 def checkIfXapkIsValid(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
 
-    if zipfile.is_zipfile (INPUT_DIRECTORY_PATH + "/" + APPLICATION_PACKAGE_NAME):
+    if zipfile.is_zipfile (INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME):
         return True
     else:
         return False
 
 def decompileApkExtention(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, OUTPUT_DIRECTORY_PATH):
     print("Decompiling: " + APPLICATION_PACKAGE_NAME )
-    os.system("apktool d " + INPUT_DIRECTORY_PATH + "/" + APPLICATION_PACKAGE_NAME + " -o " + OUTPUT_DIRECTORY_PATH + "/" + APPLICATION_PACKAGE_NAME + " -f --quiet")
+    os.system("apktool d " + INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + " -o " + OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + " -f --quiet")
 
 
 def decompileXapkExtention(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, OUTPUT_DIRECTORY_PATH):
 
     if checkIfXapkIsValid(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
-        os.mkdir(INPUT_DIRECTORY_PATH + "/XAPK_TEMP")
-        os.chmod(INPUT_DIRECTORY_PATH + "/XAPK_TEMP", 0o766)
+        os.mkdir(INPUT_DIRECTORY_PATH + "XAPK_TEMP")
+        os.chmod(INPUT_DIRECTORY_PATH + "XAPK_TEMP", 0o766)
         unzipXapkFile(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME)
         APPLICATION_PACKAGE_NAME = APPLICATION_PACKAGE_NAME.replace(".xapk", ".apk")
-        decompileApkExtention(INPUT_DIRECTORY_PATH + "/XAPK_TEMP/" + APPLICATION_PACKAGE_NAME, APPLICATION_PACKAGE_NAME, OUTPUT_DIRECTORY_PATH)
-        shutil.rmtree(INPUT_DIRECTORY_PATH + "/XAPK_TEMP")
+        decompileApkExtention(INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME + "/", APPLICATION_PACKAGE_NAME, OUTPUT_DIRECTORY_PATH)
+        shutil.rmtree(INPUT_DIRECTORY_PATH + "XAPK_TEMP")
     else :
         print ("File " + APPLICATION_PACKAGE_NAME + " is not valid ZIP file (or it is corrupted).")
 
