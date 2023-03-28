@@ -1,15 +1,18 @@
-from modules.tests.checksAndroidManifest import *
-from modules.tests.checksResValuesStrings import *
+from modules.androidTests.checksAndroidManifest import *
+from modules.androidTests.checksResValuesStrings import *
 import os
+from termcolor import colored
 
 ANDROID_MANIFEST_RELATIVE_FILE_PATH = "/AndroidManifest.xml"
 ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH = "/res/values/strings.xml"
 
-def runAndroidTests(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
+def runAndroidTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
     
     outputDirectoryApplicationPackageNames = os.listdir(OUTPUT_DIRECTORY_PATH)
 
     for APPLICATION_PACKAGE_NAME in outputDirectoryApplicationPackageNames:
+        print("Analyzing application: " + colored(APPLICATION_PACKAGE_NAME, 'cyan'))
+
         checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
         checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
         checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
