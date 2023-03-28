@@ -195,7 +195,7 @@ def prepareAppplicationListFileFromDevelopersUrlsProfileFile(DEVELOPERS_URLS_PRO
             retrieveApplicationPackageNameFromAppStoreDeveloperProfile(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
 
 def runTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
-    print("runTests")
+
     filenames = os.listdir(OUTPUT_DIRECTORY_PATH)
     for filename in filenames:
         if IS_APP_STORE_APPLICATION:
