@@ -1,5 +1,6 @@
 from termcolor import colored
 import re
+import requests
 
 def checksResValuesStringsAwsAkid(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -100,12 +101,23 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
 
     resultFile.close()
 
+def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl):
+    response = requests.get(firebaseUrl + "/.json")
+    data = str(response.json())
+
+    if "Permission denied" in data:
+        print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'blue'))
+    elif len(data) == 0:
+        print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'red'))
+    else:
+        print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'yellow'))
+
 def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
     # firebaseUrlRegex = r'https.*firebaseio.com'
     firebaseUrlRegex = r'https.*firebaseio.com'
     firebaseFalseText='Not found'
-    firebaseValue=""
+    firebaseUrl=""
 
     resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
     resultFile = open(RESULT_FILE_PATH, "a")
@@ -113,11 +125,12 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
     for line in resValuesStringsFileContent:
         if re.search(firebaseUrlRegex, line):
             firebaseMatch =  re.search(firebaseUrlRegex, line)
-            firebaseValue = firebaseMatch.group()
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseValue)
+            firebaseUrl = firebaseMatch.group()
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl)
 
-    if len(firebaseValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseValue, 'red'))
+    if len(firebaseUrl) > 0:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseUrl, 'red'))
+        checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl)
     else:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseFalseText, 'blue'))
 
