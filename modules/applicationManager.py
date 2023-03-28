@@ -8,7 +8,11 @@ import shutil
 
 IS_GOOGLE_PLAY_APPLICATION_URL=False
 IS_GOOGLE_PLAY_DEVELOPER_URL=False
-IS_GOOGLE_PLAY_APPLICATION=False
+
+IS_APK_EXTENSION=False
+IS_XAPK_EXTENSION=False
+IS_IPA_EXTENSION=False
+
 GOOGLE_PLAY_URL_REGEX="https://play.google.com/"
 GOOGLE_PLAY_APPLICATION_URL_SCHEMA="https://play.google.com/store/apps/details"
 GOOGLE_PLAY_DEVELOPER_URL_SCHEMA="https://play.google.com/store/apps/dev"
@@ -18,7 +22,6 @@ GOOGLE_PLAY_ID_VALUE_REGEX=r"id=(.+)"
 
 IS_APP_STORE_APPLICATION_URL=False
 IS_APP_STORE_DEVELOPER_URL=False
-IS_APP_STORE_APPLICATION=False
 APP_STORE_URL_REGEX="https://apps.apple.com/"
 APP_STORE_APPLICATION_URL_SCHEMA="https://apps.apple.com/pl/app/app-store-connect/id"
 APP_STORE_DEVELOPER_URL_SCHEMA="https://apps.apple.com/pl/developer/apple/id"
@@ -86,26 +89,23 @@ def retrieveApplicationPackageNameFromAppStoreDeveloperProfile():
 # Check if URL leads to Developer profile or directcly to application
 def checkIfUrlLeadsToDeveloperOrApplication(USER_URL):
     
-    global IS_GOOGLE_PLAY_APPLICATION
     global IS_GOOGLE_PLAY_APPLICATION_URL
     global IS_GOOGLE_PLAY_DEVELOPER_URL
-    global IS_APP_STORE_APPLICATION
     global IS_APP_STORE_APPLICATION_URL
     global IS_APP_STORE_DEVELOPER_URL
 
     if GOOGLE_PLAY_APPLICATION_URL_SCHEMA in USER_URL:
         IS_GOOGLE_PLAY_APPLICATION_URL = True
-        IS_GOOGLE_PLAY_APPLICATION = True
+
     elif GOOGLE_PLAY_DEVELOPER_URL_SCHEMA in USER_URL:
         IS_GOOGLE_PLAY_DEVELOPER_URL = True
-        IS_GOOGLE_PLAY_APPLICATION = True
+
     elif APP_STORE_APPLICATION_URL_SCHEMA in USER_URL: 
         IS_APP_STORE_APPLICATION_URL = True
-        IS_APP_STORE_APPLICATION = True
+
     elif APP_STORE_DEVELOPER_URL_SCHEMA in USER_URL: 
         IS_APP_STORE_DEVELOPER_URL = True
-        IS_APP_STORE_APPLICATION = True
-    
+
 
 def downloadApplicationFromStoreToInputDirectory(APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH):
 
@@ -119,8 +119,10 @@ def replaceWhiteSpaceWithDotsInApplicationPackageName(INPUT_DIRECTORY_PATH):
     for filename in filenames:
         os.rename(os.path.join(INPUT_DIRECTORY_PATH, filename), os.path.join(INPUT_DIRECTORY_PATH, filename.replace(' ', '.').lower()))
 
+
 def changeApplicationNameFromXapkToApk(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
     os.rename(INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME_FILE, INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME_FILE.replace(".xapk", ".apk"))
+
 
 def unzipXapkFile(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
     print("unzipXapkFile: " + INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE)
@@ -130,12 +132,14 @@ def unzipXapkFile(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
 
     changeApplicationNameFromXapkToApk(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE)
 
+
 def checkIfXapkIsValid(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
 
     if zipfile.is_zipfile (INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE):
         return True
     else:
         return False
+
 
 def decompileApkExtention(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH):
     print("Decompiling: " + APPLICATION_PACKAGE_NAME_FILE )
@@ -154,6 +158,7 @@ def decompileXapkExtention(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, 
     else :
         print ("File " + APPLICATION_PACKAGE_NAME_FILE + " is not valid ZIP file (or it is corrupted).")
 
+
 def decompileSingleApplicationPackage(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH): 
 
     if ".xapk" in APPLICATION_PACKAGE_NAME_FILE:
@@ -161,10 +166,12 @@ def decompileSingleApplicationPackage(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_
     elif ".apk" in APPLICATION_PACKAGE_NAME_FILE:
         decompileApkExtention(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH)
 
+
 def decompileApplicationInInputDirectory(INPUT_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH):
     
     inputDirectoryApplicationPackageNames = os.listdir(INPUT_DIRECTORY_PATH)
     for APPLICATION_PACKAGE_NAME_FILE in inputDirectoryApplicationPackageNames:
+        setFlagForApplicationStore(APPLICATION_PACKAGE_NAME_FILE)
         decompileSingleApplicationPackage(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH)
 
 
@@ -194,14 +201,31 @@ def prepareAppplicationListFileFromDevelopersUrlsProfileFile(DEVELOPERS_URLS_PRO
         elif (IS_APP_STORE_DEVELOPER_URL):
             retrieveApplicationPackageNameFromAppStoreDeveloperProfile(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
 
+
+def setFlagForApplicationStore(filename):
+    global IS_APK_EXTENSION
+    global IS_XAPK_EXTENSION
+    global IS_IPA_EXTENSION
+
+    if ".apk" in filename:
+        IS_APK_EXTENSION = True
+    elif ".xapk" in filename: 
+        IS_XAPK_EXTENSION = True
+    elif ".ipa" in filename:
+        IS_IPA_EXTENSION = True
+    else:
+        print("Unrecognized mobile application extension!")
+
 def runTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
 
     filenames = os.listdir(OUTPUT_DIRECTORY_PATH)
+
     for filename in filenames:
-        if IS_APP_STORE_APPLICATION:
+        setFlagForApplicationStore(filename)
+
+        if IS_IPA_EXTENSION:
             print("App Store not Supported yet.")
-        elif IS_GOOGLE_PLAY_APPLICATION:
-            print(filename)
+        elif IS_APK_EXTENSION or IS_XAPK_EXTENSION:
             runAndroidTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH)
 
 def moveApplicationFromInputDirectoryToInputAnalyzedDirectory(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH):

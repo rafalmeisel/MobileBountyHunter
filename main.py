@@ -72,10 +72,6 @@ def main(argv):
     installThirdPartySoftware()
     createDirectories(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
 
-    # TODO: 
-    # When running application as "inputDirectory", "outputDirectory", GooglePlay/AppStore application flag is not set (currently only for URLs).
-    # What needs to do: Determine if application is GooglePlay or AppStore earlier.
-
     match USER_CHOICE:
         case "apkFile":
             print("Analyze selected apkFile. Will be added later.")
