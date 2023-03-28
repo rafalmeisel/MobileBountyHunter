@@ -5,3 +5,7 @@ output_analyzed/
 check-rules/
 AndroidManifext.xml
 strings.xml
+__pycache__
+results.txt
+apksList.txt
+developerUrlsProfile.txt
