@@ -79,7 +79,7 @@ def checksResValuesStringsAwsUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME
 # https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg.htm
 def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    pushIoApplicationIdentifierRegex=r'"pio-.*"'
+    pushIoApplicationIdentifierRegex=r'pio-([^<]+)'
     pushIoApplicationIdentifierFalseText='Not found'
     pushIoApplicationIdentifierValue=""
 
