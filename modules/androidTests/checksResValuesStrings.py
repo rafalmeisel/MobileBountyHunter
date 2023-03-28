@@ -2,9 +2,10 @@ from termcolor import colored
 import re
 import requests
 
-def checksResValuesStringsAwsAkid(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+# TODO: Precice Regex
+def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsAkidRegex=r'>(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])<'
+    awsAkidRegex=r'AK([^<]+)'
     awsAkidFalseText='Not found'
     awsAkidValue=""
 
@@ -26,10 +27,35 @@ def checksResValuesStringsAwsAkid(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
 
     resultFile.close()
 
-
-def checksResValuesStringsAwSecretKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+# TODO: Precice Regex
+def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsSecretKeyRegex=r'>(?<![A-Za-z0-9+=])[A-Za-z0-9+=]{40}(?![A-Za-z0-9+=])<'
+    awsAkidRegex=r'AS([^<]+)'
+    awsAkidFalseText='Not found'
+    awsAkidValue=""
+
+    androidresValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
+
+    resultFile = open(RESULT_FILE_PATH, "a")
+    
+    for line in androidresValuesStringsFileContent:
+        if re.search(awsAkidRegex, line):
+            awsAkidMatch =  re.search(awsAkidRegex, line)
+            awsAkidValue = awsAkidMatch.group()
+
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS AKID: " + awsAkidValue)
+
+    if len(awsAkidValue) > 0:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS AKID: ", colored(awsAkidValue, 'red'))
+    else:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS AKID: ", colored(awsAkidFalseText, 'blue'))
+
+    resultFile.close()
+
+# TODO: Precice Regex
+def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+    
+    awsSecretKeyRegex=r'(?<![A-Za-z0-9\/+=])[A-Za-z0-9\/+=]{40}(?![A-Za-z0-9\/+=])'
     awsSecretKeyFalseText='Not found'
     awsSecretKeyValue=""
 
@@ -51,7 +77,7 @@ def checksResValuesStringsAwSecretKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
 
     resultFile.close()
 
-
+# To check
 def checksResValuesStringsAwsUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
     awsUrlRegex=r"http.*amazonaws.com"
