@@ -9,10 +9,8 @@ AWSCLI_PATH='/usr/bin/aws'
 
 def installApkTools():
     
-    if os.path.exists(APKTOOL_PATH):
-        print("ApkTool detected.")
-    
-    else:
+    if not os.path.exists(APKTOOL_PATH):
+        
         currentInstallationStep = 0
         totalInstallationSteps = 6
 
@@ -46,10 +44,8 @@ def installApkTools():
     
 def installRust():
     
-    if os.path.exists(RUST_PATH):
-        print("Rustc detected.")
-    
-    else:
+    if not os.path.exists(RUST_PATH):
+
         urllib.request.urlretrieve("https://sh.rustup.rs", "rustup-init.sh")
         os.system("sh rustup-init.sh")
         os.system("source '$HOME/.cargo/env'")
@@ -58,10 +54,8 @@ def installRust():
 
 def installApkeep():
     
-    if os.path.exists(APKEEP_PATH):
-        print("Apkeep detected.")
-    
-    else:
+    if not os.path.exists(APKEEP_PATH):
+
         os.system("apt install libssl-dev")
         os.system("apt install pkg-config -y")
         os.system("cargo install apkeep --locked")
@@ -69,10 +63,8 @@ def installApkeep():
 
 def installAwsCli():
 
-    if os.path.exists(AWSCLI_PATH):
-        print("AwsCli detected.")
-    
-    else:
+    if not os.path.exists(AWSCLI_PATH):
+
         os.system("apt install awscli -y")
 
 def installThirdPartySoftware():
