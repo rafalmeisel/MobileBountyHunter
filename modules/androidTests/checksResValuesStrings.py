@@ -55,7 +55,7 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
 # TODO: Precice Regex
 def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsSecretKeyRegex=r'(?:(AWS|aws).*>)(.*)(?=<)'
+    awsSecretKeyRegex=r'(?:(AWS|aws).*>)(\S*)(?=<)'
     awsSecretKeyFalseText='Not found'
     awsSecretKeyValue=""
 
