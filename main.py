@@ -97,6 +97,7 @@ def main(argv):
 
         case _:
             print("Default")
+            modules.applicationManager.runAnalyzeApplicationFromDeveloperProfileList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
 
     
 
