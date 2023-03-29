@@ -140,7 +140,6 @@ def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl):
 
 def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    # firebaseUrlRegex = r'https.*firebaseio.com'
     firebaseUrlRegex = r'https.*firebaseio.com'
     firebaseFalseText='Not found'
     firebaseUrl=""
