@@ -5,7 +5,7 @@ import requests
 # TODO: Precice Regex
 def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsAkidRegex=r'(?<=>)AK(.*?)(?=<)'
+    awsAkidRegex=r'(?<=>)AK(\S*?)(?=<)'
     awsAkidFalseText='Not found'
     awsAkidValue=""
 
@@ -30,7 +30,7 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
 # TODO: Precice Regex
 def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsAkidRegex=r'(?<=>)AS(.*?)(?=<)'
+    awsAkidRegex=r'(?<=>)AS(\S*?)(?=<)'
     awsAkidFalseText='Not found'
     awsAkidValue=""
 
