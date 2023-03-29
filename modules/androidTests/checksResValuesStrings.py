@@ -5,7 +5,7 @@ import requests
 # TODO: Precice Regex
 def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsAkidRegex=r'AK([^<]+)'
+    awsAkidRegex=r'(?<=>)AK(.*?)(?=<)'
     awsAkidFalseText='Not found'
     awsAkidValue=""
 
@@ -18,19 +18,19 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
             awsAkidMatch =  re.search(awsAkidRegex, line)
             awsAkidValue = awsAkidMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS AKID: " + awsAkidValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Long Term Access Key: " + awsAkidValue)
 
     if len(awsAkidValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS AKID: ", colored(awsAkidValue, 'red'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidValue, 'red'))
     else:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS AKID: ", colored(awsAkidFalseText, 'blue'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidFalseText, 'blue'))
 
     resultFile.close()
 
 # TODO: Precice Regex
 def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsAkidRegex=r'AS([^<]+)'
+    awsAkidRegex=r'(?<=>)AS(.*?)(?=<)'
     awsAkidFalseText='Not found'
     awsAkidValue=""
 
@@ -43,19 +43,19 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
             awsAkidMatch =  re.search(awsAkidRegex, line)
             awsAkidValue = awsAkidMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS AKID: " + awsAkidValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Short Term Access Key: " + awsAkidValue)
 
     if len(awsAkidValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS AKID: ", colored(awsAkidValue, 'red'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidValue, 'red'))
     else:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS AKID: ", colored(awsAkidFalseText, 'blue'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidFalseText, 'blue'))
 
     resultFile.close()
 
 # TODO: Precice Regex
 def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    awsSecretKeyRegex=r'(?<![A-Za-z0-9\/+=])[A-Za-z0-9\/+=]{40}(?![A-Za-z0-9\/+=])'
+    awsSecretKeyRegex=r'(?:(AWS|aws).*>)(.*)(?=<)'
     awsSecretKeyFalseText='Not found'
     awsSecretKeyValue=""
 
@@ -66,7 +66,7 @@ def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_P
     for line in androidresValuesStringsFileContent:
         if re.search(awsSecretKeyRegex, line):
             awsSecretKeyMatch =  re.search(awsSecretKeyRegex, line)
-            awsSecretKeyValue = awsSecretKeyMatch.group()
+            awsSecretKeyValue = awsSecretKeyMatch.group(2)
 
             resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Secret Key: " + awsSecretKeyValue)
 
