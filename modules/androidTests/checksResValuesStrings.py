@@ -2,7 +2,7 @@ from termcolor import colored
 import re
 import requests
 
-# TODO: Precice Regex
+
 def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
     awsAkidRegex=r'(?<=>)AK(\S*?)(?=<)'
@@ -27,7 +27,7 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
 
     resultFile.close()
 
-# TODO: Precice Regex
+
 def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
     awsAkidRegex=r'(?<=>)AS(\S*?)(?=<)'
@@ -52,7 +52,7 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
 
     resultFile.close()
 
-# TODO: Precice Regex
+
 def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
     awsSecretKeyRegex=r'(?:(AWS|aws).*>)(\S*)(?=<)'
@@ -102,6 +102,7 @@ def checksResValuesStringsAwsUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME
 
     resultFile.close()
 
+
 # https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg.htm
 def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -127,6 +128,7 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
 
     resultFile.close()
 
+
 def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl):
     response = requests.get(firebaseUrl + "/.json")
     data = str(response.json())
@@ -137,6 +139,7 @@ def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl):
         print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'red'))
     else:
         print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'yellow'))
+
 
 def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
