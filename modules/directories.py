@@ -35,7 +35,7 @@ def createResultFile(RESULT_FILE_PATH):
         os.chmod(RESULT_FILE_PATH, 0o766)
         print("Created file: " + RESULT_FILE_PATH)
 
-def createDeveloperProfileUrlsFile(STORE_URLS_FILE):
+def createStoreUrlsFile(STORE_URLS_FILE):
 
     if not os.path.exists(STORE_URLS_FILE):
         f = open(STORE_URLS_FILE, "x")

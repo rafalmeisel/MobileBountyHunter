@@ -24,7 +24,7 @@ def main(argv):
     OUTPUT_ANALYZED_DIRECTORY_PATH = "./workspace/output_analyzed/"
     RESULT_FILE_PATH = "./workspace/results.txt"
     APPLICATION_LIST_FILE_PATH = "./workspace/apksList.txt"
-    DEVELOPERS_URLS_PROFILE_FILE = "./workspace/developersUrlsProfile.txt"
+    DEVELOPERS_URLS_PROFILE_FILE = "./workspace/storeUrls.txt"
     APK_FILE = ""
     STORE_URL = ""
 
