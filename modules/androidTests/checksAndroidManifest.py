@@ -3,25 +3,31 @@ import re
 
 def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    debuggableTrueRegex='.*debuggable="true".*'
+    debuggableActivityTrueRegex='.*debuggable="true".*'
+    debuggableActivityTypeValue=""
+    debuggableActivityTypeRegex='(?:<)(.*?) (?=android)'
+    debuggableActivityNameValue=""
     debuggableActivityNameRegex='(?:(name="))(.*?)(?=")'
-    ifDebuggableFlag=False
+    isDebuggableFlag=False
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
 
     resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidManifestFileContent:
-        if re.search(debuggableTrueRegex, line):
-            debuggableActivityName = str(re.search(debuggableActivityNameRegex, line).group(2))
+        if re.search(debuggableActivityTrueRegex, line):
+            if re.search(debuggableActivityNameRegex, line):
+                debuggableActivityNameValue = str(re.search(debuggableActivityNameRegex, line).group(2))
+
+            debuggableActivityTypeValue = str(re.search(debuggableActivityTypeRegex, line).group(1))
             resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:" + line)
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:", colored(debuggableActivityName, 'red'))
-            ifDebuggableFlag = True
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:", colored(debuggableActivityTypeValue + ":" + debuggableActivityNameValue, 'red'))
+            isDebuggableFlag = True
 
         else:
-            ifDebuggableFlag = ifDebuggableFlag or False
+            isDebuggableFlag = isDebuggableFlag or False
 
-    if not ifDebuggableFlag:
+    if not isDebuggableFlag:
         print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:", colored("False", 'blue'))       
 
     resultFile.close()
@@ -29,50 +35,62 @@ def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
 
 def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    allowBackupTrueRegex='.*allowBackup="true".*'
+    allowBackupActivityTrueRegex='.*allowBackup="true".*'
+    allowBackupActivityTypeValue=""
+    allowBackupActivityTypeRegex='(?:<)(.*?) (?=android)'
+    allowBackupActivityNameValue=""
     allowBackupActivityNameRegex='(?:(name="))(.*?)(?=")'
-    ifAllowBackupFlag=False
+    isAllowBackupFlag=False
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
 
     resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidManifestFileContent:
-        if re.search(allowBackupTrueRegex, line):
-            allowBackupActivityName = str(re.search(allowBackupActivityNameRegex, line).group(2))
+        if re.search(allowBackupActivityTrueRegex, line):
+            if re.search(allowBackupActivityNameRegex, line):
+                allowBackupActivityNameValue = str(re.search(allowBackupActivityNameRegex, line).group(2))
+            
+            allowBackupActivityTypeValue = str(re.search(allowBackupActivityTypeRegex, line).group(1))
             resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:" + line)
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:", colored(allowBackupActivityName, 'red'))
-            ifAllowBackupFlag = True
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:", colored(allowBackupActivityTypeValue + ":" + allowBackupActivityNameValue, 'red'))
+            isAllowBackupFlag = True
             
         else:
-            ifAllowBackupFlag= ifAllowBackupFlag or False
+            isAllowBackupFlag= isAllowBackupFlag or False
 
-    if not ifAllowBackupFlag:
+    if not isAllowBackupFlag:
         print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:", colored("False", 'blue'))
 
     resultFile.close()
 
 def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
-    exportedTrueRegex='.*exported="true".*'
+    exportedActivityTrueRegex='.*exported="true".*'
+    exportedActivityTypeValue=""
+    exportedActivityTypeRegex='(?:<)(.*?) (?=android)'
+    exportedActivityNameValue=""
     exportedActivityNameRegex='(?:(name="))(.*?)(?=")'
-    ifExportedFlag=False
+    isExportedFlag=False
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
 
     resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidManifestFileContent:
-        if re.search(exportedTrueRegex, line):
-            exportedActivityName = str(re.search(exportedActivityNameRegex, line).group(2))
+        if re.search(exportedActivityTrueRegex, line):
+            if re.search(exportedActivityNameRegex, line):
+                exportedActivityNameValue = str(re.search(exportedActivityNameRegex, line).group(2))
+            
+            exportedActivityTypeValue = str(re.search(exportedActivityTypeRegex, line).group(1))
             resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:" + line)
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:", colored(exportedActivityName, 'red'))
-            ifExportedFlag = True
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:", colored(exportedActivityTypeValue + ":" + exportedActivityNameValue, 'red'))
+            isExportedFlag = True
         
         else:
-            ifExportedFlag= ifExportedFlag or False
+            isExportedFlag= isExportedFlag or False
 
-    if not ifExportedFlag:
+    if not isExportedFlag:
         print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:", colored("False", 'blue'))
 
     resultFile.close()
