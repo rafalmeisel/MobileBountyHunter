@@ -1,5 +1,6 @@
 from modules.androidTests.checksAndroidManifest import *
 from modules.androidTests.checksResValuesStrings import *
+from modules.androidTests.checksAndroidDatabase import *
 import os
 from termcolor import colored
 
@@ -23,3 +24,6 @@ def runAndroidTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
         checksResValuesStringsAwsUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
         checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
         checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
+
+        searchFilesWithSqliteExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
+        searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
