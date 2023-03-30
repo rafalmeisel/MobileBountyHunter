@@ -14,7 +14,7 @@ def searchFilesWithSqliteExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
     if(len(sqliteFilesList) > 0):
 
         for sqliteFilePath in sqliteFilesList:
-            print(APPLICATION_PACKAGE_NAME + "Sqlite database: " + colored(str(sqliteFilePath), 'red'))
+            print(APPLICATION_PACKAGE_NAME + ": Sqlite database: " + colored(str(sqliteFilePath), 'red'))
             resultFile.write(APPLICATION_PACKAGE_NAME + ": Sqlite database: " + str(sqliteFilePath) + "\n")
         
         resultFile.close()
@@ -34,7 +34,7 @@ def searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME,
     if(len(dbFilesList) > 0):
 
         for dbFilePath in dbFilesList:
-            print(APPLICATION_PACKAGE_NAME + "DB database: " + colored(str(dbFilePath), 'red'))
+            print(APPLICATION_PACKAGE_NAME + ": DB database: " + colored(str(dbFilePath), 'red'))
             resultFile.write(APPLICATION_PACKAGE_NAME + ": DB database: " + str(dbFilePath) + "\n")
         
         resultFile.close()
