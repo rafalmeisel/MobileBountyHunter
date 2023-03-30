@@ -37,7 +37,7 @@ def retrieveApplicationPackageNameFromGooglePlayApplication(APPLICATION_LIST_FIL
     applicationListFile.write(applicationPackageName)
     applicationListFile.close()
 
-def retrieveApplicationPackageNameFromGooglePlayDeveloperProfile(APPLICATION_LIST_FILE_PATH, urlToAnalyze):
+def retrieveApplicationPackageNameFromGooglePlayUrl(APPLICATION_LIST_FILE_PATH, urlToAnalyze):
     # Examples:
     # https://play.google.com/store/apps/dev?id=5360036014478858866
     # https://play.google.com/store/apps/developer?id=Bethesda+Softworks+LLC
@@ -82,8 +82,8 @@ def retrieveApplicationPackageNameFromAppStoreApplication(urlToAnalyze):
     
     print("TODO: retrieveApplicationPackageNameFromAppStoreApplication")
 
-def retrieveApplicationPackageNameFromAppStoreDeveloperProfile():
-     print("TODO: retrieveApplicationPackageNameFromAppStoreDeveloperProfile")
+def retrieveApplicationPackageNameFromAppStoreUrl():
+     print("TODO: retrieveApplicationPackageNameFromAppStoreUrl")
 
 
 # Check if URL leads to Developer profile or directcly to application
@@ -175,15 +175,15 @@ def decompileApplicationInInputDirectory(INPUT_DIRECTORY_PATH, OUTPUT_DIRECTORY_
         decompileSingleApplicationPackage(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH)
 
 
-# Read developersUrlsProfile.txt, retrieve applications package name from GET response, write it to file 
-def prepareAppplicationListFileFromDevelopersUrlsProfileFile(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH):
+# Read storeUrls.txt, retrieve applications package name from GET response, write it to file 
+def prepareAppplicationListFileFromstoreUrlsFile(STORE_URLS_FILE, APPLICATION_LIST_FILE_PATH):
 
     global IS_GOOGLE_PLAY_APPLICATION_URL
     global IS_GOOGLE_PLAY_DEVELOPER_URL
     global IS_APP_STORE_APPLICATION_URL
     global IS_APP_STORE_DEVELOPER_URL
 
-    developerUrlsProfileFile = open(DEVELOPERS_URLS_PROFILE_FILE, 'r')
+    developerUrlsProfileFile = open(STORE_URLS_FILE, 'r')
     developerUrlsProfileFileLines = developerUrlsProfileFile.readlines()
     
     clearApplicationListFile(APPLICATION_LIST_FILE_PATH)
@@ -195,11 +195,11 @@ def prepareAppplicationListFileFromDevelopersUrlsProfileFile(DEVELOPERS_URLS_PRO
         if (IS_GOOGLE_PLAY_APPLICATION_URL):
              retrieveApplicationPackageNameFromGooglePlayApplication(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
         elif (IS_GOOGLE_PLAY_DEVELOPER_URL):
-            retrieveApplicationPackageNameFromGooglePlayDeveloperProfile(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
+            retrieveApplicationPackageNameFromGooglePlayUrl(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
         elif (IS_APP_STORE_APPLICATION_URL):
             retrieveApplicationPackageNameFromAppStoreApplication(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
         elif (IS_APP_STORE_DEVELOPER_URL):
-            retrieveApplicationPackageNameFromAppStoreDeveloperProfile(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
+            retrieveApplicationPackageNameFromAppStoreUrl(APPLICATION_LIST_FILE_PATH, urlToAnalyze)
 
 
 def setFlagForApplicationStore(filename):
@@ -275,7 +275,7 @@ def analyzeApplicationFromList(APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH,
         analyzeApplication(APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
 
 
-def runAnalyzeApplicationFromDeveloperProfileList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
+def runAnalyzeApplicationFromStoreUrlList(STORE_URLS_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
 
-    prepareAppplicationListFileFromDevelopersUrlsProfileFile(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH)
+    prepareAppplicationListFileFromstoreUrlsFile(STORE_URLS_FILE, APPLICATION_LIST_FILE_PATH)
     analyzeApplicationFromList(APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)

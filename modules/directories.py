@@ -35,12 +35,12 @@ def createResultFile(RESULT_FILE_PATH):
         os.chmod(RESULT_FILE_PATH, 0o766)
         print("Created file: " + RESULT_FILE_PATH)
 
-def createDeveloperProfileUrlsFile(DEVELOPERS_URLS_PROFILE_FILE):
+def createDeveloperProfileUrlsFile(STORE_URLS_FILE):
 
-    if not os.path.exists(DEVELOPERS_URLS_PROFILE_FILE):
-        f = open(DEVELOPERS_URLS_PROFILE_FILE, "x")
-        os.chmod(DEVELOPERS_URLS_PROFILE_FILE, 0o766)
-        print("Created file: " + DEVELOPERS_URLS_PROFILE_FILE + " - Please provide the Developers Urls from Google Play in this file.")
+    if not os.path.exists(STORE_URLS_FILE):
+        f = open(STORE_URLS_FILE, "x")
+        os.chmod(STORE_URLS_FILE, 0o766)
+        print("Created file: " + STORE_URLS_FILE + " - Please provide the Developers Urls from Google Play in this file.")
 
 def createApplicationListFile(APPLICATION_LIST_FILE_PATH):
 
@@ -61,9 +61,9 @@ def clearApplicationListFile(APPLICATION_LIST_FILE):
     resultFile.truncate(0)
     resultFile.close()
     
-def createDirectories(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
+def createDirectories(STORE_URLS_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH):
 
-    createDeveloperProfileUrlsFile(DEVELOPERS_URLS_PROFILE_FILE)
+    createDeveloperProfileUrlsFile(STORE_URLS_FILE)
     createApplicationListFile(APPLICATION_LIST_FILE_PATH)
     createInputDirectory(INPUT_DIRECTORY_PATH)
     createInputAnalyzedDirectory(INPUT_ANALYZED_DIRECTORY_PATH)
