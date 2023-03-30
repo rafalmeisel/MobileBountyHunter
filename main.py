@@ -90,14 +90,14 @@ def main(argv):
 
         case "developersUrlsProfileFile":
             print("Analyze selected developersUrlsProfileFile")
-            modules.applicationManager.runAnalyzeApplicationFromDeveloperProfileList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            modules.applicationManager.runAnalyzeApplicationFromStoreUrlList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
 
         case "storeUrl":
             print("Analyze selected storeUrl. Will be added later.")
 
         case _:
             print("Default")
-            modules.applicationManager.runAnalyzeApplicationFromDeveloperProfileList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            modules.applicationManager.runAnalyzeApplicationFromStoreUrlList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
 
     
 
