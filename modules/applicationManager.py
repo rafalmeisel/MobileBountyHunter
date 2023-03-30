@@ -236,6 +236,7 @@ def moveApplicationFromInputDirectoryToInputAnalyzedDirectory(INPUT_DIRECTORY_PA
 def moveApplicationFromOutputDirectoryToOutputAnalyzedDirectory(OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH):
     filenames = os.listdir(OUTPUT_DIRECTORY_PATH)
     for filename in filenames:
+        print("move: " + OUTPUT_ANALYZED_DIRECTORY_PATH + filename)
         shutil.move(OUTPUT_DIRECTORY_PATH + filename, OUTPUT_ANALYZED_DIRECTORY_PATH + filename)
 
 

@@ -14,16 +14,15 @@ def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
     
     for line in androidManifestFileContent:
         if re.search(debuggableTrueRegex, line):
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: " + debuggableTrueText + " : " + line)
-            ifDebuggableFlag = ifDebuggableFlag or True
-        
-        else:
-            ifDebuggableFlag= ifDebuggableFlag or False
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: " + debuggableTrueText + " : " + line + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(debuggableTrueText, 'red'))
+            ifDebuggableFlag = True
 
-    if ifDebuggableFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(debuggableTrueText, 'red'))
-    else:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(debuggableFalseText, 'blue'))
+        else:
+            ifDebuggableFlag = ifDebuggableFlag or False
+
+    if not ifDebuggableFlag:
+        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(debuggableFalseText, 'blue'))       
 
     resultFile.close()
 
@@ -41,15 +40,14 @@ def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_
     
     for line in androidManifestFileContent:
         if re.search(allowBackupTrueRegex, line):
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: " + allowBackupTrueText + " : " + line)
-            ifAllowBackupFlag = ifAllowBackupFlag or True
-        
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: " + allowBackupTrueText + " : " + line + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(allowBackupTrueText, 'red'))
+            ifAllowBackupFlag = True
+            
         else:
             ifAllowBackupFlag= ifAllowBackupFlag or False
 
-    if ifAllowBackupFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(allowBackupTrueText, 'red'))
-    else:
+    if not ifAllowBackupFlag:
         print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(allowBackupFalseText, 'blue'))
 
     resultFile.close()
@@ -67,15 +65,14 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
     
     for line in androidManifestFileContent:
         if re.search(exportedTrueRegex, line):
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: " + exportedTrueText + " : " + line)
-            ifExportedFlag = ifExportedFlag or True
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: " + exportedTrueText + " : " + line + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(exportedTrueText, 'red'))
+            ifExportedFlag = True
         
         else:
             ifExportedFlag= ifExportedFlag or False
 
-    if ifExportedFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(exportedTrueText, 'red'))
-    else:
+    if not ifExportedFlag:
         print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: ", colored(exportedFalseText, 'blue'))
 
     resultFile.close()

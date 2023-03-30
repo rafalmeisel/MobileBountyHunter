@@ -18,11 +18,10 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
             awsAkidMatch =  re.search(awsAkidRegex, line)
             awsAkidValue = awsAkidMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Long Term Access Key: " + awsAkidValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Long Term Access Key: " + awsAkidValue + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidValue, 'red'))
 
-    if len(awsAkidValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidValue, 'red'))
-    else:
+    if len(awsAkidValue) == 0:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidFalseText, 'blue'))
 
     resultFile.close()
@@ -43,11 +42,10 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
             awsAkidMatch =  re.search(awsAkidRegex, line)
             awsAkidValue = awsAkidMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Short Term Access Key: " + awsAkidValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Short Term Access Key: " + awsAkidValue + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidValue, 'red'))
 
-    if len(awsAkidValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidValue, 'red'))
-    else:
+    if len(awsAkidValue) == 0:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidFalseText, 'blue'))
 
     resultFile.close()
@@ -68,11 +66,10 @@ def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_P
             awsSecretKeyMatch =  re.search(awsSecretKeyRegex, line)
             awsSecretKeyValue = awsSecretKeyMatch.group(2)
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Secret Key: " + awsSecretKeyValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Secret Key: " + awsSecretKeyValue + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Secret Key: ", colored(awsSecretKeyValue, 'red'))
 
-    if len(awsSecretKeyValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Secret Key: ", colored(awsSecretKeyValue, 'red'))
-    else:
+    if len(awsSecretKeyValue) == 0:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Secret Key: ", colored(awsSecretKeyFalseText, 'blue'))
 
     resultFile.close()
@@ -93,11 +90,10 @@ def checksResValuesStringsAwsUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME
             awsUrlMatch =  re.search(awsUrlRegex, line)
             awsUrlValue = awsUrlMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS URL: " + awsUrlValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS URL: " + awsUrlValue + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS URL: ", colored(awsUrlValue, 'red'))
 
-    if len(awsUrlValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS URL: ", colored(awsUrlValue, 'red'))
-    else:
+    if len(awsUrlValue) == 0:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS URL: ", colored(awsUrlFalseText, 'blue'))
 
     resultFile.close()
@@ -119,11 +115,10 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
             pushIoApplicationIdentifierMatch =  re.search(pushIoApplicationIdentifierRegex, line)
             pushIoApplicationIdentifierValue = pushIoApplicationIdentifierMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: " + pushIoApplicationIdentifierValue)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: " + pushIoApplicationIdentifierValue + "\n")
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: ", colored(pushIoApplicationIdentifierValue, 'red'))
 
-    if len(pushIoApplicationIdentifierValue) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: ", colored(pushIoApplicationIdentifierValue, 'red'))
-    else:
+    if len(pushIoApplicationIdentifierValue) == 0:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: ", colored(pushIoApplicationIdentifierFalseText, 'blue'))
 
     resultFile.close()
@@ -154,12 +149,12 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
         if re.search(firebaseUrlRegex, line):
             firebaseMatch =  re.search(firebaseUrlRegex, line)
             firebaseUrl = firebaseMatch.group()
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + "\n")
 
-    if len(firebaseUrl) > 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseUrl, 'red'))
-        checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl)
-    else:
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseUrl, 'red'))
+            checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl)
+
+    if len(firebaseUrl) == 0:
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseFalseText, 'blue'))
 
     resultFile.close()
