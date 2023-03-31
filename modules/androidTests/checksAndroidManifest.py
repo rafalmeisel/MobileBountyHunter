@@ -94,3 +94,28 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
         print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:", colored("False", 'blue'))
 
     resultFile.close()
+
+def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+    
+    cloudinaryRegex='cloudinary:\/\/.*(?="|\')'
+    cloudinaryValue=""
+    isCloudinaryFlag=False
+
+    androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
+
+    resultFile = open(RESULT_FILE_PATH, "a")
+    
+    for line in androidManifestFileContent:
+        if re.search(cloudinaryRegex, line):
+            cloudinaryValue = re.search(cloudinaryRegex, line).group(0)
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: Cloudinary:" + str(cloudinaryValue))
+            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: Cloudinary:", colored(str(cloudinaryValue), 'red'))
+            isCloudinaryFlag = True
+        
+        else:
+            isCloudinaryFlag= isCloudinaryFlag or False
+
+    if not isCloudinaryFlag:
+        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: Cloudinary:", colored("Not found", 'blue'))
+
+    resultFile.close()
