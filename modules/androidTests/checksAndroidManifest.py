@@ -1,6 +1,15 @@
 from termcolor import colored
 import re
 
+# Interesting things in AndroidManifest:
+# - Exported components
+# - Api keys
+# - Custom deep link schemas
+# - http deep link scheme
+# - Deep link hosts
+# - Schema endpoints
+# - Deep link pathPatterns
+
 def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
     debuggableActivityTrueRegex='.*debuggable="true".*'

@@ -1,6 +1,8 @@
 import os
 import urllib.request
 import shutil
+import sys
+import subprocess
 
 APKTOOL_PATH = '/usr/local/bin/apktool.jar'
 RUST_PATH = '/home/kali/.cargo/bin/rustc'
@@ -67,9 +69,15 @@ def installAwsCli():
 
         os.system("apt install awscli -y")
 
+def installBoto3():
+    
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'boto3'])
+
+
 def installThirdPartySoftware():
     
     installApkTools()
     installRust()
     installApkeep()
     installAwsCli()
+    installBoto3()
