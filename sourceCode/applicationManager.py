@@ -276,6 +276,9 @@ def analyzeApplicationFromList(APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH,
 
     for APPLICATION_PACKAGE_NAME in applicationPackageNames:
         APPLICATION_PACKAGE_NAME = APPLICATION_PACKAGE_NAME.replace("\n", "")
+
+        # Newline between printing new scan
+        print("\n")
         analyzeApplication(APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
 
 
