@@ -115,9 +115,11 @@ The Mobile Bounty Hunter can be used ONLY for educational purpose and Bug Bounty
 
 ## Todo's:
 1. Checks SMALI config
-3. Check build configs like: local.properties, gradle.properties
-4. Check: /data/misc/keystore/
+2. Check build configs like: local.properties, gradle.properties
+3. Check: /data/misc/keystore/
+4. Prepare full scan including all files in decompiled application
 
 ## Interesting links about Mobile Bug Bounty:
 https://www.youtube.com/watch?v=OlgmPxTHLuY
-
+https://hackmd.io/@Chal13W1zz/ABBH
+https://www.youtube.com/watch?v=S6xGOU-QWWQ
