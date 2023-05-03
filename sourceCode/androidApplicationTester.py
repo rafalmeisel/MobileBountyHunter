@@ -1,6 +1,6 @@
-from modules.androidTests.checksAndroidManifest import *
-from modules.androidTests.checksResValuesStrings import *
-from modules.androidTests.checksAndroidDatabase import *
+from sourceCode.androidTests.checksAndroidManifest import *
+from sourceCode.androidTests.checksResValuesStrings import *
+from sourceCode.androidTests.checksAndroidDatabase import *
 # from modules.androidTests.searchInSmaliFiles import *
 
 import os

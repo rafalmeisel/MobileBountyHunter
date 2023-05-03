@@ -1,8 +1,8 @@
 import os
 import re
 import requests
-from modules.directories import clearApplicationListFile
-from modules.androidApplicationTester import runAndroidTests
+from sourceCode.directories import clearApplicationListFile
+from sourceCode.androidApplicationTester import runAndroidTests
 import zipfile
 import shutil
 

@@ -163,17 +163,23 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
     resultFile.close()
 
 
-def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl):
+def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH):
     response = requests.get(firebaseUrl + "/.json")
     data = str(response.json())
 
-    if "Permission denied" in data:
-        print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'blue'))
-    elif len(data) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'red'))
-    else:
-        print(APPLICATION_PACKAGE_NAME + ": Firebase: " + colored(data, 'yellow'))
+    resultFile = open(RESULT_FILE_PATH, "a")
 
+    if "Permission denied" in data:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + colored(firebaseUrl, 'yellow') + ": " + colored(data, 'blue'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + ": Secured" + "\n")
+    elif len(data) == 0:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + colored(firebaseUrl, 'yellow') + ": " + colored(data, 'red'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + ": OPEN!" + "\n")
+    else:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + colored(firebaseUrl, 'yellow') + ": " + colored(data, 'yellow'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + ": To check" + "\n")
+    
+    resultFile.close()
 
 def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -182,31 +188,36 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
     firebaseUrl=""
 
     resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-    resultFile = open(RESULT_FILE_PATH, "a")
-
+    
     for line in resValuesStringsFileContent:
         if re.search(firebaseUrlRegex, line):
             firebaseMatch =  re.search(firebaseUrlRegex, line)
             firebaseUrl = firebaseMatch.group()
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + "\n")
-
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseUrl, 'red'))
-            checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl)
+            
+            # print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseUrl, 'red'))
+            checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH)
 
     if len(firebaseUrl) == 0:
+        resultFile = open(RESULT_FILE_PATH, "a")
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseNotFoundText, 'blue'))
+        resultFile.close()
 
-    resultFile.close()
 
-
-def checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey):
+def checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH):
     response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountains+View,+CA&key=" + googleApiKey)
     data = str(response.json())
 
+    resultFile = open(RESULT_FILE_PATH, "a")
+
     if "REQUEST_DENIED" in data:
-        print(APPLICATION_PACKAGE_NAME + ": Google API: " + colored("Secured", 'blue'))
+        print(APPLICATION_PACKAGE_NAME + ": Google API: " + colored(googleApiKey, 'yellow') + " : " + colored("Secured", 'blue'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + googleApiKey + ": Secured" + "\n")
     else:
-        print(APPLICATION_PACKAGE_NAME + ": Google API: " + colored("OPEN!", 'red'))
+        print(APPLICATION_PACKAGE_NAME + ": Google API: " + colored(googleApiKey, 'yellow') + " : " + colored("OPEN!", 'red'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + googleApiKey + ": OPEN!" + "\n")
+
+    resultFile.close()
+
     
 def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
 
@@ -217,18 +228,129 @@ def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
 
     
     resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-    resultFile = open(RESULT_FILE_PATH, "a")
-
+    
     for line in resValuesStringsFileContent:
         if re.search(googleApiKeyRegex, line):
             googleApiKeyMatch =  re.search(googleApiKeyRegex, line)
             googleApiKey = googleApiKeyMatch.group(1)
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API Key: " + googleApiKey + "\n")
 
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API Key: ", colored(googleApiKey, 'red'))
-            checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey)
+            # print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API Key: ", colored(googleApiKey, 'red'))
+            checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH)
 
     if len(googleApiKey) == 0:
+        resultFile = open(RESULT_FILE_PATH, "a")
         print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API Key: ", colored(googleApiKeyNotFoundText, 'blue'))
+        resultFile.close()
 
-    resultFile.close()
+
+def checksResValuesStringGoogleCloudPlatformOAuth(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+
+    googleCloudPlatformOAuthRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
+    googleCloudPlatformOAuthNotFoundText='Not found'
+    googleCloudPlatformOAuth=""
+
+    
+    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
+    
+    for line in resValuesStringsFileContent:
+        if re.search(googleCloudPlatformOAuthRegex, line):
+            googleCloudPlatformOAuthMatch =  re.search(googleCloudPlatformOAuthRegex, line)
+            googleCloudPlatformOAuth = googleCloudPlatformOAuthMatch.group()
+
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuth, 'red'))
+            
+            resultFile = open(RESULT_FILE_PATH, "a")
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
+            resultFile.close()
+
+    if len(googleCloudPlatformOAuth) == 0:
+        
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuthNotFoundText, 'blue'))
+        
+        resultFile = open(RESULT_FILE_PATH, "a")
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
+        resultFile.close()
+
+def checksResValuesStringGoogleCloudServiceAccount(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+    
+    googleCloudPlatformServiceAccountRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
+    googleCloudPlatformServiceAccountNotFoundText='Not found'
+    googleCloudPlatformServiceAccount=""
+
+    
+    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
+    
+    for line in resValuesStringsFileContent:
+        if re.search(googleCloudPlatformServiceAccountRegex, line):
+            googleCloudPlatformServiceAccountMatch =  re.search(googleCloudPlatformServiceAccountRegex, line)
+            googleCloudPlatformServiceAccount = googleCloudPlatformServiceAccountMatch.group()
+
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: ", colored(googleCloudPlatformServiceAccount, 'red'))
+            
+            resultFile = open(RESULT_FILE_PATH, "a")
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: " + googleCloudPlatformServiceAccount + "\n")
+            resultFile.close()
+
+    if len(googleCloudPlatformServiceAccount) == 0:
+        
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: ", colored(googleCloudPlatformServiceAccountNotFoundText, 'blue'))
+        
+        resultFile = open(RESULT_FILE_PATH, "a")
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: " + googleCloudPlatformServiceAccount + "\n")
+        resultFile.close()
+
+def checksResValuesStringGoogleCloudPlatformOAuth(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+
+    googleCloudPlatformOAuthRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
+    googleCloudPlatformOAuthNotFoundText='Not found'
+    googleCloudPlatformOAuth=""
+
+    
+    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
+    
+    for line in resValuesStringsFileContent:
+        if re.search(googleCloudPlatformOAuthRegex, line):
+            googleCloudPlatformOAuthMatch =  re.search(googleCloudPlatformOAuthRegex, line)
+            googleCloudPlatformOAuth = googleCloudPlatformOAuthMatch.group()
+
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuth, 'red'))
+            
+            resultFile = open(RESULT_FILE_PATH, "a")
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
+            resultFile.close()
+
+    if len(googleCloudPlatformOAuth) == 0:
+        
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuthNotFoundText, 'blue'))
+        
+        resultFile = open(RESULT_FILE_PATH, "a")
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
+        resultFile.close()
+
+def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+    
+    googleOAuthAccessTokenRegex = r'ya29\.[0-9A-Za-z_-]+'
+    googleOAuthAccessTokenNotFoundText='Not found'
+    googleOAuthAccessToken=""
+
+    
+    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
+    
+    for line in resValuesStringsFileContent:
+        if re.search(googleOAuthAccessTokenRegex, line):
+            googleOAuthAccessTokenMatch =  re.search(googleOAuthAccessTokenRegex, line)
+            googleOAuthAccessToken = googleOAuthAccessTokenMatch.group()
+
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: ", colored(googleOAuthAccessToken, 'red'))
+            
+            resultFile = open(RESULT_FILE_PATH, "a")
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: " + googleOAuthAccessToken + "\n")
+            resultFile.close()
+
+    if len(googleOAuthAccessToken) == 0:
+        
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: ", colored(googleOAuthAccessTokenNotFoundText, 'blue'))
+        
+        resultFile = open(RESULT_FILE_PATH, "a")
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: " + googleOAuthAccessToken + "\n")
+        resultFile.close()
