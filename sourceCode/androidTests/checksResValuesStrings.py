@@ -210,10 +210,10 @@ def checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE
     resultFile = open(RESULT_FILE_PATH, "a")
 
     if "REQUEST_DENIED" in data:
-        print(APPLICATION_PACKAGE_NAME + ": Google API: " + colored(googleApiKey, 'yellow') + " : " + colored("Secured", 'blue'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + colored(googleApiKey, 'yellow') + ": " + colored("Secured", 'blue'))
         resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + googleApiKey + ": Secured" + "\n")
     else:
-        print(APPLICATION_PACKAGE_NAME + ": Google API: " + colored(googleApiKey, 'yellow') + " : " + colored("OPEN!", 'red'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + colored(googleApiKey, 'yellow') + ": " + colored("OPEN!", 'red'))
         resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + googleApiKey + ": OPEN!" + "\n")
 
     resultFile.close()
