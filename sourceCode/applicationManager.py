@@ -43,6 +43,7 @@ def retrieveApplicationPackageNameFromGooglePlayUrl(APPLICATION_LIST_FILE_PATH, 
     # https://play.google.com/store/apps/developer?id=Bethesda+Softworks+LLC
     
     # From string 'https://play.google.com/store/apps/developer?id=Developer' retrieve 'Developer'
+    print("\n")
     print("Analyzing: " + urlToAnalyze)
 
     androidDeveloperBaseUrlMatch=re.search(GOOGLE_PLAY_DEVELOPER_BASE_URL_REGEX, urlToAnalyze)
@@ -190,6 +191,9 @@ def prepareAppplicationListFileFromstoreUrlsFile(STORE_URLS_FILE, APPLICATION_LI
     
     for urlToAnalyze in developerUrlsProfileFileLines:
         
+        # Remove Newline character
+        urlToAnalyze = urlToAnalyze.strip()
+
         checkIfUrlLeadsToDeveloperOrApplication(urlToAnalyze)
 
         if (IS_GOOGLE_PLAY_APPLICATION_URL):

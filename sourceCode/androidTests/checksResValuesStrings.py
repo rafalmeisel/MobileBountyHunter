@@ -243,88 +243,32 @@ def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
         resultFile.close()
 
 
-def checksResValuesStringGoogleCloudPlatformOAuth(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
 
-    googleCloudPlatformOAuthRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
-    googleCloudPlatformOAuthNotFoundText='Not found'
-    googleCloudPlatformOAuth=""
-
-    
-    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-    
-    for line in resValuesStringsFileContent:
-        if re.search(googleCloudPlatformOAuthRegex, line):
-            googleCloudPlatformOAuthMatch =  re.search(googleCloudPlatformOAuthRegex, line)
-            googleCloudPlatformOAuth = googleCloudPlatformOAuthMatch.group()
-
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuth, 'red'))
-            
-            resultFile = open(RESULT_FILE_PATH, "a")
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
-            resultFile.close()
-
-    if len(googleCloudPlatformOAuth) == 0:
-        
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuthNotFoundText, 'blue'))
-        
-        resultFile = open(RESULT_FILE_PATH, "a")
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
-        resultFile.close()
-
-def checksResValuesStringGoogleCloudServiceAccount(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
-    
-    googleCloudPlatformServiceAccountRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
-    googleCloudPlatformServiceAccountNotFoundText='Not found'
-    googleCloudPlatformServiceAccount=""
+    googleCloudPlatformGoogleUserContentRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
+    googleCloudPlatformGoogleUserContentNotFoundText='Not found'
+    googleCloudPlatformGoogleUserContent=""
 
     
     resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
     
     for line in resValuesStringsFileContent:
-        if re.search(googleCloudPlatformServiceAccountRegex, line):
-            googleCloudPlatformServiceAccountMatch =  re.search(googleCloudPlatformServiceAccountRegex, line)
-            googleCloudPlatformServiceAccount = googleCloudPlatformServiceAccountMatch.group()
+        if re.search(googleCloudPlatformGoogleUserContentRegex, line):
+            googleCloudPlatformGoogleUserContentMatch =  re.search(googleCloudPlatformGoogleUserContentRegex, line)
+            googleCloudPlatformGoogleUserContent = googleCloudPlatformGoogleUserContentMatch.group()
 
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: ", colored(googleCloudPlatformServiceAccount, 'red'))
+            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Google User Content: ", colored(googleCloudPlatformGoogleUserContent, 'red'))
             
             resultFile = open(RESULT_FILE_PATH, "a")
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: " + googleCloudPlatformServiceAccount + "\n")
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": Google Cloud Platform Google User Content: " + googleCloudPlatformGoogleUserContent + "\n")
             resultFile.close()
 
-    if len(googleCloudPlatformServiceAccount) == 0:
+    if len(googleCloudPlatformGoogleUserContent) == 0:
         
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: ", colored(googleCloudPlatformServiceAccountNotFoundText, 'blue'))
-        
-        resultFile = open(RESULT_FILE_PATH, "a")
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Service Account: " + googleCloudPlatformServiceAccount + "\n")
-        resultFile.close()
-
-def checksResValuesStringGoogleCloudPlatformOAuth(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
-
-    googleCloudPlatformOAuthRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
-    googleCloudPlatformOAuthNotFoundText='Not found'
-    googleCloudPlatformOAuth=""
-
-    
-    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-    
-    for line in resValuesStringsFileContent:
-        if re.search(googleCloudPlatformOAuthRegex, line):
-            googleCloudPlatformOAuthMatch =  re.search(googleCloudPlatformOAuthRegex, line)
-            googleCloudPlatformOAuth = googleCloudPlatformOAuthMatch.group()
-
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuth, 'red'))
-            
-            resultFile = open(RESULT_FILE_PATH, "a")
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
-            resultFile.close()
-
-    if len(googleCloudPlatformOAuth) == 0:
-        
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: ", colored(googleCloudPlatformOAuthNotFoundText, 'blue'))
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Google User Content: ", colored(googleCloudPlatformGoogleUserContentNotFoundText, 'blue'))
         
         resultFile = open(RESULT_FILE_PATH, "a")
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform OAuth: " + googleCloudPlatformOAuth + "\n")
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Google User Content: " + googleCloudPlatformGoogleUserContent + "\n")
         resultFile.close()
 
 def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
