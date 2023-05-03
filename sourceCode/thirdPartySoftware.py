@@ -71,7 +71,9 @@ def installAwsCli():
 
 def installBoto3():
     
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'boto3'])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'boto3'],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.STDOUT)
 
 
 def installThirdPartySoftware():
