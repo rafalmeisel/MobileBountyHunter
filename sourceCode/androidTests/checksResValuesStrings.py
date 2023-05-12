@@ -177,21 +177,11 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
         report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url")
 
 
-def checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH):
+def sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH):
     response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountains+View,+CA&key=" + googleApiKey)
     data = str(response.json())
 
-    resultFile = open(RESULT_FILE_PATH, "a")
-
-    if "REQUEST_DENIED" in data:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + colored(googleApiKey, 'yellow') + ": " + colored("Secured", 'blue'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + googleApiKey + ": Secured" + "\n")
-    else:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + colored(googleApiKey, 'yellow') + ": " + colored("OPEN!", 'red'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API: " + googleApiKey + ": OPEN!" + "\n")
-
-    resultFile.close()
-
+    return data
     
 def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
 
@@ -208,13 +198,15 @@ def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
             googleApiKeyMatch =  re.search(googleApiKeyRegex, line)
             googleApiKey = googleApiKeyMatch.group(1)
 
-            # print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API Key: ", colored(googleApiKey, 'red'))
-            checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH)
+            googleApiResponseData = sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH)
 
-    if len(googleApiKey) == 0:
-        resultFile = open(RESULT_FILE_PATH, "a")
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google API Key: ", colored(googleApiKeyNotFoundText, 'blue'))
-        resultFile.close()
+            if "REQUEST_DENIED" in googleApiResponseData:
+                report.reportStatusSecuredWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API", googleApiKey)
+            else:
+                report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API", googleApiKey)
+            
+        if len(googleApiKey) == 0:
+            report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API")
 
 
 def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -231,19 +223,11 @@ def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_P
             googleCloudPlatformGoogleUserContentMatch =  re.search(googleCloudPlatformGoogleUserContentRegex, line)
             googleCloudPlatformGoogleUserContent = googleCloudPlatformGoogleUserContentMatch.group()
 
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Google User Content: ", colored(googleCloudPlatformGoogleUserContent, 'red'))
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Cloud Platform Google User Content", googleCloudPlatformGoogleUserContent)
             
-            resultFile = open(RESULT_FILE_PATH, "a")
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": Google Cloud Platform Google User Content: " + googleCloudPlatformGoogleUserContent + "\n")
-            resultFile.close()
-
     if len(googleCloudPlatformGoogleUserContent) == 0:
-        
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Google User Content: ", colored(googleCloudPlatformGoogleUserContentNotFoundText, 'blue'))
-        
-        resultFile = open(RESULT_FILE_PATH, "a")
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Cloud Platform Google User Content: " + googleCloudPlatformGoogleUserContent + "\n")
-        resultFile.close()
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Cloud Platform Google User Content")
+
 
 def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -259,35 +243,17 @@ def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATI
             googleOAuthAccessTokenMatch =  re.search(googleOAuthAccessTokenRegex, line)
             googleOAuthAccessToken = googleOAuthAccessTokenMatch.group()
 
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: ", colored(googleOAuthAccessToken, 'red'))
-            
-            resultFile = open(RESULT_FILE_PATH, "a")
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: " + googleOAuthAccessToken + "\n")
-            resultFile.close()
+            report.reportStatusFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Oauth Access Token", googleOAuthAccessToken)
 
     if len(googleOAuthAccessToken) == 0:
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Oauth Access Token")
         
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: ", colored(googleOAuthAccessTokenNotFoundText, 'blue'))
-        
-        resultFile = open(RESULT_FILE_PATH, "a")
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: " + googleOAuthAccessToken + "\n")
-        resultFile.close()
 
-def checkGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH):
+def sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH):
     response = requests.get("https://" + googleAppSpot)
     data = str(response.json())
 
-    resultFile = open(RESULT_FILE_PATH, "a")
-
-    if "Error: Page not found" in data:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + colored(googleAppSpot, 'yellow') + ": " + colored("Page not found", 'blue'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + ": Page not found" + "\n")
-    else:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + colored(googleAppSpot, 'yellow') + ": " + colored("looks interesting!", 'red'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + ": looks interesting!" + "\n")
-
-    resultFile.close()
-
+    return data
 
 def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -303,17 +269,12 @@ def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAG
             googleAppSpotMatch =  re.search(googleAppSpotRegex, line)
             googleAppSpot = googleAppSpotMatch.group(1)
 
-            # print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: ", colored(googleAppSpot, 'red'))
-            checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH)
+            googleAppSpotResponseData = sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH)
 
-            # resultFile = open(RESULT_FILE_PATH, "a")
-            # resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + "\n")
-            # resultFile.close()
-
+            if "Error: Page not found" in googleAppSpotResponseData:
+                report.reportStatusSecuredWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot", googleAppSpot)
+            else:
+                report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot", googleAppSpot)
+            
     if len(googleAppSpot) == 0:
-        
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: ", colored(googleAppSpotNotFoundText, 'blue'))
-        
-        resultFile = open(RESULT_FILE_PATH, "a")
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + "\n")
-        resultFile.close()
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot")
