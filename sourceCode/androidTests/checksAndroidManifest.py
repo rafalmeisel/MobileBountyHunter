@@ -1,5 +1,7 @@
 from termcolor import colored
 import re
+from sourceCode.reporting import report
+from sourceCode.reporting import reportEnums
 
 # Interesting things in AndroidManifest:
 # - Exported components
@@ -21,25 +23,22 @@ def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
 
-    resultFile = open(RESULT_FILE_PATH, "a")
-    
     for line in androidManifestFileContent:
         if re.search(debuggableActivityTrueRegex, line):
             if re.search(debuggableActivityNameRegex, line):
                 debuggableActivityNameValue = str(re.search(debuggableActivityNameRegex, line).group(2))
 
             debuggableActivityTypeValue = str(re.search(debuggableActivityTypeRegex, line).group(1))
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:" + line)
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:", colored(debuggableActivityTypeValue + ":" + debuggableActivityNameValue, 'red'))
+
+            report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug", debuggableActivityTypeValue + ":" + debuggableActivityNameValue)
+            
             isDebuggableFlag = True
 
         else:
             isDebuggableFlag = isDebuggableFlag or False
 
     if not isDebuggableFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: debug:", colored("False", 'blue'))       
-
-    resultFile.close()
+        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug")
 
 
 def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -52,26 +51,23 @@ def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_
     isAllowBackupFlag=False
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
-    
+   
     for line in androidManifestFileContent:
         if re.search(allowBackupActivityTrueRegex, line):
             if re.search(allowBackupActivityNameRegex, line):
                 allowBackupActivityNameValue = str(re.search(allowBackupActivityNameRegex, line).group(2))
             
             allowBackupActivityTypeValue = str(re.search(allowBackupActivityTypeRegex, line).group(1))
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:" + line)
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:", colored(allowBackupActivityTypeValue + ":" + allowBackupActivityNameValue, 'red'))
+            
+            report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup", allowBackupActivityTypeValue + ":" + allowBackupActivityNameValue)
+            
             isAllowBackupFlag = True
             
         else:
             isAllowBackupFlag= isAllowBackupFlag or False
 
     if not isAllowBackupFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: allowBackup:", colored("False", 'blue'))
-
-    resultFile.close()
+        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup")
 
 def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -92,15 +88,16 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
                 exportedActivityNameValue = str(re.search(exportedActivityNameRegex, line).group(2))
             
             exportedActivityTypeValue = str(re.search(exportedActivityTypeRegex, line).group(1))
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:" + line)
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:", colored(exportedActivityTypeValue + ":" + exportedActivityNameValue, 'red'))
+
+            report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported", exportedActivityTypeValue + ":" + exportedActivityNameValue)
+
             isExportedFlag = True
         
         else:
             isExportedFlag= isExportedFlag or False
 
     if not isExportedFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: exported:", colored("False", 'blue'))
+        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported")
 
     resultFile.close()
 
@@ -117,14 +114,15 @@ def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
     for line in androidManifestFileContent:
         if re.search(cloudinaryRegex, line):
             cloudinaryValue = re.search(cloudinaryRegex, line).group(0)
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": AndroidManifest: Cloudinary:" + str(cloudinaryValue))
-            print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: Cloudinary:", colored(str(cloudinaryValue), 'red'))
+
+            report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary", str(cloudinaryValue))
+
             isCloudinaryFlag = True
         
         else:
             isCloudinaryFlag= isCloudinaryFlag or False
 
     if not isCloudinaryFlag:
-        print(APPLICATION_PACKAGE_NAME + ": AndroidManifest: Cloudinary:", colored("Not found", 'blue'))
+        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary")
 
     resultFile.close()

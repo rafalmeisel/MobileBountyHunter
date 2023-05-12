@@ -122,7 +122,7 @@ def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
             awsBucketNameMatch =  re.search(awsBucketNameRegex, line)
             awsBucketNameValue = awsBucketNameMatch.group(2)
 
-            awsS3BucketIsOpen = checkAwsS3BucketPermission(APPLICATION_PACKAGE_NAME, awsBucketName)
+            awsS3BucketIsOpen = checkAwsS3BucketPermission(APPLICATION_PACKAGE_NAME, awsBucketNameValue)
 
             if (awsS3BucketIsOpen):
                 resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS URL: " + awsBucketNameValue + ": is OPEN.\n")
