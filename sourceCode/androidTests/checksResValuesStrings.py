@@ -298,3 +298,48 @@ def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATI
         resultFile = open(RESULT_FILE_PATH, "a")
         resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google Oauth Access Token: " + googleOAuthAccessToken + "\n")
         resultFile.close()
+
+def checkGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH):
+    response = requests.get("https://" + googleAppSpot)
+    data = str(response.json())
+
+    resultFile = open(RESULT_FILE_PATH, "a")
+
+    if "Error: Page not found" in data:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + colored(googleAppSpot, 'yellow') + ": " + colored("Page not found", 'blue'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + ": Page not found" + "\n")
+    else:
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + colored(googleAppSpot, 'yellow') + ": " + colored("looks interesting!", 'red'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + ": looks interesting!" + "\n")
+
+    resultFile.close()
+
+
+def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+    
+    googleAppSpotRegex = r'(?:>)(.*.appspot.com)(?:<)'
+    googleAppSpotNotFoundText='Not found'
+    googleAppSpot=""
+
+    
+    resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
+    
+    for line in resValuesStringsFileContent:
+        if re.search(googleAppSpotRegex, line):
+            googleAppSpotMatch =  re.search(googleAppSpotRegex, line)
+            googleAppSpot = googleAppSpotMatch.group(1)
+
+            # print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: ", colored(googleAppSpot, 'red'))
+            checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH)
+
+            # resultFile = open(RESULT_FILE_PATH, "a")
+            # resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + "\n")
+            # resultFile.close()
+
+    if len(googleAppSpot) == 0:
+        
+        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: ", colored(googleAppSpotNotFoundText, 'blue'))
+        
+        resultFile = open(RESULT_FILE_PATH, "a")
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Google AppSpot: " + googleAppSpot + "\n")
+        resultFile.close()

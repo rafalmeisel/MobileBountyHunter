@@ -42,3 +42,23 @@ def searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME,
     else:
         print(APPLICATION_PACKAGE_NAME + ": DB database: " + colored("Not found", 'blue'))
         resultFile.write(APPLICATION_PACKAGE_NAME + ": DB database: Not found" + "\n")
+
+def searchConfigFilesWithAnyExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH):
+    
+    applicationDirectoryPath = OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME
+    applicationDirectoryPathLib = pathlib.Path(applicationDirectoryPath)
+    configFilesList = list(applicationDirectoryPathLib.rglob("*config*"))
+
+    resultFile = open(RESULT_FILE_PATH, "a")
+
+    if(len(configFilesList) > 0):
+
+        for configFileList in configFilesList:
+            print(APPLICATION_PACKAGE_NAME + ": Config file: " + colored(str(configFileList), 'red'))
+            resultFile.write(APPLICATION_PACKAGE_NAME + ": Config file: " + str(configFileList) + "\n")
+        
+        resultFile.close()
+
+    else:
+        print(APPLICATION_PACKAGE_NAME + ": Config file: " + colored("Not found", 'blue'))
+        resultFile.write(APPLICATION_PACKAGE_NAME + ": Config file: Not found" + "\n")

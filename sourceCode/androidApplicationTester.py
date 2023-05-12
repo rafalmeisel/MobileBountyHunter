@@ -1,6 +1,6 @@
 from sourceCode.androidTests.checksAndroidManifest import *
 from sourceCode.androidTests.checksResValuesStrings import *
-from sourceCode.androidTests.checksAndroidDatabase import *
+from sourceCode.androidTests.checksFilesNames import *
 # from modules.androidTests.searchInSmaliFiles import *
 
 import os
@@ -31,6 +31,8 @@ def runAndroidTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
         checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
         checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
         checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
+        checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH)
 
         searchFilesWithSqliteExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
         searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
+        searchConfigFilesWithAnyExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
