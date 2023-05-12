@@ -4,4 +4,5 @@ class UrlResourceSecurityStatus(Enum):
     IS_SECURE = 1
     IS_VULNERABLE = 2
     TO_VERIFY = 3
-    NOT_FOUND = 4
+    FOUND = 4
+    NOT_FOUND = 5

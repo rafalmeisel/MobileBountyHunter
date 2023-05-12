@@ -30,7 +30,7 @@ def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
 
             debuggableActivityTypeValue = str(re.search(debuggableActivityTypeRegex, line).group(1))
 
-            report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug", debuggableActivityTypeValue + ":" + debuggableActivityNameValue)
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug", debuggableActivityTypeValue + ":" + debuggableActivityNameValue)
             
             isDebuggableFlag = True
 
@@ -59,7 +59,7 @@ def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_
             
             allowBackupActivityTypeValue = str(re.search(allowBackupActivityTypeRegex, line).group(1))
             
-            report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup", allowBackupActivityTypeValue + ":" + allowBackupActivityNameValue)
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup", allowBackupActivityTypeValue + ":" + allowBackupActivityNameValue)
             
             isAllowBackupFlag = True
             
@@ -89,7 +89,7 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
             
             exportedActivityTypeValue = str(re.search(exportedActivityTypeRegex, line).group(1))
 
-            report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported", exportedActivityTypeValue + ":" + exportedActivityNameValue)
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported", exportedActivityTypeValue + ":" + exportedActivityNameValue)
 
             isExportedFlag = True
         
@@ -115,7 +115,7 @@ def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
         if re.search(cloudinaryRegex, line):
             cloudinaryValue = re.search(cloudinaryRegex, line).group(0)
 
-            report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary", str(cloudinaryValue))
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary", str(cloudinaryValue))
 
             isCloudinaryFlag = True
         

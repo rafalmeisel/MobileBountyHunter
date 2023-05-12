@@ -4,9 +4,9 @@ import shutil
 import os
 
 def printOnConsoleWithoutTokenValue(applicationPackageName, fileName, issueStatus, tokenType):
-    printOnConsole(applicationPackageName, fileName, issueStatus, tokenType, "")
+    printOnConsoleWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, "")
 
-def printOnConsole(applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
+def printOnConsoleWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
 
     reportColor = ""
     issueStatusComment = ""
@@ -23,6 +23,9 @@ def printOnConsole(applicationPackageName, fileName, issueStatus, tokenType, tok
     elif (UrlResourceSecurityStatus.NOT_FOUND == issueStatus):
         issueStatusComment = "not found."
         reportColor = "blue"
+    elif (UrlResourceSecurityStatus.FOUND == issueStatus):
+        issueStatusComment = "FOUND!"
+        reportColor = "red"
     else:
         issueStatusComment = issueStatus
         reportColor = "grey"
@@ -45,6 +48,8 @@ def writeToReportFile(resultFilePath, applicationPackageName, fileName, issueSta
         issueStatusComment = "to verify..."
     elif (UrlResourceSecurityStatus.NOT_FOUND == issueStatus):
         issueStatusComment = "not found."
+    elif (UrlResourceSecurityStatus.FOUND == issueStatus):
+        issueStatusComment = "FOUND!"
     else:
         issueStatusComment = issueStatus
 
@@ -65,35 +70,47 @@ def writeToReportFile(resultFilePath, applicationPackageName, fileName, issueSta
 
     resultFile.close()
 
-def writeToCommonReportFile(applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
+
+
+def writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
     writeToReportFile("./_MobileBountyHunterReport.txt", applicationPackageName, fileName, issueStatus, tokenType, tokenValue)
 
 def writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, issueStatus, tokenType):
-    writeToCommonReportFile(applicationPackageName, fileName, issueStatus, tokenType, "")
+    writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, "")
 
-def writeToDedicatedReportFile(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
+
+
+def writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
     mobileBountyHunterDirectory = "_MobileBountyHunterReport"
     writeToReportFile(outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + "_MobileBountyHunterReport.txt", applicationPackageName, fileName, issueStatus, tokenType, tokenValue)
 
 def writeToDedicatedReportFileWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType):
-    writeToDedicatedReportFile(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType, "")
+    writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType, "")
+
+
+
 
 def reportStatusVulnerableWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType, tokenValue):
-    printOnConsole(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_VULNERABLE, tokenType, tokenValue)
-    writeToCommonReportFile(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_VULNERABLE, tokenType, tokenValue)
-    writeToDedicatedReportFile(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.IS_VULNERABLE, tokenType, tokenValue)
+    printOnConsoleWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_VULNERABLE, tokenType, tokenValue)
+    writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_VULNERABLE, tokenType, tokenValue)
+    writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.IS_VULNERABLE, tokenType, tokenValue)
 
 def reportStatusToVerifyWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType, tokenValue):
-    printOnConsole(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
-    writeToCommonReportFile(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
-    writeToDedicatedReportFile(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
+    printOnConsoleWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
+    writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
+    writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
 
-def reportStatusSecureWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType):
-    printOnConsoleWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_SECURE, tokenType)
-    writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_SECURE, tokenType)
-    writeToDedicatedReportFileWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.IS_SECURE, tokenType)
+def reportStatusSecureWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType, tokenValue):
+    printOnConsoleWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_SECURE, tokenType, tokenValue)
+    writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.IS_SECURE, tokenType, tokenValue)
+    writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.IS_SECURE, tokenType, tokenValue)
 
-def reportStatuNotFound(outputDirectoryPath, applicationPackageName, fileName, tokenType):
+def reportStatuFoundWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType, tokenValue):
+    printOnConsoleWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.FOUND, tokenType, tokenValue)
+    writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.FOUND, tokenType, tokenValue)
+    writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.FOUND, tokenType, tokenValue)
+
+def reportStatusNotFound(outputDirectoryPath, applicationPackageName, fileName, tokenType):
     printOnConsoleWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.NOT_FOUND, tokenType)
     writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.NOT_FOUND, tokenType)
     writeToDedicatedReportFileWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.NOT_FOUND, tokenType)

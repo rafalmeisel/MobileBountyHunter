@@ -2,6 +2,8 @@ from termcolor import colored
 import re
 import requests
 import boto3
+from sourceCode.reporting import report
+from sourceCode.reporting import reportEnums
 
 # Interesting things in AndroidManifest:
 # - Api keys
@@ -15,21 +17,16 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
     awsAkidValue=""
 
     androidresValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidresValuesStringsFileContent:
         if re.search(awsAkidRegex, line):
             awsAkidMatch =  re.search(awsAkidRegex, line)
             awsAkidValue = awsAkidMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Long Term Access Key: " + awsAkidValue + "\n")
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidValue, 'red'))
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Long Term Access Key", awsAkidValue)
 
     if len(awsAkidValue) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Long Term Access Key: ", colored(awsAkidNotFoundText, 'blue'))
-
-    resultFile.close()
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Long Term Access Key")
 
 
 def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -39,21 +36,16 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
     awsAkidValue=""
 
     androidresValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
-    
+   
     for line in androidresValuesStringsFileContent:
         if re.search(awsAkidRegex, line):
             awsAkidMatch =  re.search(awsAkidRegex, line)
             awsAkidValue = awsAkidMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Short Term Access Key: " + awsAkidValue + "\n")
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidValue, 'red'))
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Short Term Access Key", awsAkidValue)
 
     if len(awsAkidValue) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Short Term Access Key: ", colored(awsAkidNotFoundText, 'blue'))
-
-    resultFile.close()
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Short Term Access Key")
 
 
 def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -64,20 +56,16 @@ def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_P
 
     androidresValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
 
-    resultFile = open(RESULT_FILE_PATH, "a")
-    
     for line in androidresValuesStringsFileContent:
         if re.search(awsSecretKeyRegex, line):
             awsSecretKeyMatch =  re.search(awsSecretKeyRegex, line)
             awsSecretKeyValue = awsSecretKeyMatch.group(2)
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS Secret Key: " + awsSecretKeyValue + "\n")
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Secret Key: ", colored(awsSecretKeyValue, 'red'))
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Secret Key", awsSecretKeyValue)
 
     if len(awsSecretKeyValue) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS Secret Key: ", colored(awsSecretKeyNotFoundText, 'blue'))
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Secret Key")
 
-    resultFile.close()
 
 def checkAwsS3BucketPermission(APPLICATION_PACKAGE_NAME, awsBucketName):
     # create an S3 client
@@ -114,8 +102,6 @@ def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
     awsBucketNameValue=""
 
     androidresValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidresValuesStringsFileContent:
         if re.search(awsBucketNameRegex, line):
@@ -125,17 +111,13 @@ def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
             awsS3BucketIsOpen = checkAwsS3BucketPermission(APPLICATION_PACKAGE_NAME, awsBucketNameValue)
 
             if (awsS3BucketIsOpen):
-                resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS URL: " + awsBucketNameValue + ": is OPEN.\n")
-                print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS URL: ", colored(awsBucketNameValue + " is OPEN!", 'red'))
+                report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Bucket", awsBucketNameValue)
             else:
-                resultFile.write(APPLICATION_PACKAGE_NAME + ": " + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH + ": AWS URL: " + awsBucketNameValue + "is closed.\n")
-                print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS URL: ", colored(awsBucketNameValue + "is closed", 'blue'))
+                report.reportStatusSecuredWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Bucket")
             
 
     if len(awsBucketNameValue) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: AWS URL: ", colored(awsBucketNameNotFoundText, 'blue'))
-
-    resultFile.close()
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Bucket")
 
 
 # https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg.htm
@@ -154,32 +136,19 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
             pushIoApplicationIdentifierMatch =  re.search(pushIoApplicationIdentifierRegex, line)
             pushIoApplicationIdentifierValue = pushIoApplicationIdentifierMatch.group()
 
-            resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: " + pushIoApplicationIdentifierValue + "\n")
-            print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: ", colored(pushIoApplicationIdentifierValue, 'red'))
+            report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "PushIoApplicationIdentifier", pushIoApplicationIdentifierValue)
 
     if len(pushIoApplicationIdentifierValue) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: PushIoApplicationIdentifier: ", colored(pushIoApplicationIdentifierNotFoundText, 'blue'))
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "PushIoApplicationIdentifier")
 
     resultFile.close()
 
 
-def checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH):
+def sendRequestToFirabase(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH):
     response = requests.get(firebaseUrl + "/.json")
     data = str(response.json())
-
-    resultFile = open(RESULT_FILE_PATH, "a")
-
-    if "Permission denied" in data:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + colored(firebaseUrl, 'yellow') + ": " + colored(data, 'blue'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + ": Secured" + "\n")
-    elif len(data) == 0:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + colored(firebaseUrl, 'yellow') + ": " + colored(data, 'red'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + ": OPEN!" + "\n")
-    else:
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + colored(firebaseUrl, 'yellow') + ": " + colored(data, 'yellow'))
-        resultFile.write(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: " + firebaseUrl + ": To check" + "\n")
     
-    resultFile.close()
+    return data
 
 def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -194,13 +163,18 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
             firebaseMatch =  re.search(firebaseUrlRegex, line)
             firebaseUrl = firebaseMatch.group()
             
-            # print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseUrl, 'red'))
-            checkFirabasePermission(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH)
+            firebaseResponseData = sendRequestToFirabase(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH)
+
+            
+            if "Permission denied" in firebaseResponseData:
+                report.reportStatusSecuredWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url", firebaseUrl)
+            elif len(firebaseResponseData) == 0:
+                report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url", firebaseUrl)
+            else:
+                report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url", firebaseUrl)
 
     if len(firebaseUrl) == 0:
-        resultFile = open(RESULT_FILE_PATH, "a")
-        print(APPLICATION_PACKAGE_NAME + ": ResValuesStrings: Firebase Url: ", colored(firebaseNotFoundText, 'blue'))
-        resultFile.close()
+        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url")
 
 
 def checkGoogleApiPermission(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH):
