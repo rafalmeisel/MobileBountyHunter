@@ -115,9 +115,11 @@ def reportStatusNotFound(outputDirectoryPath, applicationPackageName, fileName, 
     writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.NOT_FOUND, tokenType)
     writeToDedicatedReportFileWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.NOT_FOUND, tokenType)
 
-def copyFileToDedicatedReportDirectory(sourceFilePath, applicationPackageName):
+
+
+def copyFileToDedicatedReportDirectory(sourceFilePath, outputDirectoryPath, applicationPackageName):
    
     mobileBountyHunterDirectory = "_MobileBountyHunterReport"
     filename = os.path.basename(sourceFilePath)
     
-    shutil.copyfile(sourceFilePath, applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename)
+    shutil.copyfile(sourceFilePath, outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename)
