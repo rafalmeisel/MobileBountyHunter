@@ -9,9 +9,9 @@ def searchFilesWithSqliteExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
     
     applicationDirectoryPath = OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME
     applicationDirectoryPathLib = pathlib.Path(applicationDirectoryPath)
-    sqliteFilesList = list(applicationDirectoryPathLib.rglob("*.sqlite"))
-    
-    if(len(sqliteFilesList) > 0):
+    sqliteFilesList = [f for f in applicationDirectoryPathLib.rglob("*.sqlite") if f.is_file()]
+
+    if len(sqliteFilesList) > 0:
 
         for sqliteFilePath in sqliteFilesList:
 
@@ -26,10 +26,10 @@ def searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME,
     
     applicationDirectoryPath = OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME
     applicationDirectoryPathLib = pathlib.Path(applicationDirectoryPath)
-    dbFilesList = list(applicationDirectoryPathLib.rglob("*.db"))
 
-    if(len(dbFilesList) > 0):
+    dbFilesList = [f for f in applicationDirectoryPathLib.rglob("*.db") if f.is_file()]
 
+    if len(dbFilesList) > 0:
         for dbFilePath in dbFilesList:
 
             report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "DB database", dbFilePath)
@@ -43,9 +43,9 @@ def searchConfigFilesWithAnyExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAG
     
     applicationDirectoryPath = OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME
     applicationDirectoryPathLib = pathlib.Path(applicationDirectoryPath)
-    configFilesList = list(applicationDirectoryPathLib.rglob("*config*"))
-
-    if(len(configFilesList) > 0):
+    configFilesList = [f for f in applicationDirectoryPathLib.rglob("*config*") if f.is_file()]
+    
+    if len(configFilesList) > 0:
 
         for configFileList in configFilesList:
             report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "Config file", str(configFileList))
