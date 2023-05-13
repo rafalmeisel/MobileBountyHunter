@@ -147,7 +147,7 @@ def copyFileToDedicatedReportDirectory(sourceFilePath, outputDirectoryPath, appl
         
         else:
             seed(1)
-            randomValue = randint(0, 100000000)
+            randomValue = str(randint(0, 100000000))
 
             shutil.copyfile(sourceFilePath, outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename + "_" + randomValue)
     else:
