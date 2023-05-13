@@ -38,7 +38,7 @@ def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
             isDebuggableFlag = isDebuggableFlag or False
 
     if not isDebuggableFlag:
-        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug")
 
 
 def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -67,7 +67,7 @@ def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_
             isAllowBackupFlag= isAllowBackupFlag or False
 
     if not isAllowBackupFlag:
-        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup")
 
 def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -97,7 +97,7 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
             isExportedFlag= isExportedFlag or False
 
     if not isExportedFlag:
-        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported")
 
     resultFile.close()
 
@@ -123,6 +123,6 @@ def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
             isCloudinaryFlag= isCloudinaryFlag or False
 
     if not isCloudinaryFlag:
-        report.reportStatuNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary")
 
     resultFile.close()

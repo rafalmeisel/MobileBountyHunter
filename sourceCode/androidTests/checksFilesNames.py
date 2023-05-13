@@ -19,7 +19,7 @@ def searchFilesWithSqliteExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
             report.copyFileToDedicatedReportDirectory(sqliteFilePath, OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME)
 
     else:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "Sqlite database")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "Sqlite database")
         
 
 def searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH):
@@ -36,7 +36,7 @@ def searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME,
             report.copyFileToDedicatedReportDirectory(dbFilePath, OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME)
 
     else:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "DB database")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "DB database")
 
 
 def searchConfigFilesWithAnyExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH):
@@ -52,4 +52,4 @@ def searchConfigFilesWithAnyExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAG
             report.copyFileToDedicatedReportDirectory(str(configFileList), OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME)
 
     else:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "Config file")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "", "Config file")

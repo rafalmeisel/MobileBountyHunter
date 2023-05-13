@@ -26,7 +26,7 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
             report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Long Term Access Key", awsAkidValue)
 
     if len(awsAkidValue) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Long Term Access Key")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Long Term Access Key")
 
 
 def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -45,7 +45,7 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
             report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Short Term Access Key", awsAkidValue)
 
     if len(awsAkidValue) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Short Term Access Key")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Short Term Access Key")
 
 
 def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -64,7 +64,7 @@ def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_P
             report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Secret Key", awsSecretKeyValue)
 
     if len(awsSecretKeyValue) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Secret Key")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Secret Key")
 
 
 def checkAwsS3BucketPermission(APPLICATION_PACKAGE_NAME, awsBucketName):
@@ -117,7 +117,7 @@ def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
             
 
     if len(awsBucketNameValue) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Bucket")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Bucket")
 
 
 # https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg.htm
@@ -139,7 +139,7 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
             report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "PushIoApplicationIdentifier", pushIoApplicationIdentifierValue)
 
     if len(pushIoApplicationIdentifierValue) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "PushIoApplicationIdentifier")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "PushIoApplicationIdentifier")
 
     resultFile.close()
 
@@ -171,10 +171,10 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
             elif len(firebaseResponseData) == 0:
                 report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url", firebaseUrl)
             else:
-                report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url", firebaseUrl)
+                report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url", firebaseUrl + ": " + firebaseResponseData)
 
     if len(firebaseUrl) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url")
 
 
 def sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH):
@@ -205,8 +205,8 @@ def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
             else:
                 report.reportStatusVulnerableWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API", googleApiKey)
             
-        if len(googleApiKey) == 0:
-            report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API")
+    if len(googleApiKey) == 0:
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API")
 
 
 def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -226,7 +226,7 @@ def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_P
             report.reportStatusFoundWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Cloud Platform Google User Content", googleCloudPlatformGoogleUserContent)
             
     if len(googleCloudPlatformGoogleUserContent) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Cloud Platform Google User Content")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Cloud Platform Google User Content")
 
 
 def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
@@ -246,14 +246,12 @@ def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATI
             report.reportStatusFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Oauth Access Token", googleOAuthAccessToken)
 
     if len(googleOAuthAccessToken) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Oauth Access Token")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Oauth Access Token")
         
 
 def sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH):
     response = requests.get("https://" + googleAppSpot)
-    data = str(response.json())
-
-    return data
+    return response
 
 def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
     
@@ -277,4 +275,4 @@ def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAG
                 report.reportStatusToVerifyWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot", googleAppSpot)
             
     if len(googleAppSpot) == 0:
-        report.reportStatusNotFoundWithoutTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot")
+        report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot")
