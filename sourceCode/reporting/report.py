@@ -2,6 +2,9 @@ from termcolor import colored
 from sourceCode.reporting.reportEnums import UrlResourceSecurityStatus
 import shutil
 import os
+import hashlib
+from random import seed
+from random import randint
 
 def printOnConsoleWithoutTokenValue(applicationPackageName, fileName, issueStatus, tokenType):
     printOnConsoleWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, "")
@@ -58,8 +61,6 @@ def writeToReportFile(resultFilePath, applicationPackageName, fileName, issueSta
     if not(os.path.exists(resultFilePath)):
         os.makedirs(os.path.dirname(resultFilePath), exist_ok=True)
     
-    print("Write to file: " + resultFilePath)
-
     resultFile = open(resultFilePath, "a")
 
     if len(tokenValue) == 0:
@@ -122,4 +123,32 @@ def copyFileToDedicatedReportDirectory(sourceFilePath, outputDirectoryPath, appl
     mobileBountyHunterDirectory = "_MobileBountyHunterReport"
     filename = os.path.basename(sourceFilePath)
     
-    shutil.copyfile(sourceFilePath, outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename)
+    filenameAlreadyExists = os.path.isfile(outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename)
+
+    if (filenameAlreadyExists):
+        # Calculate MD5 of already existing file with new one
+        # If MD5 are the same, skip copying
+        # If MD5 are different, copy file with adding suffix _1, _2, etc.
+
+        md5ExistedFile = ""
+        md5NewFile = ""
+        existedFilePath = outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename
+
+        with open(existedFilePath, 'rb') as file_to_check:
+            data = file_to_check.read()    
+            md5ExistedFile = hashlib.md5(data).hexdigest()
+
+        with open(sourceFilePath, 'rb') as file_to_check:
+            data = file_to_check.read()    
+            md5NewFile = hashlib.md5(data).hexdigest()
+
+        if (md5ExistedFile == md5NewFile):
+            print("Found file \"" + sourceFilePath + "\"" + "was already copied (comapred MD5s). Skipping...")
+        
+        else:
+            seed(1)
+            randomValue = randint(0, 100000000)
+
+            shutil.copyfile(sourceFilePath, outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename + "_" + randomValue)
+    else:
+        shutil.copyfile(sourceFilePath, outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename)
