@@ -34,10 +34,10 @@ def printOnConsoleWithTokenValue(applicationPackageName, fileName, issueStatus, 
         reportColor = "grey"
 
     if len(tokenValue) == 0:
-        print(applicationPackageName + ": " + fileName + ": " + tokenType + ": " + colored(issueStatusComment, reportColor))
+        print(applicationPackageName + ": " + fileName + ": " + colored(tokenType + ": " + issueStatusComment, reportColor))
     
     else:
-        print(applicationPackageName + ": " + fileName + ": " + tokenType + ": " + colored(tokenValue + ": " + issueStatusComment, reportColor))
+        print(applicationPackageName + ": " + fileName + ": " + colored(tokenType + ": " + tokenValue + ": " + issueStatusComment, reportColor))
 
 def writeToReportFile(resultFilePath, applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
     
@@ -100,6 +100,11 @@ def reportStatusToVerifyWithTokenValue(outputDirectoryPath, applicationPackageNa
     printOnConsoleWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
     writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
     writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType, tokenValue)
+
+def reportStatusToVerifyWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType):
+    printOnConsoleWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType)
+    writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType)
+    writeToDedicatedReportFileWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, UrlResourceSecurityStatus.TO_VERIFY, tokenType)
 
 def reportStatusSecuredWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, tokenType, tokenValue):
     printOnConsoleWithTokenValue(applicationPackageName, fileName, UrlResourceSecurityStatus.SECURED, tokenType, tokenValue)

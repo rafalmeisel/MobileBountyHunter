@@ -113,13 +113,25 @@ The Mobile Bounty Hunter is not full-penetration testing platform, it is rather 
 ## Disclaimer
 The Mobile Bounty Hunter can be used ONLY for educational purpose and Bug Bounty activities to find the issues and report them to application developers. Any other activities (especially illegal) are forbidden.
 
+## What kind of vulnerabilities are cheched, explanation how this knowledge could be used and if they are worth to report
+1. Android:
+   1. .db / .sql files:
+      1. Why: Databases files can contain sensitive information about clients/configurations/tables.
+      2. Next step: Read these files in order to find any sensitive informations.
+      3. Worth to report: Depends.
+   2. 
+
+
+
 ## Todo's:
-1. Checks SMALI config
-2. Check build configs like: local.properties, gradle.properties
-3. Check: /data/misc/keystore/
-4. Prepare full scan including all files in decompiled application
+1. Check build configs like: local.properties, gradle.properties
+2. Check: /data/misc/keystore/
+3. Prepare full scan including all files in decompiled application
 
 ## Interesting links about Mobile Bug Bounty:
 https://www.youtube.com/watch?v=OlgmPxTHLuY
 https://hackmd.io/@Chal13W1zz/ABBH
 https://www.youtube.com/watch?v=S6xGOU-QWWQ
+
+Checking WebViews
+https://medium.com/mobis3c/exploiting-android-webview-vulnerabilities-e2bcff780892

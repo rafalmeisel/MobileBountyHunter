@@ -4,10 +4,18 @@ import shutil
 import sys
 import subprocess
 
+JADX_PATH = '/usr/bin/jadx'
 APKTOOL_PATH = '/usr/local/bin/apktool.jar'
 RUST_PATH = '/home/kali/.cargo/bin/rustc'
 APKEEP_PATH = '/home/kali/.cargo/bin/apkeep'
 AWSCLI_PATH='/usr/bin/aws'
+
+def installJadx():
+    
+    if not os.path.exists(JADX_PATH):
+        subprocess.run(["git", "clone", "https://github.com/skylot/jadx.git"])
+        subprocess.run(["./jadx/gradlew", "dist"])
+        subprocess.run(["rm -rf", "jadx"])
 
 def installApkTools():
     
@@ -78,6 +86,7 @@ def installBoto3():
 
 def installThirdPartySoftware():
     
+    installJadx()
     installApkTools()
     installRust()
     installApkeep()

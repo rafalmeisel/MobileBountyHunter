@@ -1,13 +1,18 @@
 from sourceCode.androidTests.checksAndroidManifest import *
 from sourceCode.androidTests.checksResValuesStrings import *
 from sourceCode.androidTests.checksFilesNames import *
-# from modules.androidTests.searchInSmaliFiles import *
+from sourceCode.androidTests.checksJavaFiles import *
 
 import os
 from termcolor import colored
 
-ANDROID_MANIFEST_RELATIVE_FILE_PATH = "/AndroidManifest.xml"
-ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH = "/res/values/strings.xml"
+# APKTOOLS:
+# ANDROID_MANIFEST_RELATIVE_FILE_PATH = "/AndroidManifest.xml"
+# ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH = "/res/values/strings.xml"
+
+# JADX:
+ANDROID_MANIFEST_RELATIVE_FILE_PATH = "/resources/AndroidManifest.xml"
+ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH = "/resources/res/values/strings.xml"
 
 def runAndroidTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
     
@@ -36,3 +41,5 @@ def runAndroidTests(OUTPUT_DIRECTORY_PATH, RESULT_FILE_PATH):
         searchFilesWithSqliteExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
         searchFilesWithDbExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
         searchConfigFilesWithAnyExtensions(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
+
+        findJavaScriptEnabled(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH)
