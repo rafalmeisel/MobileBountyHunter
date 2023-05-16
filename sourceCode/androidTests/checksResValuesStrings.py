@@ -10,7 +10,7 @@ from sourceCode.reporting import reportEnums
 # - Custom schemas
 # - Hardcoded values. Developers are encouraged to store strings as reference
 
-def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     awsAkidRegex=r'(?<=>)AK(\S*?)(?=<)'
     awsAkidNotFoundText='Not found'
@@ -29,7 +29,7 @@ def checksResValuesStringsAwsLongTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATI
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Long Term Access Key")
 
 
-def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     awsAkidRegex=r'(?<=>)AS(\S*?)(?=<)'
     awsAkidNotFoundText='Not found'
@@ -48,7 +48,7 @@ def checksResValuesStringsAwsShortTermAccessKeys(OUTPUT_DIRECTORY_PATH, APPLICAT
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "AWS Short Term Access Key")
 
 
-def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringsAwSecretAccessKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     awsSecretKeyRegex=r'(?:(AWS|aws).*>)(\S*)(?=<)'
     awsSecretKeyNotFoundText='Not found'
@@ -95,7 +95,7 @@ def checkAwsS3BucketPermission(APPLICATION_PACKAGE_NAME, awsBucketName):
     #     print("Bucket is not publicly accessible")
     return False
 
-def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     awsBucketNameRegex=r"(https:?\/\/)(.*)(.s3.amazonaws.com)"
     awsBucketNameNotFoundText='Not found'
@@ -121,16 +121,14 @@ def checksResValuesStringsAwsBucket(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
 
 
 # https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg.htm
-def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     pushIoApplicationIdentifierRegex=r'pio-([^<]+)'
     pushIoApplicationIdentifierNotFoundText='Not found'
     pushIoApplicationIdentifierValue=""
 
     resValuesStringsFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
-    
+   
     for line in resValuesStringsFileContent:
         if re.search(pushIoApplicationIdentifierRegex, line):
             pushIoApplicationIdentifierMatch =  re.search(pushIoApplicationIdentifierRegex, line)
@@ -141,16 +139,13 @@ def checksResValuesStringsPushIoApplicationIdentifier(OUTPUT_DIRECTORY_PATH, APP
     if len(pushIoApplicationIdentifierValue) == 0:
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "PushIoApplicationIdentifier")
 
-    resultFile.close()
-
-
-def sendRequestToFirabase(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH):
+def sendRequestToFirabase(APPLICATION_PACKAGE_NAME, firebaseUrl):
     response = requests.get(firebaseUrl + "/.json")
     data = str(response.json())
     
     return data
 
-def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     firebaseUrlRegex = r'https.*firebaseio.com'
     firebaseNotFoundText='Not found'
@@ -163,7 +158,7 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
             firebaseMatch =  re.search(firebaseUrlRegex, line)
             firebaseUrl = firebaseMatch.group()
             
-            firebaseResponseData = sendRequestToFirabase(APPLICATION_PACKAGE_NAME, firebaseUrl, RESULT_FILE_PATH)
+            firebaseResponseData = sendRequestToFirabase(APPLICATION_PACKAGE_NAME, firebaseUrl)
 
             
             if "Permission denied" in firebaseResponseData:
@@ -177,13 +172,13 @@ def checksResValuesStringsFirebaseUrl(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Firebase Url")
 
 
-def sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH):
+def sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey):
     response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountains+View,+CA&key=" + googleApiKey)
     data = str(response.json())
 
     return data
     
-def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
 
     # Example: <string name="google_api_key">AizaSyCBuDfLsTrMv-Q4EP1hP4Uh88Hohdl0ZCU</string>
     googleApiKeyRegex = r'(?:"google_api_key">)(.*)(?:<\/string>)'
@@ -198,7 +193,7 @@ def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
             googleApiKeyMatch =  re.search(googleApiKeyRegex, line)
             googleApiKey = googleApiKeyMatch.group(1)
 
-            googleApiResponseData = sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey, RESULT_FILE_PATH)
+            googleApiResponseData = sendRequestToGoogleApi(APPLICATION_PACKAGE_NAME, googleApiKey)
 
             if "REQUEST_DENIED" in googleApiResponseData:
                 report.reportStatusSecuredWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API", googleApiKey)
@@ -209,7 +204,7 @@ def checksResValuesStringGoogleApiKey(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google API")
 
 
-def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
 
     googleCloudPlatformGoogleUserContentRegex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
     googleCloudPlatformGoogleUserContentNotFoundText='Not found'
@@ -229,7 +224,7 @@ def checksResValuesStringGoogleCloudPlatformGoogleUserContent(OUTPUT_DIRECTORY_P
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Cloud Platform Google User Content")
 
 
-def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     googleOAuthAccessTokenRegex = r'ya29\.[0-9A-Za-z_-]+'
     googleOAuthAccessTokenNotFoundText='Not found'
@@ -249,11 +244,11 @@ def checksResValuesStringGoogleOAuthAccessToken(OUTPUT_DIRECTORY_PATH, APPLICATI
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google Oauth Access Token")
         
 
-def sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH):
+def sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot):
     response = requests.get("https://" + googleAppSpot)
     return response
 
-def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_RES_VALUES_STRINGS_RELATIVE_FILE_PATH):
     
     googleAppSpotRegex = r'(?:>)(.*.appspot.com)(?:<)'
     googleAppSpotNotFoundText='Not found'
@@ -267,7 +262,7 @@ def checksResValuesStringGoogleAppSpot(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAG
             googleAppSpotMatch =  re.search(googleAppSpotRegex, line)
             googleAppSpot = googleAppSpotMatch.group(1)
 
-            googleAppSpotResponseData = sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot, RESULT_FILE_PATH)
+            googleAppSpotResponseData = sendRequestToGoogleAppSpot(APPLICATION_PACKAGE_NAME, googleAppSpot)
 
             if "Error: Page not found" in googleAppSpotResponseData:
                 report.reportStatusSecuredWithTokenValue(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "ResValuesStrings", "Google AppSpot", googleAppSpot)

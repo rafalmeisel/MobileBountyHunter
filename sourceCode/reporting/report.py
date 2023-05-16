@@ -6,6 +6,12 @@ import hashlib
 from random import seed
 from random import randint
 
+mobileBountyHunterDirectory = "_MobileBountyHunterReport"
+mobileBountyHunterReportFile = "_MobileBountyHunterReport.txt"
+
+def getAbsolutePathToDedicatedApplicationReport(outputDirectoryPath, applicationPackageName):
+    return str(os.path.abspath(outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + mobileBountyHunterReportFile))
+
 def printOnConsoleWithoutTokenValue(applicationPackageName, fileName, issueStatus, tokenType):
     printOnConsoleWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, "")
 
@@ -74,7 +80,7 @@ def writeToReportFile(resultFilePath, applicationPackageName, fileName, issueSta
 
 
 def writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
-    writeToReportFile("./_MobileBountyHunterReport.txt", applicationPackageName, fileName, issueStatus, tokenType, tokenValue)
+    writeToReportFile("./" + mobileBountyHunterReportFile, applicationPackageName, fileName, issueStatus, tokenType, tokenValue)
 
 def writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, issueStatus, tokenType):
     writeToCommonReportFileWithTokenValue(applicationPackageName, fileName, issueStatus, tokenType, "")
@@ -82,8 +88,7 @@ def writeToCommonReportFileWithoutTokenValue(applicationPackageName, fileName, i
 
 
 def writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType, tokenValue):
-    mobileBountyHunterDirectory = "_MobileBountyHunterReport"
-    writeToReportFile(outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + "_MobileBountyHunterReport.txt", applicationPackageName, fileName, issueStatus, tokenType, tokenValue)
+    writeToReportFile(outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + mobileBountyHunterReportFile, applicationPackageName, fileName, issueStatus, tokenType, tokenValue)
 
 def writeToDedicatedReportFileWithoutTokenValue(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType):
     writeToDedicatedReportFileWithTokenValue(outputDirectoryPath, applicationPackageName, fileName, issueStatus, tokenType, "")
@@ -125,7 +130,6 @@ def reportStatusNotFound(outputDirectoryPath, applicationPackageName, fileName, 
 
 def copyFileToDedicatedReportDirectory(sourceFilePath, outputDirectoryPath, applicationPackageName):
    
-    mobileBountyHunterDirectory = "_MobileBountyHunterReport"
     filename = os.path.basename(sourceFilePath)
     
     filenameAlreadyExists = os.path.isfile(outputDirectoryPath + "/" + applicationPackageName + "/" + mobileBountyHunterDirectory + "/" + filename)

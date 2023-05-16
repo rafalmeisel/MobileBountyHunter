@@ -13,6 +13,7 @@ import getopt
 # -o / outputDirectory - output directory
 # -l / apksListFile - analyze application listed in file
 # -s / storeUrlsFile - analyze applications from storeUrls file
+# -d / decompilingTool - decompile application with specific tool like apktool, jadx
 # -u / directUrl - analyze specified URL - can be url to specified android/ios apk, specified android/ios developer
 
 def main(argv):
@@ -25,14 +26,11 @@ def main(argv):
     RESULT_FILE_PATH = "./workspace/results.txt"
     APPLICATION_LIST_FILE_PATH = "./workspace/apksList.txt"
     DEVELOPERS_URLS_PROFILE_FILE = "./workspace/storeUrlsList.txt"
+    DECOMPILING_TOOL="apktools"
     APK_FILE = ""
     URL = ""
 
-
-    print("APPLICATION_LIST_FILE_PATH" + APPLICATION_LIST_FILE_PATH)
-    print("DEVELOPERS_URLS_PROFILE_FILE" + DEVELOPERS_URLS_PROFILE_FILE)
-
-    opts, args = getopt.getopt(argv,"hf:iolsu:",["apkFile=", "inputDirectory=", "outputDirectory=", "apksListFile=", "storeUrlsListFile=", "url="])
+    opts, args = getopt.getopt(argv,"hf:iolsu:d:",["apkFile=", "inputDirectory=", "outputDirectory=", "apksListFile=", "storeUrlsListFile=", "decompilingTool=", "url="])
    
     for opt, arg in opts:
         if opt == '-h':
@@ -68,9 +66,18 @@ def main(argv):
             if len(arg)>0:
                 DIRECT_URL = arg
             USER_CHOICE="url"
+        elif opt in ("-d", "--decompilingTool"):
+            if len(arg)>0:
+                selectedDecompilingdTool = arg
+                if selectedDecompilingdTool == "apktools":
+                    DECOMPILING_TOOL = "apktools"
+                elif selectedDecompilingdTool == "jadx":
+                    DECOMPILING_TOOL = "jadx"
+                else:
+                    DECOMPILING_TOOL = "apktools"
 
     installThirdPartySoftware()
-    createDirectories(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+    createDirectories(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
     match USER_CHOICE:
         case "apkFile":
@@ -78,25 +85,25 @@ def main(argv):
 
         case "inputDirectory":
             print("Analyze selected inputDirectory")
-            sourceCode.applicationManager.analyzeInputDirectory(INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            sourceCode.applicationManager.analyzeInputDirectory(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
         case "outputDirectory":
             print("Analyze selected outputDirectory")
-            sourceCode.applicationManager.analyzeOutputDirectory(OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            sourceCode.applicationManager.analyzeOutputDirectory(OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
         case "apksListFile":
             print("Analyze selected apksListFile")
-            sourceCode.applicationManager.analyzeApplicationFromList(APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            sourceCode.applicationManager.analyzeApplicationFromList(DECOMPILING_TOOL, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
         case "storeUrlsListFile":
-            sourceCode.applicationManager.runAnalyzeApplicationFromStoreUrlList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            sourceCode.applicationManager.runAnalyzeApplicationFromStoreUrlList(DECOMPILING_TOOL, DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
         case "url":
             print("Analyze selected url. Will be added later.")
 
         case _:
             print("Default")
-            sourceCode.applicationManager.runAnalyzeApplicationFromStoreUrlList(DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH, RESULT_FILE_PATH)
+            sourceCode.applicationManager.runAnalyzeApplicationFromStoreUrlList(DECOMPILING_TOOL, DEVELOPERS_URLS_PROFILE_FILE, APPLICATION_LIST_FILE_PATH, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
     
 

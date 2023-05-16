@@ -4,7 +4,7 @@ from sourceCode.reporting import reportEnums
 
 # Any file with extension .sqlite or .db
 
-def findJavaScriptEnabled(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, RESULT_FILE_PATH):
+def findJavaScriptEnabled(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
     
     applicationDirectoryPath = OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + "/" + "sources" + "/"
     applicationDirectoryPathLib = pathlib.Path(applicationDirectoryPath)

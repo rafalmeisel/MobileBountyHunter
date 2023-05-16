@@ -12,7 +12,7 @@ from sourceCode.reporting import reportEnums
 # - Schema endpoints
 # - Deep link pathPatterns
 
-def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH):
     
     debuggableActivityTrueRegex='.*debuggable="true".*'
     debuggableActivityTypeValue=""
@@ -41,7 +41,7 @@ def checksAndroidManifestDebuggable(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Debug")
 
 
-def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH):
     
     allowBackupActivityTrueRegex='.*allowBackup="true".*'
     allowBackupActivityTypeValue=""
@@ -69,7 +69,7 @@ def checksAndroidManifestAllowBackup(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_
     if not isAllowBackupFlag:
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "allowBackup")
 
-def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH):
     
     exportedActivityTrueRegex='.*exported="true".*'
     exportedActivityTypeValue=""
@@ -79,8 +79,6 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
     isExportedFlag=False
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidManifestFileContent:
         if re.search(exportedActivityTrueRegex, line):
@@ -99,17 +97,14 @@ def checksAndroidManifestExported(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAM
     if not isExportedFlag:
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "exported")
 
-    resultFile.close()
 
-def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH, RESULT_FILE_PATH):
+def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, ANDROID_MANIFEST_RELATIVE_FILE_PATH):
     
     cloudinaryRegex='cloudinary:\/\/.*(?="|\')'
     cloudinaryValue=""
     isCloudinaryFlag=False
 
     androidManifestFileContent = open(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME + ANDROID_MANIFEST_RELATIVE_FILE_PATH, "r").readlines()
-
-    resultFile = open(RESULT_FILE_PATH, "a")
     
     for line in androidManifestFileContent:
         if re.search(cloudinaryRegex, line):
@@ -124,5 +119,3 @@ def checksAndroidManifestCloudinary(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_N
 
     if not isCloudinaryFlag:
         report.reportStatusNotFound(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, "AndroidManifest", "Cloudinary")
-
-    resultFile.close()
