@@ -23,7 +23,6 @@ def main(argv):
     INPUT_ANALYZED_DIRECTORY_PATH = "./workspace/input_analyzed/"
     OUTPUT_DIRECTORY_PATH = "./workspace/output/"
     OUTPUT_ANALYZED_DIRECTORY_PATH = "./workspace/output_analyzed/"
-    RESULT_FILE_PATH = "./workspace/results.txt"
     APPLICATION_LIST_FILE_PATH = "./workspace/apksList.txt"
     DEVELOPERS_URLS_PROFILE_FILE = "./workspace/storeUrlsList.txt"
     DECOMPILING_TOOL="apktools"
