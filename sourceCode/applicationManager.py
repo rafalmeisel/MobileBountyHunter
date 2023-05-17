@@ -128,6 +128,7 @@ def changeApplicationNameFromXapkToApk(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE
 
 def unzipXapkFile(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
     print("unzipXapkFile: " + INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE)
+    # print("unxipXapkFile: " + INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME_FILE)
 
     with zipfile.ZipFile(INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE, "r") as zip_ref:
             zip_ref.extractall(INPUT_DIRECTORY_PATH + "XAPK_TEMP/" + APPLICATION_PACKAGE_NAME_FILE)
@@ -140,6 +141,7 @@ def checkIfXapkIsValid(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
     if zipfile.is_zipfile (INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE):
         return True
     else:
+        print("Application: " + APPLICATION_PACKAGE_NAME_FILE + " is not valid xapk file.")
         return False
 
 
@@ -151,7 +153,6 @@ def decompileApkWithJadx(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OU
 
 def decompileApkWithApkTools(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH):
     print("Decompiling: " + APPLICATION_PACKAGE_NAME_FILE )
-    
     os.system("apktool d " + INPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE + " -o " + OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME_FILE + " -f --quiet")
 
     
@@ -164,7 +165,7 @@ def decompileExtentionApk(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PA
         decompileApkWithApkTools(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH)
 
 def decompileExtentionXapk(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH):
-
+    
     if checkIfXapkIsValid(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE):
         os.mkdir(INPUT_DIRECTORY_PATH + "XAPK_TEMP")
         os.chmod(INPUT_DIRECTORY_PATH + "XAPK_TEMP", 0o766)
@@ -178,9 +179,9 @@ def decompileExtentionXapk(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_P
 
 def decompileSingleApplicationPackage(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH): 
 
-    if ".xapk" in APPLICATION_PACKAGE_NAME_FILE:
+    if IS_XAPK_EXTENSION:
         decompileExtentionXapk(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH)
-    elif ".apk" in APPLICATION_PACKAGE_NAME_FILE:
+    elif IS_APK_EXTENSION:
         decompileExtentionApk(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME_FILE, OUTPUT_DIRECTORY_PATH)
 
 
@@ -242,10 +243,11 @@ def runTests(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
 
     # for filename in filenames:
     setFlagForApplicationStore(APPLICATION_PACKAGE_NAME)
-
+    
     if IS_IPA_EXTENSION:
         print("App Store not Supported yet.")
     elif IS_APK_EXTENSION or IS_XAPK_EXTENSION:
+        APPLICATION_PACKAGE_NAME = APPLICATION_PACKAGE_NAME.replace("xapk","apk")
         runAndroidTests(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME)
 
 def moveApplicationFromInputDirectoryToInputAnalyzedDirectory(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, INPUT_ANALYZED_DIRECTORY_PATH):
@@ -256,6 +258,7 @@ def moveApplicationFromInputDirectoryToInputAnalyzedDirectory(INPUT_DIRECTORY_PA
 def moveApplicationFromOutputDirectoryToOutputAnalyzedDirectory(OUTPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, OUTPUT_ANALYZED_DIRECTORY_PATH):
     # filenames = os.listdir(OUTPUT_DIRECTORY_PATH)
     # for filename in filenames:
+    APPLICATION_PACKAGE_NAME = APPLICATION_PACKAGE_NAME.replace(".xapk", ".apk")
     print("move: " + OUTPUT_ANALYZED_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME)
     shutil.move(OUTPUT_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME, OUTPUT_ANALYZED_DIRECTORY_PATH + APPLICATION_PACKAGE_NAME)
 
@@ -273,17 +276,25 @@ def analyzeInputDirectory(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, INPUT_ANALYZED
     applicationPackageNamesList = [entry.name for entry in os.scandir(INPUT_DIRECTORY_PATH) if entry.is_file()]
 
     for APPLICATION_PACKAGE_NAME in applicationPackageNamesList:
+        
 
-        # Newline between printing new scan
-        print("\n")
-        print("analyzeInputDirectory: " + APPLICATION_PACKAGE_NAME)
-        decompileApplication(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, OUTPUT_DIRECTORY_PATH)
-        analyzeApplication(APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
+        if(".xapk" in APPLICATION_PACKAGE_NAME):
+            if not(checkIfXapkIsValid(INPUT_DIRECTORY_PATH,APPLICATION_PACKAGE_NAME)):
+                # TODO: Move invalid Xapk to direcotry "input_invalid"
+                continue
+        else:
+            # Newline between printing new scan
+            print("\n")
+            print("analyzeInputDirectory: " + APPLICATION_PACKAGE_NAME)
+            decompileApplication(DECOMPILING_TOOL, INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME, OUTPUT_DIRECTORY_PATH)
+            analyzeApplication(APPLICATION_PACKAGE_NAME, INPUT_DIRECTORY_PATH, INPUT_ANALYZED_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
 def analyzeOutputDirectory(OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH):
     
-    runTests(OUTPUT_DIRECTORY_PATH)
-    moveApplicationFromOutputDirectoryToOutputAnalyzedDirectory(OUTPUT_DIRECTORY_PATH, OUTPUT_ANALYZED_DIRECTORY_PATH)
+    for APPLICATION_PACKAGE_NAME in os.scandir(OUTPUT_DIRECTORY_PATH):
+        outputDirectoryApplicationPackageName = str(os.path.basename(APPLICATION_PACKAGE_NAME.path))
+        runTests(OUTPUT_DIRECTORY_PATH, outputDirectoryApplicationPackageName)
+        moveApplicationFromOutputDirectoryToOutputAnalyzedDirectory(OUTPUT_DIRECTORY_PATH, outputDirectoryApplicationPackageName, OUTPUT_ANALYZED_DIRECTORY_PATH)
 
 def getApplicationPackageNameWithExtentionFromInputDirectory(INPUT_DIRECTORY_PATH, APPLICATION_PACKAGE_NAME):
    
