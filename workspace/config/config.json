@@ -1,0 +1,16 @@
+{
+    "globalMobileBountyHunterReportFileRelativePath": "./_MobileBountyHunterReport.txt",
+    "dedicatedMobileBountyHunterReportFileName": "_MobileBountyHunterReport.txt",
+    "dedicatedMobileBountyHunterReportDirectoryRelativePath": "/_MobileBountyHunterReport/",
+    "storeUrlsListRelativePath": "./workspace/store_urls_list.txt",
+    "applicationPackageNameListRelativePath": "./workspace/application_package_name_list.txt",
+    "androidInputDirectoryRelativePath": "./workspace/android_input/",
+    "androidInputAnalyzedDirectoryRelativePath": "./workspace/android_input_analyzed/",
+    "androidOutputDirectoryRelativePath": "./workspace/android_output/",
+    "androidOutputAnalyzedDirectoryRelativePath": "./workspace/android_output_analyzed/",
+    "androidDecompilingTool": "apktools",
+    "iosInputDirectoryRelativePath": "./workspace/ios_input/",
+    "iosInputAnalyzedDirectoryRelativePath": "./workspace/ios_input_analyzed/",
+    "iosOutputDirectoryRelativePath": "./workspace/ios_output/",
+    "iosOutputAnalyzedDirectoryRelativePath": "./workspace/ios_output_analyzed/"
+}
