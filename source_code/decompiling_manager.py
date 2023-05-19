@@ -1,7 +1,6 @@
 import os
 import subprocess
 import source_code.config_file_manager
-import source_code.system_manager
 import zipfile
 import pathlib
 import shutil
@@ -81,21 +80,6 @@ def decompile_xapk_with_apk_tools(application_package_name):
         remove_unzip_apk_temporary_directory(apk_application_package_name)
 
 
-def decompile_application(application_package_system, application_package_name, decompiling_tool):
-    
-    if (source_code.system_manager.isAndroid(application_package_system)):
-        if (is_apk(application_package_name) and use_apk_tools(decompiling_tool)):
-            decompile_apk_with_apk_tools(application_package_name)
-        elif (is_apk(application_package_name) and use_jadx(decompiling_tool)):
-            decompile_apk_with_jadx(application_package_name)
-        elif (is_xapk(application_package_name) and use_apk_tools(decompiling_tool)):
-            decompile_xapk_with_apk_tools(application_package_name)
-        elif (is_xapk(application_package_name) and use_jadx(decompiling_tool)):
-            decompile_xapk_with_jadx(application_package_name)
-    elif (source_code.system_manager.isIos(application_package_system)):
-        print("iOS is not supported yet :(")
-
-
 def use_apk_tools(decompiling_tool):
     if decompiling_tool == "apktools":
         return True
@@ -170,3 +154,33 @@ def move_apk_from_temporary_to_input_directory(apk_application_package_name):
     if os.path.isfile(input_apk_temporary_directory_absolute_path):
         shutil.move(input_apk_temporary_directory_absolute_path, input_apk_application_package_name_absolute_path)
     
+
+def decompile_android_application(application_package_name, decompiling_tool):
+    
+    if (is_apk(application_package_name) and use_apk_tools(decompiling_tool)):
+        decompile_apk_with_apk_tools(application_package_name)
+    elif (is_apk(application_package_name) and use_jadx(decompiling_tool)):
+        decompile_apk_with_jadx(application_package_name)
+    elif (is_xapk(application_package_name) and use_apk_tools(decompiling_tool)):
+        decompile_xapk_with_apk_tools(application_package_name)
+    elif (is_xapk(application_package_name) and use_jadx(decompiling_tool)):
+        decompile_xapk_with_jadx(application_package_name)
+
+
+def decompile_android_input_directory():
+
+    input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
+    decompiling_tool = source_code.config_file_manager.get_android_decompiling_tool()
+
+    for application_package_name in os.listdir(input_directory_relative_path):
+        decompile_android_application(application_package_name, decompiling_tool)
+
+
+def decompile_ios_application(application_package_name, decompiling_tool):
+
+    print("iOS is not supported yet :(")
+
+
+def decompile_ios_input_directory():
+
+    print("iOS is not supported yet :(")

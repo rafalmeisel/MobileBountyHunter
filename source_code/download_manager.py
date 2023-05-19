@@ -11,20 +11,23 @@ def download_ios_application_package_name_from_appstore_to_input_directory(appli
     print("download_ios_application_package_name_from_appstore_to_input_directory: To be implemented.")
 
 
-def download_application_package_name_from_package_name_to_input_directory(application_package_name):
-    if application_package_name.startswith('id'):
-        download_ios_application_package_name_from_appstore_to_input_directory(application_package_name)
-    else:
-        download_android_application_package_name_from_google_play_to_input_directory(application_package_name)
-
-
-def download_applications():
-    application_package_name_list_relative_path = source_code.config_file_manager.get_application_package_name_list_relative_path
+def download_android_applications():
+    application_package_name_list_relative_path = source_code.config_file_manager.get_android_application_package_name_list_relative_path
 
     with open(application_package_name_list_relative_path) as application_package_name_list_file:
         application_package_name_list_file_contents = application_package_name_list_file.read()
     
     # Google Play: https://play.google.com/store/apps/details?id=com.some.application -> com.some.application
+    for application_package_name in application_package_name_list_file_contents:
+        download_android_application_package_name_from_google_play_to_input_directory(application_package_name)
+
+
+def download_ios_applications():
+    application_package_name_list_relative_path = source_code.config_file_manager.get_ios_application_package_name_list_relative_path
+
+    with open(application_package_name_list_relative_path) as application_package_name_list_file:
+        application_package_name_list_file_contents = application_package_name_list_file.read()
+    
     # App Store: https://apps.apple.com/pl/app/pyszne-pl/id1234567890?l=pl -> id1234567890
     for application_package_name in application_package_name_list_file_contents:
-        download_application_package_name_from_package_name_to_input_directory(application_package_name)
+        download_ios_application_package_name_from_appstore_to_input_directory(application_package_name)

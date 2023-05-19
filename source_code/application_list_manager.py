@@ -21,7 +21,7 @@ def retrieve_application_package_name_from_google_play_application_url(google_pl
     
     print("[Google Play][Application] Retrieved name: " + application_package_name)
     
-    source_code.config_file_manager.append_to_application_package_name_list(application_package_name)
+    source_code.config_file_manager.append_to_android_application_package_name_list(application_package_name)
 
 
 # Function take Url to Google Play, visit developer website, find all application related to this developer and paste them into file
@@ -63,7 +63,7 @@ def retrieve_application_package_names_from_google_play_developer_url(google_pla
         summary_retrieved_applications_package_name = ""
         
         for application_package_name in application_package_names_found_on_developer_profile:
-            source_code.config_file_manager.append_to_application_package_name_list(application_package_name)
+            source_code.config_file_manager.append_to_android_application_package_name_list(application_package_name)
             summary_retrieved_applications_package_name = summary_retrieved_applications_package_name + " " + application_package_name
         
 
@@ -97,8 +97,8 @@ def retrieve_application_package_name_from_url_to_file_list(url):
 
 
 def retrieve_all_application_package_names_from_store_file_list_to_application_file_list():
+
     store_urls_list_relative_path = source_code.config_file_manager.get_store_urls_list_relative_path
-    
 
     with open(store_urls_list_relative_path) as store_urls_list_file:
         store_urls_list_file_contents = store_urls_list_file.read()

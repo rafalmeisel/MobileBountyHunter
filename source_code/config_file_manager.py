@@ -31,16 +31,27 @@ def get_store_urls_list_relative_path():
     return config_file_json["storeUrlsListRelativePath"]
 
 
-def get_application_package_name_list_relative_path():
+def get_android_application_package_name_list_relative_path():
     config_file_json = get_config_file_json()
-    return config_file_json["applicationPackageNameListRelativePath"]
+    return config_file_json["androidApplicationPackageNameListRelativePath"]
 
 
-def append_to_application_package_name_list(application_package_name):
-    application_package_name_list_relative_path = get_application_package_name_list_relative_path()
-    application_package_name_list_file = open(application_package_name_list_relative_path, "a")
-    application_package_name_list_file.write(application_package_name+"\n")
-    application_package_name_list_file.close()
+def append_to_android_application_package_name_list(application_package_name):
+    android_application_package_name_list_relative_path = get_android_application_package_name_list_relative_path()
+    android_application_package_name_list_file = open(android_application_package_name_list_relative_path, "a")
+    android_application_package_name_list_file.write(application_package_name+"\n")
+    android_application_package_name_list_file.close()
+
+def get_ios_application_package_name_list_relative_path():
+    config_file_json = get_config_file_json()
+    return config_file_json["iosApplicationPackageNameListRelativePath"]
+
+
+def append_to_ios_application_package_name_list(application_package_name):
+    ios_application_package_name_list_relative_path = get_ios_application_package_name_list_relative_path()
+    ios_application_package_name_list_file = open(ios_application_package_name_list_relative_path, "a")
+    ios_application_package_name_list_file.write(application_package_name+"\n")
+    ios_application_package_name_list_file.close()
 
 def get_android_decompiling_tool():
     config_file_json = get_config_file_json()

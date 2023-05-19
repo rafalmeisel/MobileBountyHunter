@@ -83,25 +83,26 @@ def write_to_report_file(report_file_relative_path, application_package_name, an
 
     report_file.close()
 
-def get_output_directory_application_package_system_relative_path(application_package_system):
+def get_android_output_directory_application_package_system_relative_path():
 
-    output_directory_relative_path = ""
+    output_directory_relative_path = get_android_output_directory_relative_path()
+    return output_directory_relative_path
 
-    if isAndroid(application_package_system):
-        output_directory_relative_path = get_android_output_directory_relative_path()
 
-    elif isIos(application_package_system):
-        output_directory_relative_path = get_ios_output_directory_relative_path()
+def get_ios_output_directory_application_package_system_relative_path():
 
-    else:
-        output_directory_relative_path = ""
-    
+    output_directory_relative_path = get_ios_output_directory_relative_path()
     return output_directory_relative_path
 
 
 def write_to_dedicated_report_file_with_token_value(application_package_system, application_package_name, analyzed_file_name, issue_status, token_name, token_value):
+
+    output_directory_relative_path = ""
     
-    output_directory_relative_path = get_output_directory_application_package_system_relative_path(application_package_system)
+    if "Android" == application_package_system:
+        output_directory_relative_path = get_android_output_directory_application_package_system_relative_path()
+    elif "iOS" == application_package_system:
+        output_directory_relative_path = get_ios_output_directory_application_package_system_relative_path()
 
     if (output_directory_relative_path == ""):
         print("report_manager: write_to_dedicated_report_file_with_token_value: output_directory_relative_path is empty!")
@@ -111,8 +112,13 @@ def write_to_dedicated_report_file_with_token_value(application_package_system, 
 
 
 def write_to_dedicated_report_file_without_token_value(application_package_system, application_package_name, analyzed_file_name, issue_status, token_name):
-       
-    output_directory_relative_path = get_output_directory_application_package_system_relative_path(application_package_system)
+    
+    output_directory_relative_path = ""
+    
+    if "Android" == application_package_system:
+        output_directory_relative_path = get_android_output_directory_application_package_system_relative_path()
+    elif "iOS" == application_package_system:
+        output_directory_relative_path = get_ios_output_directory_application_package_system_relative_path()
 
     if (output_directory_relative_path == ""):
         print("report_manager: write_to_dedicated_report_file_without_token_value: output_directory_relative_path is empty!")
@@ -131,14 +137,13 @@ def write_to_global_report_file_without_token_value(application_package_name, an
     write_to_report_file(global_report_file_relative_path, application_package_name, analyzed_file_name, issue_status, token_name, "")
 
 
-
 def report_status_vulnerable_with_token_value(application_package_system, application_package_name, analyzed_file_name, token_name, token_value):
     print_on_console_with_token_value(application_package_name, analyzed_file_name, UrlResourceSecurityStatus.VULNERABLE, token_name, token_value)
     write_to_dedicated_report_file_with_token_value(application_package_system, application_package_name, analyzed_file_name, UrlResourceSecurityStatus.VULNERABLE, token_name, token_value)
     write_to_global_report_file_with_token_value(application_package_name, analyzed_file_name, UrlResourceSecurityStatus.VULNERABLE, token_name, token_value)
 
 
-def reportStatusToVerifyWithtoken_value(application_package_system, application_package_name, analyzed_file_name, token_name, token_value):
+def report_status_to_verify_with_token_value(application_package_system, application_package_name, analyzed_file_name, token_name, token_value):
     print_on_console_with_token_value(application_package_name, analyzed_file_name, UrlResourceSecurityStatus.TO_VERIFY, token_name, token_value)
     write_to_dedicated_report_file_with_token_value(application_package_system, application_package_name, analyzed_file_name, UrlResourceSecurityStatus.TO_VERIFY, token_name, token_value)
     write_to_global_report_file_with_token_value(application_package_name, analyzed_file_name, UrlResourceSecurityStatus.TO_VERIFY, token_name, token_value)
@@ -168,15 +173,9 @@ def report_status_not_found(application_package_system, application_package_name
     write_to_global_report_file_without_token_value(application_package_name, analyzed_file_name, UrlResourceSecurityStatus.NOT_FOUND, token_name)
 
 
-def copyFileToDedicatedReportDirectory(source_file_path_to_copy, application_package_system, application_package_name):
+def copy_file_to_dedicated_report_directory(source_file_path, destination_file_path):
    
-    file_name_to_copy = os.path.basename(source_file_path_to_copy)
-    
-    output_directory_relative_path = get_output_directory_application_package_system_relative_path(application_package_system)
-    dedicatedMobileBountyHunterReportDirectoryRelativePath = get_dedicated_mobile_bounty_hunter_report_directory_relative_path()
-    
-    file_name_to_copy_destination_path = pathlib.Path(output_directory_relative_path, application_package_name, dedicatedMobileBountyHunterReportDirectoryRelativePath, file_name_to_copy)
-    file_name_to_copy_exists = os.path.isfile(file_name_to_copy_destination_path)
+    file_name_to_copy_exists = os.path.isfile(destination_file_path)
 
     if (file_name_to_copy_exists):
         # Calculate MD5 of already existing file with new one
@@ -186,21 +185,21 @@ def copyFileToDedicatedReportDirectory(source_file_path_to_copy, application_pac
         md5ExistedFile = ""
         md5NewFile = ""
         
-        with open(file_name_to_copy_destination_path, 'rb') as file_to_check:
+        with open(destination_file_path, 'rb') as file_to_check:
             data = file_to_check.read()    
             md5ExistedFile = hashlib.md5(data).hexdigest()
 
-        with open(source_file_path_to_copy, 'rb') as file_to_check:
+        with open(source_file_path, 'rb') as file_to_check:
             data = file_to_check.read()    
             md5NewFile = hashlib.md5(data).hexdigest()
 
         if (md5ExistedFile == md5NewFile):
-            print("Found file \"" + source_file_path_to_copy + "\"" + "was already copied (comapred MD5s). Skipping...")
+            print("Found file \"" + source_file_path + "\"" + "was already copied (comapred MD5s). Skipping...")
         
         else:
             seed(1)
             randomValue = str(randint(0, 100000000))
 
-            shutil.copyfile(source_file_path_to_copy, file_name_to_copy_destination_path + "_" + randomValue)
+            shutil.copyfile(source_file_path, destination_file_path + "_" + randomValue)
     else:
-        shutil.copyfile(source_file_path_to_copy, file_name_to_copy_destination_path)
+        shutil.copyfile(source_file_path, destination_file_path)
