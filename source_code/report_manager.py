@@ -7,7 +7,6 @@ from random import seed
 from random import randint
 from enum import Enum
 from source_code.config_file_manager import *
-from source_code.system_manager import *
 
 class UrlResourceSecurityStatus(Enum):
     SECURED = 1

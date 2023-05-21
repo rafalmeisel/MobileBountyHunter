@@ -2,8 +2,6 @@ from termcolor import colored
 import re
 import requests
 import boto3
-from sourceCode.reporting import report
-from sourceCode.reporting import reportEnums
 
 # Interesting things in AndroidManifest:
 # - Api keys

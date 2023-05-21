@@ -1,6 +1,4 @@
 from source_code.config_file_manager import get_android_output_directory_relative_path
-from source_code.config_file_manager import get_android_output_analyzed_directory_relative_pathry_relative_path
-
 from source_code.android_tests.check_android_manifest import *
 from source_code.android_tests.check_res_values_strings import *
 from source_code.android_tests.check_files_names import *
@@ -36,22 +34,22 @@ def run_android_tests(application_package_name):
     # for application_package_name in outputDirectoryApplicationPackageNames:
     print("Analyzing application: " + colored(application_package_name, 'cyan'))
 
-    checksAndroidManifestDebuggable(application_package_name, android_manifest_relative_file_path)
-    checksAndroidManifestAllowBackup(application_package_name, android_manifest_relative_file_path)
-    checksAndroidManifestExported(application_package_name, android_manifest_relative_file_path)
-    checksAndroidManifestCloudinary(application_package_name, android_manifest_relative_file_path)
+    # checksAndroidManifestDebuggable(application_package_name, android_manifest_relative_file_path)
+    # checksAndroidManifestAllowBackup(application_package_name, android_manifest_relative_file_path)
+    # checksAndroidManifestExported(application_package_name, android_manifest_relative_file_path)
+    # checksAndroidManifestCloudinary(application_package_name, android_manifest_relative_file_path)
     
-    checksResValuesStringsAwsLongTermAccessKeys(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringsAwsShortTermAccessKeys(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringsAwSecretAccessKey(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringsAwsBucket(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringsPushIoApplicationIdentifier(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringsFirebaseUrl(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringsAwsBucket(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringGoogleApiKey(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringGoogleCloudPlatformGoogleUserContent(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringGoogleOAuthAccessToken(application_package_name, android_res_values_strings_relative_file_path)
-    checksResValuesStringGoogleAppSpot(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsAwsLongTermAccessKeys(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsAwsShortTermAccessKeys(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsAwSecretAccessKey(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsAwsBucket(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsPushIoApplicationIdentifier(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsFirebaseUrl(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringsAwsBucket(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringGoogleApiKey(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringGoogleCloudPlatformGoogleUserContent(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringGoogleOAuthAccessToken(application_package_name, android_res_values_strings_relative_file_path)
+    # checksResValuesStringGoogleAppSpot(application_package_name, android_res_values_strings_relative_file_path)
 
     search_files_with_sqlite_extensions(application_package_name)
     search_files_with_db_extensions(application_package_name)

@@ -1,5 +1,6 @@
 import pathlib
-from source_code.report_manager import report
+from source_code.report_manager import report_status_vulnerable_with_token_value
+from source_code.report_manager import report_status_not_found
 from source_code.config_file_manager import get_android_output_directory_relative_path
 from source_code.config_file_manager import get_dedicated_mobile_bounty_hunter_report_directory_relative_path
 from source_code.config_file_manager import get_dedicated_mobile_bounty_hunter_report_file_name
@@ -32,7 +33,7 @@ def check_exported_activity_with_java_script_enabled(application_package_name):
     commonActivities = set(exported_activity_list) & set(java_script_enabled_activity_list)
 
     for activityName in commonActivities:
-        report.report_status_vulnerable_with_token_value("Android", application_package_name, "Report", "Exported + JavaScriptEnabled", activityName)
+        report_status_vulnerable_with_token_value("Android", application_package_name, "Report", "Exported + JavaScriptEnabled", activityName)
 
     if len(commonActivities) == 0:
-        report.report_status_not_found("Android", application_package_name, "Report", "Export with JavaScriptEnabled")
+        report_status_not_found("Android", application_package_name, "Report", "Export with JavaScriptEnabled")

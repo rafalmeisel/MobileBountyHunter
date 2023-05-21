@@ -1,7 +1,6 @@
 from termcolor import colored
 import re
-from sourceCode.reporting import report
-from sourceCode.reporting import reportEnums
+from source_code.report_manager import *
 
 # Interesting things in AndroidManifest:
 # - Exported components

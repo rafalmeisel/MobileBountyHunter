@@ -1,4 +1,6 @@
+import sys
 import re
+import os
 import requests
 import source_code.config_file_manager
 
@@ -81,27 +83,61 @@ def retrieve_application_package_name_from_appstore_developer_url(appstore_devel
 
 
 # Check if URL leads to Developer profile or directcly to application
-def retrieve_application_package_name_from_url_to_file_list(url):
+def retrieve_android_application_package_name_from_store_url_to_applicatione_list_file():
 
-    if "https://play.google.com/store/apps/details" in url:
-        retrieve_application_package_name_from_google_play_application_url(url)
+    store_urls_list_relative_path = source_code.config_file_manager.get_android_store_urls_list_relative_path()
 
-    elif "https://play.google.com/store/apps/dev" in url:
-        retrieve_application_package_names_from_google_play_developer_url(url)
-
-    elif "https://apps.apple.com/pl/app/app-store-connect/id" in url: 
-        retrieve_application_package_name_from_appstore_application_url(url)
-
-    elif "https://apps.apple.com/pl/developer/apple/id" in url: 
-        retrieve_application_package_name_from_appstore_developer_url(url)
-
-
-def retrieve_all_application_package_names_from_store_file_list_to_application_file_list():
-
-    store_urls_list_relative_path = source_code.config_file_manager.get_store_urls_list_relative_path
-
-    with open(store_urls_list_relative_path) as store_urls_list_file:
-        store_urls_list_file_contents = store_urls_list_file.read()
+    try:
+        with open(store_urls_list_relative_path, 'r') as store_urls_list_file:
+            store_urls_list_file_contents = store_urls_list_file.readlines()
     
-    for store_url in store_urls_list_file_contents:
-        retrieve_application_package_name_from_url_to_file_list(store_url)
+        for store_url in store_urls_list_file_contents:
+            print("retrieve_android_application_package_name_from_store_url_to_applicatione_list_file: " + store_url)
+            if "https://play.google.com/store/apps/details" in store_url:
+                retrieve_application_package_name_from_google_play_application_url(store_url)
+
+            elif "https://play.google.com/store/apps/dev" in store_url:
+                retrieve_application_package_names_from_google_play_developer_url(store_url)
+
+    except FileNotFoundError:
+        try:
+            with open(store_urls_list_relative_path, 'w') as store_urls_list_file:
+                print("It seems that file 'android_store_urls_list.txt' did not exist. We created it for you. Please update it.")
+        except IOError:
+            print("An error occurred while creating the file: " + store_urls_list_relative_path)
+
+        sys.exit(1)
+
+    except IOError:
+        print("An error occurred while reading the file: " + store_urls_list_relative_path)
+        sys.exit(1)
+
+
+# Check if URL leads to Developer profile or directcly to application
+def retrieve_ios_application_package_name_from_store_url_to_applicatione_list_file():
+
+    store_urls_list_relative_path = source_code.config_file_manager.get_ios_store_urls_list_relative_path
+
+    try:
+        with open(store_urls_list_relative_path) as store_urls_list_file:
+            store_urls_list_file_contents = store_urls_list_file.readlines()
+    
+        for store_url in store_urls_list_file_contents:
+            if "https://apps.apple.com/pl/app/app-store-connect/id" in store_url: 
+                retrieve_application_package_name_from_appstore_application_url(store_url)
+
+            elif "https://apps.apple.com/pl/developer/apple/id" in store_url: 
+                retrieve_application_package_name_from_appstore_developer_url(store_url)
+
+    except FileNotFoundError:
+        try:
+            with open(store_urls_list_relative_path, 'w') as store_urls_list_file:
+                print("It seems that file 'ios_store_urls_list.txt' did not exist. We created it for you. Please update it.")
+        except IOError:
+            print("An error occurred while creating the file: " + store_urls_list_relative_path)
+
+        sys.exit(1)
+
+    except IOError:
+        print("An error occurred while reading the file: " + store_urls_list_relative_path)
+        sys.exit(1)
