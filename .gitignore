@@ -1,7 +1,11 @@
-input/
-input_analyzed/
-output/
-output_analyzed/
+android_input/
+android_input_analyzed/
+android_output/
+android_output_analyzed/
+ios_input/
+ios_input_analyzed/
+ios_output/
+ios_output_analyzed/
 check-rules/
 AndroidManifext.xml
 strings.xml
@@ -10,3 +14,4 @@ results.txt
 apksList.txt
 developersUrlsProfile.txt
 storeUrls.txt
+android_application_package_name_list.txt

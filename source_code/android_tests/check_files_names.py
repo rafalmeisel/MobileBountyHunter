@@ -1,5 +1,5 @@
-from termcolor import colored
 import pathlib
+import os
 from source_code.report_manager import report_status_to_verify_with_token_value
 from source_code.report_manager import report_status_not_found
 from source_code.report_manager import copy_file_to_dedicated_report_directory
@@ -52,14 +52,17 @@ def search_config_files_with_any_extensions(application_package_name):
     android_output_directory_relative_path = get_android_output_directory_relative_path()
     dedicated_mobile_bounty_hunter_report_directory_relative_path = get_dedicated_mobile_bounty_hunter_report_directory_relative_path()
     android_application_directory_relative_path = pathlib.Path(android_output_directory_relative_path, application_package_name)
-    android_dedicated_report_application_directory_relative_path = pathlib.Path(android_output_directory_relative_path, application_package_name, dedicated_mobile_bounty_hunter_report_directory_relative_path)
+    
 
     config_files_list = [f for f in android_application_directory_relative_path.rglob("*config*") if f.is_file()]
     
     if len(config_files_list) > 0:
 
         for config_file_list in config_files_list:
+            
+            android_dedicated_report_application_directory_relative_path = pathlib.Path(android_output_directory_relative_path, application_package_name, dedicated_mobile_bounty_hunter_report_directory_relative_path, os.path.basename(config_file_list))
             report_status_to_verify_with_token_value("Android", application_package_name, "", "Config file", str(config_file_list))
+            
             copy_file_to_dedicated_report_directory(str(config_file_list), str(android_dedicated_report_application_directory_relative_path))
 
     else:

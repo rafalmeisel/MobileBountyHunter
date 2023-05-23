@@ -17,6 +17,7 @@ def download_android_application_package_name_from_google_play_to_input_director
     print("Start downloading: " + application_package_name + " to " + android_input_directory_relative_path)
     os.system("apkeep -a " + application_package_name + " " + android_input_directory_relative_path)
 
+
 # TODO: Implement iOS application downloader
 def download_ios_application_package_name_from_appstore_to_input_directory(application_package_name):
     print("download_ios_application_package_name_from_appstore_to_input_directory: To be implemented.")
@@ -32,7 +33,8 @@ def download_ios_application_package_name_from_appstore_to_input_directory(appli
     # os.system("apkeep -a " + application_package_name + " " + ios_input_directory_relative_path)
 
 
-def download_android_applications():
+# TODO: Remove this function? Think if this function will be useful...
+def download_android_applications(application_package_name):
     application_package_name_list_relative_path = source_code.config_file_manager.get_android_application_package_name_list_relative_path()
 
     try:
@@ -81,3 +83,12 @@ def download_ios_applications():
     except IOError:
         print("An error occurred while reading the file: " + application_package_name_list_relative_path)
         sys.exit(1)
+
+
+def find_application_package_name_with_extention(application_package_name_without_extention):
+    
+    android_input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
+    
+    for file in os.listdir(android_input_directory_relative_path):
+        if application_package_name_without_extention in file:
+            return str(os.path.basename(file))

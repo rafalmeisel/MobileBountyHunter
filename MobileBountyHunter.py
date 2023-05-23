@@ -3,6 +3,7 @@ import argparse
 from source_code.third_party_software_manager import install_third_party_software
 import source_code.application_manager
 from source_code.config_file_manager import create_config_runtime_file
+from source_code.config_file_manager import delete_config_runtime_file
 from source_code.config_file_manager import set_android_decompiling_tool
 from source_code.config_file_manager import set_ios_decompiling_tool
 
@@ -67,7 +68,7 @@ def main(argv):
         print('You choose: analyze_ios_store_url_file')
         source_code.application_manager.analyze_ios_store_list_file()
 
-
+    delete_config_runtime_file()
     
 if __name__ == '__main__':
     main(sys.argv[1:])

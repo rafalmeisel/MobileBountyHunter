@@ -44,7 +44,10 @@ def print_on_console_with_token_value(application_package_name, analyzed_file_na
         issue_status_comment = issue_status
         report_color = "grey"
 
-    if len(token_value) == 0:
+    if len(analyzed_file_name) == 0 and len(token_value) == 0:
+        print(application_package_name + ": " + colored(token_name + ": " + issue_status_comment, report_color))
+
+    elif len(token_value) == 0:
         print(application_package_name + ": " + analyzed_file_name + ": " + colored(token_name + ": " + issue_status_comment, report_color))
     
     else:
@@ -107,7 +110,7 @@ def write_to_dedicated_report_file_with_token_value(application_package_system, 
         print("report_manager: write_to_dedicated_report_file_with_token_value: output_directory_relative_path is empty!")
     else:
         dedicated_report_file_relative_path = pathlib.Path(output_directory_relative_path, application_package_name, get_dedicated_mobile_bounty_hunter_report_directory_relative_path(), get_dedicated_mobile_bounty_hunter_report_file_name())
-        write_to_report_file(dedicated_report_file_relative_path, analyzed_file_name, issue_status, token_name, token_value)
+        write_to_report_file(dedicated_report_file_relative_path, application_package_name, analyzed_file_name, issue_status, token_name, token_value)
 
 
 def write_to_dedicated_report_file_without_token_value(application_package_system, application_package_name, analyzed_file_name, issue_status, token_name):
@@ -123,7 +126,7 @@ def write_to_dedicated_report_file_without_token_value(application_package_syste
         print("report_manager: write_to_dedicated_report_file_without_token_value: output_directory_relative_path is empty!")
     else:
         dedicated_report_file_relative_path = pathlib.Path(output_directory_relative_path, application_package_name, get_dedicated_mobile_bounty_hunter_report_directory_relative_path(), get_dedicated_mobile_bounty_hunter_report_file_name())
-        write_to_report_file(dedicated_report_file_relative_path, analyzed_file_name, issue_status, token_name, "")
+        write_to_report_file(dedicated_report_file_relative_path, application_package_name, analyzed_file_name, issue_status, token_name, "")
 
 
 def write_to_global_report_file_with_token_value(application_package_name, analyzed_file_name, issue_status, token_name, token_value):
@@ -175,7 +178,7 @@ def report_status_not_found(application_package_system, application_package_name
 def copy_file_to_dedicated_report_directory(source_file_path, destination_file_path):
    
     file_name_to_copy_exists = os.path.isfile(destination_file_path)
-
+    
     if (file_name_to_copy_exists):
         # Calculate MD5 of already existing file with new one
         # If MD5 are the same, skip copying
@@ -193,7 +196,7 @@ def copy_file_to_dedicated_report_directory(source_file_path, destination_file_p
             md5NewFile = hashlib.md5(data).hexdigest()
 
         if (md5ExistedFile == md5NewFile):
-            print("Found file \"" + source_file_path + "\"" + "was already copied (comapred MD5s). Skipping...")
+            print("File already exists (compared MD5s): \"" + source_file_path + "\"" + " - Skipping...")
         
         else:
             seed(1)

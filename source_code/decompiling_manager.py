@@ -11,10 +11,10 @@ def decompile_apk_with_jadx(application_package_name):
     print("Decompiling: " + application_package_name + " with JADX.")
 
     input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-    input_application_package_absolute_path = os.path.abspath(input_directory_relative_path, application_package_name)
+    input_application_package_absolute_path = os.path.abspath(pathlib.Path(input_directory_relative_path, application_package_name))
 
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-    output_application_package_absolute_path = os.path.abspath(output_directory_relative_path, application_package_name)
+    output_application_package_absolute_path = os.path.abspath(pathlib.Path(output_directory_relative_path, application_package_name))
 
     subprocess.run(['jadx', '-d', input_application_package_absolute_path, output_application_package_absolute_path])
 
@@ -25,10 +25,10 @@ def decompile_apk_with_apk_tools(application_package_name):
     print("Decompiling: " + application_package_name + " with ApkTools.")
 
     input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-    input_application_package_absolute_path = os.path.abspath(input_directory_relative_path, application_package_name)
+    input_application_package_absolute_path = os.path.abspath(pathlib.Path(input_directory_relative_path, application_package_name))
 
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-    output_application_package_absolute_path = os.path.abspath(output_directory_relative_path, application_package_name)
+    output_application_package_absolute_path = os.path.abspath(pathlib.Path(output_directory_relative_path, application_package_name))
 
     os.system("apktool d " + input_application_package_absolute_path + " -o " + output_application_package_absolute_path + " -f --quiet")
 
@@ -47,10 +47,10 @@ def decompile_xapk_with_jadx(application_package_name):
         print("Decompiling: " + application_package_name + " with ApkTools.")
 
         input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-        input_application_package_absolute_path = os.path.abspath(input_directory_relative_path, apk_application_package_name)
+        input_application_package_absolute_path = os.path.abspath(pathlib.Path(input_directory_relative_path, apk_application_package_name))
 
         output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-        output_application_package_absolute_path = os.path.abspath(output_directory_relative_path, apk_application_package_name)
+        output_application_package_absolute_path = os.path.abspath(pathlib.Path(output_directory_relative_path, apk_application_package_name))
 
         subprocess.run(['jadx', '-d', input_application_package_absolute_path, output_application_package_absolute_path])
         remove_unzip_apk_temporary_directory(apk_application_package_name)
@@ -70,10 +70,10 @@ def decompile_xapk_with_apk_tools(application_package_name):
         print("Decompiling: " + application_package_name + " with ApkTools.")
 
         input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-        input_application_package_absolute_path = os.path.abspath(input_directory_relative_path, apk_application_package_name)
+        input_application_package_absolute_path = os.path.abspath(pathlib.Path(input_directory_relative_path, apk_application_package_name))
 
         output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-        output_application_package_absolute_path = os.path.abspath(output_directory_relative_path, apk_application_package_name)
+        output_application_package_absolute_path = os.path.abspath(pathlib.Path(output_directory_relative_path, apk_application_package_name))
 
         os.system("apktool d " + input_application_package_absolute_path + " -o " + output_application_package_absolute_path + " -f --quiet")
 
@@ -167,13 +167,13 @@ def decompile_android_application(application_package_name, decompiling_tool):
         decompile_xapk_with_jadx(application_package_name)
 
 
-def decompile_android_input_directory():
+# def decompile_android_input_directory():
 
-    input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-    decompiling_tool = source_code.config_file_manager.get_android_decompiling_tool()
+#     input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
+#     decompiling_tool = source_code.config_file_manager.get_android_decompiling_tool()
 
-    for application_package_name in os.listdir(input_directory_relative_path):
-        decompile_android_application(application_package_name, decompiling_tool)
+#     for application_package_name in os.listdir(input_directory_relative_path):
+#         decompile_android_application(application_package_name, decompiling_tool)
 
 
 def decompile_ios_application(application_package_name, decompiling_tool):

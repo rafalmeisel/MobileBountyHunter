@@ -1,8 +1,11 @@
 import sys
 import re
 import os
-import requests
-import source_code.config_file_manager
+import requests 
+from source_code.config_file_manager import get_android_application_package_name_list_relative_path
+from source_code.config_file_manager import get_ios_application_package_name_list_relative_path
+from source_code.config_file_manager import get_android_store_urls_list_relative_path
+from source_code.config_file_manager import get_ios_store_urls_list_relative_path
 
 GOOGLE_PLAY_DEVELOPER_BASE_URL_REGEX=r"(.+?)\?"
 GOOGLE_PLAY_ID_VALUE_REGEX=r"id=(.+)"
@@ -14,6 +17,31 @@ IS_APP_STORE_APPLICATION_URL=False
 IS_APP_STORE_DEVELOPER_URL=False
 APP_STORE_URL_REGEX="https://apps.apple.com/"
 
+def append_to_android_application_package_name_list(application_package_name):
+
+    android_application_package_name_list_relative_path = get_android_application_package_name_list_relative_path()
+    android_application_package_name_list_file = open(android_application_package_name_list_relative_path, "a")
+    android_application_package_name_list_file.write(application_package_name+"\n")
+    android_application_package_name_list_file.close()
+
+
+def append_to_ios_application_package_name_list(application_package_name):
+
+    ios_application_package_name_list_relative_path = get_ios_application_package_name_list_relative_path()
+    ios_application_package_name_list_file = open(ios_application_package_name_list_relative_path, "a")
+    ios_application_package_name_list_file.write(application_package_name+"\n")
+    ios_application_package_name_list_file.close()
+
+
+def clear_ios_application_package_name_list():
+    ios_application_package_name_list_relative_path = get_ios_application_package_name_list_relative_path()
+    ios_application_package_name_list_file = open(ios_application_package_name_list_relative_path, "w").close()
+
+
+def clear_android_application_package_name_list():
+    android_application_package_name_list_relative_path = get_android_application_package_name_list_relative_path()
+    android_application_package_name_list_file = open(android_application_package_name_list_relative_path, "w").close()
+
 
 def retrieve_application_package_name_from_google_play_application_url(google_play_application_url):
 
@@ -23,7 +51,7 @@ def retrieve_application_package_name_from_google_play_application_url(google_pl
     
     print("[Google Play][Application] Retrieved name: " + application_package_name)
     
-    source_code.config_file_manager.append_to_android_application_package_name_list(application_package_name)
+    append_to_android_application_package_name_list(application_package_name)
 
 
 # Function take Url to Google Play, visit developer website, find all application related to this developer and paste them into file
@@ -65,7 +93,7 @@ def retrieve_application_package_names_from_google_play_developer_url(google_pla
         summary_retrieved_applications_package_name = ""
         
         for application_package_name in application_package_names_found_on_developer_profile:
-            source_code.config_file_manager.append_to_android_application_package_name_list(application_package_name)
+            append_to_android_application_package_name_list(application_package_name)
             summary_retrieved_applications_package_name = summary_retrieved_applications_package_name + " " + application_package_name
         
 
@@ -85,7 +113,9 @@ def retrieve_application_package_name_from_appstore_developer_url(appstore_devel
 # Check if URL leads to Developer profile or directcly to application
 def retrieve_android_application_package_name_from_store_url_to_applicatione_list_file():
 
-    store_urls_list_relative_path = source_code.config_file_manager.get_android_store_urls_list_relative_path()
+    clear_android_application_package_name_list()
+    
+    store_urls_list_relative_path = get_android_store_urls_list_relative_path()
 
     try:
         with open(store_urls_list_relative_path, 'r') as store_urls_list_file:
@@ -116,7 +146,9 @@ def retrieve_android_application_package_name_from_store_url_to_applicatione_lis
 # Check if URL leads to Developer profile or directcly to application
 def retrieve_ios_application_package_name_from_store_url_to_applicatione_list_file():
 
-    store_urls_list_relative_path = source_code.config_file_manager.get_ios_store_urls_list_relative_path
+    clear_ios_application_package_name_list()
+
+    store_urls_list_relative_path = get_ios_store_urls_list_relative_path
 
     try:
         with open(store_urls_list_relative_path) as store_urls_list_file:
