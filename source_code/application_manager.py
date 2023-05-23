@@ -19,7 +19,7 @@ def analyze_android_output_directory():
     
     for application_package_name in os.listdir(output_directory_relative_path):
         run_tests_android_application(application_package_name)
-        move_android_application_to_analyzed_directory(application_package_name)
+        move_android_application_to_output_analyzed_directory(application_package_name)
 
 
 def analyze_android_input_directory():
@@ -31,7 +31,8 @@ def analyze_android_input_directory():
     for application_package_name in os.listdir(input_directory_relative_path):
         decompile_android_application(application_package_name, decompiling_tool)
         run_tests_android_application(application_package_name)
-        move_android_application_to_analyzed_directory(application_package_name)
+        move_android_application_to_input_analyzed_directory(application_package_name)
+        move_android_application_to_output_analyzed_directory(application_package_name)
 
 
 def analyze_android_application_package_name_list_file():
@@ -51,7 +52,8 @@ def analyze_android_application_package_name_list_file():
         application_package_name_with_extention = find_application_package_name_with_extention(application_package_name_without_extention)
         decompile_android_application(application_package_name_with_extention, decompiling_tool)
         run_tests_android_application(application_package_name_with_extention)
-        move_android_application_to_analyzed_directory(application_package_name_with_extention)
+        move_android_application_to_input_analyzed_directory(application_package_name_with_extention)
+        move_android_application_to_output_analyzed_directory(application_package_name_with_extention)
 
 
 def analyze_android_store_list_file():
@@ -72,7 +74,8 @@ def analyze_android_store_list_file():
         application_package_name_with_extention = find_application_package_name_with_extention(application_package_name_without_extention)
         decompile_android_application(application_package_name_with_extention, decompiling_tool)
         run_tests_android_application(application_package_name_with_extention)
-        move_android_application_to_analyzed_directory(application_package_name_with_extention)
+        move_android_application_to_input_analyzed_directory(application_package_name_with_extention)
+        move_android_application_to_output_analyzed_directory(application_package_name_with_extention)
     
 
 def analyze_ios_output_directory():
@@ -105,19 +108,22 @@ def analyze_ios_store_list_file():
     # Add: Analyzing iOS Output
 
 
-def move_android_application_to_analyzed_directory(application_package_name_with_extention):
+def move_android_application_to_input_analyzed_directory(application_package_name_with_extention):
     
     get_android_input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
     get_android_input_analyzed_directory_relative_path = source_code.config_file_manager.get_android_input_analyzed_directory_relative_path()
     get_android_application_in_input_directory_path = pathlib.Path(get_android_input_directory_relative_path, application_package_name_with_extention)
 
-    get_android_output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-    get_android_output_analyzed_directory_relative_path = source_code.config_file_manager.get_android_output_analyzed_directory_relative_path()
-    get_android_application_in_output_directory_path = pathlib.Path(get_android_output_directory_relative_path, application_package_name_with_extention)
-
     if not os.path.exists(get_android_input_analyzed_directory_relative_path):
         os.makedirs(get_android_input_analyzed_directory_relative_path)
     shutil.move(get_android_application_in_input_directory_path, get_android_input_analyzed_directory_relative_path)
+
+
+def move_android_application_to_output_analyzed_directory(application_package_name_with_extention):
+    
+    get_android_output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
+    get_android_output_analyzed_directory_relative_path = source_code.config_file_manager.get_android_output_analyzed_directory_relative_path()
+    get_android_application_in_output_directory_path = pathlib.Path(get_android_output_directory_relative_path, application_package_name_with_extention)
 
     if not os.path.exists(get_android_output_analyzed_directory_relative_path):
         os.makedirs(get_android_output_analyzed_directory_relative_path)
