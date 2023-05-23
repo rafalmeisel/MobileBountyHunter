@@ -1,3 +1,4 @@
+__pycache__
 android_input/
 android_input_analyzed/
 android_output/
@@ -6,12 +7,6 @@ ios_input/
 ios_input_analyzed/
 ios_output/
 ios_output_analyzed/
-check-rules/
-AndroidManifext.xml
-strings.xml
-__pycache__
-results.txt
-apksList.txt
-developersUrlsProfile.txt
-storeUrls.txt
 android_application_package_name_list.txt
+android_store_urls_list.txt
+_MobileBountyHunterReport.txt
