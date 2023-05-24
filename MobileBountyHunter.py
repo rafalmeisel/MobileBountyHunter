@@ -13,11 +13,12 @@ def main(argv):
 
     parser = argparse.ArgumentParser()
     
+    # The store_true option automatically creates a default value of False.
     parser.add_argument("-ai", "--analyze_android_input_directory", required=False, action='store_true')
     parser.add_argument("-ao", "--analyze_android_output_directory", required=False, action='store_true')
     parser.add_argument("-al", "--analyze_android_application_package_name_file", required=False, action='store_true')
     parser.add_argument("-as", "--analyze_android_store_list_file", required=False, action='store_true')
-    parser.add_argument("-ad", "--android_decompiling_tool", required=False, action='store_true', choices=["jadx", "apktool"])
+    parser.add_argument("-ad", "--android_decompiling_tool", required=False, choices=['jadx', 'apktool'])
     
     parser.add_argument("-ii", "--analyze_ios_input_directory", required=False, action='store_true')
     parser.add_argument("-io", "--analyze_ios_output_directory", required=False, action='store_true')
@@ -32,6 +33,7 @@ def main(argv):
     if args.android_decompiling_tool:
         print("You set Android decompiling tool: " + args.android_decompiling_tool)   
         set_android_decompiling_tool(args.android_decompiling_tool)
+        
     elif args.ios_decompiling_tool:
         print("You set iOS decompiling tool: " + args.ios_decompiling_tool)   
         set_ios_decompiling_tool(args.ios_decompiling_tool)
