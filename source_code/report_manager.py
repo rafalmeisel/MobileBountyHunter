@@ -67,6 +67,9 @@ def print_on_console(application_package_name, analyzed_file_name, issue_severit
     elif len(token_value) == 0:
         print(application_package_name + ": " + analyzed_file_name + ": " + colored(str(issue_severity.name), issue_severity_report_color) + ": " + colored(str(issue_status.name) + ": " + token_name, issue_status_report_color))
     
+    elif len(analyzed_file_name) == 0:
+        print(application_package_name + ": " + colored(str(issue_severity.name), issue_severity_report_color) + ": " + colored(str(issue_status.name) + ": " + token_name + ": " + token_value, issue_status_report_color))
+    
     else:
         print(application_package_name + ": " + analyzed_file_name + ": " + colored(str(issue_severity.name), issue_severity_report_color) + ": " + colored(str(issue_status.name) + ": " + token_name + ": " + token_value, issue_status_report_color))
 
@@ -83,13 +86,16 @@ def write_to_dedicated_report_file(application_package_system, application_packa
     report_global_file = open(dedicated_mobile_bounty_huinter_report_file_path, "a")
 
     if len(analyzed_file_name) == 0 and len(token_value) == 0:
-        report_global_file.write(application_package_system + ": " + application_package_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name)
+        report_global_file.write(application_package_system + ": " + application_package_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + "\n")
 
     elif len(token_value) == 0:
-        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name)
+        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + "\n")
     
+    elif len(analyzed_file_name) == 0:
+        report_global_file.write(application_package_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + ": " + token_value)
+
     else:
-        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + ": " + token_value)
+        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + ": " + token_value + "\n")
 
     report_global_file.close()
 
@@ -104,13 +110,16 @@ def write_to_global_report_file(application_package_system, application_package_
     report_global_file = open(global_mobile_bounty_hunter_report_file_relative_path, "a")
 
     if len(analyzed_file_name) == 0 and len(token_value) == 0:
-        report_global_file.write(application_package_system + ": " + application_package_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name)
+        report_global_file.write(application_package_system + ": " + application_package_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + "\n")
 
     elif len(token_value) == 0:
-        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name)
+        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + "\n")
     
+    elif len(analyzed_file_name) == 0:
+        report_global_file.write(application_package_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + ": " + token_value)
+
     else:
-        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + ": " + token_value)
+        report_global_file.write(application_package_system + ": " + analyzed_file_name + ": " + str(issue_severity.name) + ": " + str(issue_status.name) + ": " + token_name + ": " + token_value + "\n")
 
     report_global_file.close()
 

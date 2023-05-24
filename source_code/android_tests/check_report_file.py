@@ -37,8 +37,6 @@ def check_exported_activity_with_java_script_enabled(application_package_name):
 
     for activityName in commonActivities:
         report_issue(application_package_system, application_package_name, "Report", IssueSeverity.MEDIUM, IssueStatus.VULNERABLE, "Exported + JavaScriptEnabled", activityName)
-        # report_status_vulnerable_with_token_value("Android", application_package_name, "Report", "Exported + JavaScriptEnabled", activityName)
 
     if len(commonActivities) == 0:
         report_issue(application_package_system, application_package_name, "Report", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Export with JavaScriptEnabled", "")
-        # report_status_not_found("Android", application_package_name, "Report", "Export with JavaScriptEnabled")

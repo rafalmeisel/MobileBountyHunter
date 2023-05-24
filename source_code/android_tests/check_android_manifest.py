@@ -37,7 +37,6 @@ def checks_android_manifest_debuggable(application_package_name, android_manifes
 
             debuggable_activity_type_value = str(re.search(debuggable_activity_type_regex, line).group(1))
             report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.LOW, IssueStatus.VULNERABLE, "Debug", debuggable_activity_type_value + ":" + debuggable_activity_name_value)
-            # report_status_found_with_token_value("Android", application_package_name, "AndroidManifest", "Debug", debuggable_activity_type_value + ":" + debuggable_activity_name_value)
             
             is_debuggable_flag = True
 
@@ -45,7 +44,6 @@ def checks_android_manifest_debuggable(application_package_name, android_manifes
             is_debuggable_flag = is_debuggable_flag or False
 
     if not is_debuggable_flag:
-        # report_status_not_found("Android", application_package_name, "AndroidManifest", "Debug")
         report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Debug", "")
 
 
@@ -69,7 +67,6 @@ def checks_android_manifest_allow_backup(application_package_name, android_manif
             
             allow_backup_activity_type_value = str(re.search(allow_backup_activity_type_regex, line).group(1))
             report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.LOW, IssueStatus.VULNERABLE, "allowBackup", allow_backup_activity_type_value + ":" + allow_backup_activity_name_value)
-            # report_status_found_with_token_value("Android", application_package_name, "AndroidManifest", "allowBackup", allow_backup_activity_type_value + ":" + allow_backup_activity_name_value)
             
             is_allow_backup_flag = True
             
@@ -78,7 +75,6 @@ def checks_android_manifest_allow_backup(application_package_name, android_manif
 
     if not is_allow_backup_flag:
         report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "allowBackup", "")
-        # report_status_not_found("Android", application_package_name, "AndroidManifest", "allowBackup")
 
 def checks_android_manifest_exported(application_package_name, android_manifest_relative_file_path):
     
@@ -100,7 +96,6 @@ def checks_android_manifest_exported(application_package_name, android_manifest_
             
             exported_activity_type_value = str(re.search(exported_activity_type_regex, line).group(1))
             report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.LOW, IssueStatus.TO_VERIFY, "exported", exported_activity_type_value + ":" + exported_activity_name_value)
-            # report_status_found_with_token_value("Android", application_package_name, "AndroidManifest", "exported", exported_activity_type_value + ":" + exported_activity_name_value)
 
             is_exported_flag = True
         
@@ -109,7 +104,6 @@ def checks_android_manifest_exported(application_package_name, android_manifest_
 
     if not is_exported_flag:
         report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "exported", "")
-        # report_status_not_found("Android", application_package_name, "AndroidManifest", "exported")
 
 
 def checks_android_manifest_cloudinary(application_package_name, android_manifest_relative_file_path):
@@ -125,8 +119,7 @@ def checks_android_manifest_cloudinary(application_package_name, android_manifes
     for line in android_manifest_file_content:
         if re.search(cloudinary_regex, line):
             cloudinary_value = re.search(cloudinary_regex, line).group(0)
-            report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.INFORMATIVE, IssueStatus.TO_VERIFY, "Cloudinary", "")
-            # report_status_found_with_token_value("Android", application_package_name, "AndroidManifest", "Cloudinary", str(cloudinary_value))
+            report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.INFORMATIVE, IssueStatus.TO_VERIFY, "Cloudinary", cloudinary_value)
 
             is_cloudinary_flag = True
         
@@ -135,4 +128,3 @@ def checks_android_manifest_cloudinary(application_package_name, android_manifes
 
     if not is_cloudinary_flag:
         report_issue(application_package_system, application_package_name, "AndroidManifest", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Cloudinary", "")
-        # report_status_not_found("Android", application_package_name, "AndroidManifest", "Cloudinary")

@@ -27,9 +27,7 @@ def find_java_script_enabled(application_package_name):
 
                     android_application_dedicated_report_directory = pathlib.Path(android_output_directory_relative_path, application_package_name, dedicated_mobile_bounty_hunter_report_directory_relative_path, os.path.basename(smali_file_path))
                     report_issue(application_package_system, application_package_name, "", IssueSeverity.MEDIUM, IssueStatus.VULNERABLE, "JavaScriptEnabled", str(smali_file_path))
-                    # report_status_to_verify_without_token_value("Android", application_package_name, str(smali_file_path), "JavaScriptEnabled")
                     copy_file_to_dedicated_report_directory(str(smali_file_path), str(android_application_dedicated_report_directory))
 
     else:
         report_issue(application_package_system, application_package_name, "", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "JavaScriptEnabled", "")
-        # report_status_not_found("Android", application_package_name, "", "JavaScriptEnabled")

@@ -9,7 +9,6 @@ from source_code.config_file_manager import get_dedicated_mobile_bounty_hunter_r
 
 application_package_system = "Android"
 
-# Any file with extension .sqlite
 def search_files_with_sqlite_extensions(application_package_name):
     
     android_output_directory_relative_path = get_android_output_directory_relative_path()
@@ -23,12 +22,10 @@ def search_files_with_sqlite_extensions(application_package_name):
 
         for sqlite_file_path in sqlite_files_list:
             report_issue(application_package_system, application_package_name, "", IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, "Sqlite database", sqlite_file_path)
-            # report_status_to_verify_with_token_value("Android", application_package_name, "", "Sqlite database", sqlite_file_path)
             copy_file_to_dedicated_report_directory(str(sqlite_file_path), str(android_dedicated_report_application_directory_relative_path))
 
     else:
         report_issue(application_package_system, application_package_name, "", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Sqlite database", "")
-        # report_status_not_found("Android", application_package_name, "", "Sqlite database")
         
 
 def search_files_with_db_extensions(application_package_name):
@@ -43,12 +40,10 @@ def search_files_with_db_extensions(application_package_name):
     if len(db_files_list) > 0:
         for db_file_path in db_files_list:
             report_issue(application_package_system, application_package_name, "", IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, "DB database", db_file_path)
-            # report_status_to_verify_with_token_value("Android", application_package_name, "", "DB database", db_file_path)
             copy_file_to_dedicated_report_directory(str(db_file_path), str(android_dedicated_report_application_directory_relative_path))
 
     else:
         report_issue(application_package_system, application_package_name, "", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "DB database", "")
-        # report_status_not_found("Android", application_package_name, "", "DB database")
 
 
 def search_config_files_with_any_extensions(application_package_name):
@@ -65,12 +60,8 @@ def search_config_files_with_any_extensions(application_package_name):
         for config_file_list in config_files_list:
             
             android_dedicated_report_application_directory_relative_path = pathlib.Path(android_output_directory_relative_path, application_package_name, dedicated_mobile_bounty_hunter_report_directory_relative_path, os.path.basename(config_file_list))
-            
             report_issue(application_package_system, application_package_name, "", IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, "Config file", str(config_file_list))
-            # report_status_to_verify_with_token_value("Android", application_package_name, "", "Config file", str(config_file_list))
-            
             copy_file_to_dedicated_report_directory(str(config_file_list), str(android_dedicated_report_application_directory_relative_path))
 
     else:
         report_issue(application_package_system, application_package_name, "", IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Config file", "")
-        # report_status_not_found("Android", application_package_name, "", "Config file")
