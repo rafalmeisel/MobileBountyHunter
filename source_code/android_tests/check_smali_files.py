@@ -9,7 +9,7 @@ from source_code.config_file_manager import get_dedicated_mobile_bounty_hunter_r
 
 application_package_system = "Android"
 
-def find_java_script_enabled(application_package_name):
+def check_java_script_enabled(application_package_name):
     
     android_output_directory_relative_path = get_android_output_directory_relative_path()
     dedicated_mobile_bounty_hunter_report_directory_relative_path = get_dedicated_mobile_bounty_hunter_report_directory_relative_path()

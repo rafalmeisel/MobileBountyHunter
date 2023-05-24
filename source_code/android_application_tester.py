@@ -49,7 +49,7 @@ def run_tests_android_application(application_package_name):
     
     search_config_files_with_any_extensions(application_package_name)
 
-    find_java_script_enabled(application_package_name)
+    check_java_script_enabled(application_package_name)
     check_exported_activity_with_java_script_enabled(application_package_name)
 
 def run_android_tests_in_android_output_directory():
