@@ -15,7 +15,6 @@ def run_tests_android_application(application_package_name):
     
     output_directory_application_package_names_relative_path = get_android_output_directory_relative_path()
 
-    print("APk dir: " + str(pathlib.Path(output_directory_application_package_names_relative_path, application_package_name)))
     for root, dirs, files in os.walk(pathlib.Path(output_directory_application_package_names_relative_path, application_package_name)):
         if "AndroidManifest.xml" in files:
             android_manifest_relative_file_path = os.path.join(root, "AndroidManifest.xml")
@@ -24,7 +23,6 @@ def run_tests_android_application(application_package_name):
         if "strings.xml" in files:
             android_res_values_strings_relative_file_path = os.path.join(root, "strings.xml")
 
-    # for application_package_name in outputDirectoryApplicationPackageNames:
     print("Analyzing application: " + colored(application_package_name, 'cyan'))
 
     checks_android_manifest_debuggable(application_package_name, android_manifest_relative_file_path)
