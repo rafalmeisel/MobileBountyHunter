@@ -14,7 +14,7 @@ import pathlib
 
 def analyze_android_output_directory():
     print("Analyzing from Android Output")
-    run_android_tests_in_android_output_directory()
+    
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
     
     for application_package_name in os.listdir(output_directory_relative_path):

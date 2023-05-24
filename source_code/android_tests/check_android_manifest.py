@@ -26,9 +26,7 @@ def checks_android_manifest_debuggable(application_package_name, android_manifes
     debuggable_activity_name_regex='(?:(name="))(.*?)(?=")'
     is_debuggable_flag=False
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_manifest_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_manifest_relative_file_path)
-    android_manifest_file_content = open(android_manifest_file_path, "r").readlines()
+    android_manifest_file_content = open(android_manifest_relative_file_path, "r").readlines()
 
     for line in android_manifest_file_content:
         if re.search(debuggable_activity_true_regex, line):
@@ -56,9 +54,7 @@ def checks_android_manifest_allow_backup(application_package_name, android_manif
     allow_backup_activity_name_regex='(?:(name="))(.*?)(?=")'
     is_allow_backup_flag=False
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_manifest_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_manifest_relative_file_path)
-    android_manifest_file_content = open(android_manifest_file_path, "r").readlines()
+    android_manifest_file_content = open(android_manifest_relative_file_path, "r").readlines()
    
     for line in android_manifest_file_content:
         if re.search(allow_backup_activity_true_regex, line):
@@ -85,9 +81,7 @@ def checks_android_manifest_exported(application_package_name, android_manifest_
     exported_activity_name_regex='(?:(name="))(.*?)(?=")'
     is_exported_flag = False
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_manifest_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_manifest_relative_file_path)
-    android_manifest_file_content = open(android_manifest_file_path, "r").readlines()
+    android_manifest_file_content = open(android_manifest_relative_file_path, "r").readlines()
     
     for line in android_manifest_file_content:
         if re.search(exported_activity_true_regex, line):
@@ -112,9 +106,7 @@ def checks_android_manifest_cloudinary(application_package_name, android_manifes
     cloudinary_value = ""
     is_cloudinary_flag = False
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_manifest_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_manifest_relative_file_path)
-    android_manifest_file_content = open(android_manifest_file_path, "r").readlines()
+    android_manifest_file_content = open(android_manifest_relative_file_path, "r").readlines()
     
     for line in android_manifest_file_content:
         if re.search(cloudinary_regex, line):

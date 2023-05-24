@@ -17,9 +17,14 @@ def read_config_runtime_file():
 
 
 def write_config_runtime_file(key, value):
-    with open('./workspace/config/config_runtime.json') as config_runtime_file:
+    
+    with open('./workspace/config/config_runtime.json', 'r') as config_runtime_file:
         config_runtime_file_contents = json.load(config_runtime_file)
         config_runtime_file_contents[key] = value
+    
+    with open('./workspace/config/config_runtime.json', 'w') as config_runtime_file:
+        json.dump(config_runtime_file_contents, config_runtime_file, indent=4)
+    
     return config_runtime_file_contents
 
 

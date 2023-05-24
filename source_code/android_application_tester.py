@@ -15,21 +15,14 @@ def run_tests_android_application(application_package_name):
     
     output_directory_application_package_names_relative_path = get_android_output_directory_relative_path()
 
-    # if outputDirectoryApplicationPackageNames:
-    #     first_folder = outputDirectoryApplicationPackageNames[0]
-    resources_folder = os.path.join(output_directory_application_package_names_relative_path, application_package_name, "resources")
-    sources_folder = os.path.join(output_directory_application_package_names_relative_path, application_package_name, "sources")
+    print("APk dir: " + str(pathlib.Path(output_directory_application_package_names_relative_path, application_package_name)))
+    for root, dirs, files in os.walk(pathlib.Path(output_directory_application_package_names_relative_path, application_package_name)):
+        if "AndroidManifest.xml" in files:
+            android_manifest_relative_file_path = os.path.join(root, "AndroidManifest.xml")
 
-    # Application was decompiled with Jadx
-    if os.path.isdir(resources_folder) and os.path.isdir(sources_folder):
-        android_manifest_relative_file_path = "resources/AndroidManifest.xml"
-        android_res_values_strings_relative_file_path = "resources/res/values/strings.xml"
-    
-    # Application was decompiled with apktools
-    else:
-        android_manifest_relative_file_path = "AndroidManifest.xml"
-        android_res_values_strings_relative_file_path = "res/values/strings.xml"
-
+    for root, dirs, files in os.walk(pathlib.Path(output_directory_application_package_names_relative_path, application_package_name)):
+        if "strings.xml" in files:
+            android_res_values_strings_relative_file_path = os.path.join(root, "strings.xml")
 
     # for application_package_name in outputDirectoryApplicationPackageNames:
     print("Analyzing application: " + colored(application_package_name, 'cyan'))

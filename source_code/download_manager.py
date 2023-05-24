@@ -5,8 +5,6 @@ import source_code.config_file_manager
 def download_android_application_package_name_from_google_play_to_input_directory(application_package_name):
     android_input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
 
-    print("download_android_application_package_name_from_google_play_to_input_directory: " + android_input_directory_relative_path)
-
     if not os.path.exists(android_input_directory_relative_path):
         try:
             os.makedirs(android_input_directory_relative_path)

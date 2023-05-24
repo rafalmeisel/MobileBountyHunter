@@ -20,9 +20,7 @@ def check_res_values_strings_aws_long_term_access_keys(application_package_name,
     aws_akid_regex=r'(?<=>)AK(\S*?)(?=<)'
     aws_akid_value=""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(aws_akid_regex, line):
@@ -40,9 +38,7 @@ def check_res_values_strings_aws_short_term_access_keys(application_package_name
     aws_akid_regex=r'(?<=>)AS(\S*?)(?=<)'
     aws_akid_value=""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
    
     for line in android_res_values_strings_file_content:
         if re.search(aws_akid_regex, line):
@@ -60,9 +56,7 @@ def check_res_values_strings_aws_secret_access_key(application_package_name, and
     aws_secret_key_regex=r'(?:(AWS|aws).*>)(\S*)(?=<)'
     aws_secret_key_value=""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
 
     for line in android_res_values_strings_file_content:
         if re.search(aws_secret_key_regex, line):
@@ -108,9 +102,7 @@ def check_res_values_strings_aws_bucket(application_package_name, android_res_va
     aws_bucket_name_regex=r"(https:?\/\/)(.*)(.s3.amazonaws.com)"
     aws_bucket_name_value=""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(aws_bucket_name_regex, line):
@@ -137,9 +129,7 @@ def check_res_values_strings_push_io_application_identifier(application_package_
     push_io_application_identifier_regex=r'pio-([^<]+)'
     push_io_application_identifier_value=""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
    
     for line in android_res_values_strings_file_content:
         if re.search(push_io_application_identifier_regex, line):
@@ -162,9 +152,7 @@ def check_res_values_strings_firebase_url(application_package_name, android_res_
     firebase_url_regex = r'https.*firebaseio.com'
     firebase_url_value = ""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(firebase_url_regex, line):
@@ -204,9 +192,7 @@ def check_res_values_strings_google_api_key(application_package_name, android_re
     google_api_key_regex = r'(?:"google_api_key">)(.*)(?:<\/string>)'
     google_api_key_value = ""
     
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(google_api_key_regex, line):
@@ -232,9 +218,7 @@ def check_res_values_strings_google_cloud_platform_google_user_content(applicati
     google_cloud_platform_google_user_content_regex = r'[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'
     google_cloud_platform_google_user_content_value = ""
     
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(google_cloud_platform_google_user_content_regex, line):
@@ -254,9 +238,7 @@ def check_res_values_strings_google_oauth_access_token(application_package_name,
     google_oauth_access_token_regex = r'ya29\.[0-9A-Za-z_-]+'
     google_oauth_access_token_value = ""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(google_oauth_access_token_regex, line):
@@ -279,9 +261,7 @@ def check_res_values_strings_google_app_spot(application_package_name, android_r
     google_app_spot_regex = r'(?:>)(.*.appspot.com)(?:<)'
     google_app_spot_value = ""
 
-    android_output_directory_relative_path = get_android_output_directory_relative_path()
-    android_res_values_strings_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, android_res_values_strings_relative_file_path)
-    android_res_values_strings_file_content = open(android_res_values_strings_file_path, "r").readlines()
+    android_res_values_strings_file_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
     for line in android_res_values_strings_file_content:
         if re.search(google_app_spot_regex, line):
