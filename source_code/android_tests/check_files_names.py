@@ -25,7 +25,7 @@ def search_files_with_sqlite_extensions(application_package_name):
         for sqlite_file_path in sqlite_files_list:
             sqlite_file_basename = os.path.basename(sqlite_file_path)
             android_dedicated_report_application_directory_destination_file_path = pathlib.Path(android_dedicated_report_application_directory_relative_path, sqlite_file_basename)
-            report_issue(application_package_system, application_package_name, sqlite_file_basename, IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, issue_type, "")
+            report_issue(application_package_system, application_package_name, sqlite_file_basename, IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, issue_type, str(sqlite_file_path))
             copy_file_to_dedicated_report_directory(str(sqlite_file_path), str(android_dedicated_report_application_directory_destination_file_path))
 
     else:
@@ -47,7 +47,7 @@ def search_files_with_db_extensions(application_package_name):
         for db_file_path in db_files_list:
             db_file_basename = os.path.basename(db_file_path)
             android_dedicated_report_application_directory_destination_file_path = pathlib.Path(android_dedicated_report_application_directory_relative_path, db_file_basename)
-            report_issue(application_package_system, application_package_name, db_file_basename, IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, issue_type, "")
+            report_issue(application_package_system, application_package_name, db_file_basename, IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, issue_type, str(db_file_path))
             copy_file_to_dedicated_report_directory(str(db_file_path), str(android_dedicated_report_application_directory_destination_file_path))
 
     else:
@@ -69,9 +69,9 @@ def search_config_files_with_any_extensions(application_package_name):
 
         for config_file_path in config_files_list:
             
-            db_file_basename = os.path.basename(config_file_path)
-            android_dedicated_report_application_directory_destination_file_path = pathlib.Path(android_application_directory_relative_path, db_file_basename)
-            report_issue(application_package_system, application_package_name, db_file_basename, IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, issue_type, "")
+            config_file_basename = os.path.basename(config_file_path)
+            android_dedicated_report_application_directory_destination_file_path = pathlib.Path(android_application_directory_relative_path, config_file_basename)
+            report_issue(application_package_system, application_package_name, config_file_basename, IssueSeverity.MEDIUM, IssueStatus.TO_VERIFY, issue_type, str(config_file_path))
             copy_file_to_dedicated_report_directory(str(config_file_path), str(android_dedicated_report_application_directory_destination_file_path))
 
     else:
