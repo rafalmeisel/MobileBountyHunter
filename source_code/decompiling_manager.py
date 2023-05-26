@@ -81,7 +81,7 @@ def decompile_xapk_with_apk_tools(application_package_name):
 
 
 def use_apk_tools(decompiling_tool):
-    if decompiling_tool == "apktools":
+    if decompiling_tool == "apktool":
         return True
     else:
         return False
