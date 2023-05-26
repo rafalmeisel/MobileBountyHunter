@@ -246,7 +246,8 @@ def check_res_values_strings_google_oauth_access_token(application_package_syste
 
 def send_request_to_google_app_spot(google_app_spot):
     response = requests.get("https://" + google_app_spot)
-    return response
+    response_body = response.text
+    return response_body
 
 def check_res_values_strings_google_app_spot(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content):
     
@@ -259,11 +260,14 @@ def check_res_values_strings_google_app_spot(application_package_system, applica
             google_app_spot_match =  re.search(google_app_spot_regex, line)
             google_app_spot_value = google_app_spot_match.group(1)
 
-            google_app_spotResponseData = send_request_to_google_app_spot(google_app_spot_value)
+            google_app_spot_response_data = send_request_to_google_app_spot(google_app_spot_value)
+            
+            if "Error: Page not found" in google_app_spot_response_data:
+                report_issue(application_package_system, application_package_name, android_values_strings_basename, IssueSeverity.INFORMATIVE, IssueStatus.SECURED, issue_type, "Error: Page not found: " + google_app_spot_value)
+            
+            elif "Error: Server Error" in google_app_spot_response_data:
+                report_issue(application_package_system, application_package_name, android_values_strings_basename, IssueSeverity.LOW, IssueStatus.TO_VERIFY, issue_type, "Error: Server Error: " + google_app_spot_value)                
 
-            if "Error: Page not found" in google_app_spotResponseData:
-                report_issue(application_package_system, application_package_name, android_values_strings_basename, IssueSeverity.INFORMATIVE, IssueStatus.SECURED, issue_type, google_app_spot_value)
-                
             else:
                 report_issue(application_package_system, application_package_name, android_values_strings_basename, IssueSeverity.LOW, IssueStatus.TO_VERIFY, issue_type, google_app_spot_value)
                 
