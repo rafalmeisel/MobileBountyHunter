@@ -8,12 +8,12 @@
     "androidInputAnalyzedDirectoryRelativePath": "workspace/android_input_analyzed",
     "androidOutputDirectoryRelativePath": "workspace/android_output",
     "androidOutputAnalyzedDirectoryRelativePath": "workspace/android_output_analyzed",
-    "androidDecompilingTool": "apktools",
+    "androidDecompilingTool": "apktool",
     "iosStoreUrlsListRelativePath": "workspace/ios_store_urls_list.txt",
     "iosInputDirectoryRelativePath": "workspace/ios_input",
     "iosInputAnalyzedDirectoryRelativePath": "workspace/ios_input_analyzed",
     "iosOutputDirectoryRelativePath": "workspace/ios_output",
     "iosOutputAnalyzedDirectoryRelativePath": "workspace/ios_output_analyzed",
     "iosApplicationPackageNameListRelativePath": "workspace/ios_application_package_name_list.txt",
-    "iosDecompilingTool": "apktools"
+    "iosDecompilingTool": "apktool"
 }
