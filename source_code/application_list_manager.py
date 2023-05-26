@@ -122,6 +122,10 @@ def retrieve_android_application_package_name_from_store_url_to_applicatione_lis
             store_urls_list_file_contents = store_urls_list_file.readlines()
     
         for store_url in store_urls_list_file_contents:
+            
+            # Remove newline character in URL
+            store_url = store_url.strip()
+
             if "https://play.google.com/store/apps/details" in store_url:
                 retrieve_application_package_name_from_google_play_application_url(store_url)
 
@@ -154,6 +158,10 @@ def retrieve_ios_application_package_name_from_store_url_to_applicatione_list_fi
             store_urls_list_file_contents = store_urls_list_file.readlines()
     
         for store_url in store_urls_list_file_contents:
+
+            # Remove newline character in URL
+            store_url = store_url.strip()
+
             if "https://apps.apple.com/pl/app/app-store-connect/id" in store_url: 
                 retrieve_application_package_name_from_appstore_application_url(store_url)
 

@@ -30,6 +30,10 @@ def analyze_android_input_directory():
 
     for application_package_name in os.listdir(input_directory_relative_path):
         decompile_android_application(application_package_name, decompiling_tool)
+        
+        # When downloaded and decompiled application is .xapk, script should test .apk 
+        application_package_name = application_package_name.replace(".xapk", ".apk")
+        
         run_tests_android_application(application_package_name)
         move_android_application_to_input_analyzed_directory(application_package_name)
         move_android_application_to_output_analyzed_directory(application_package_name)
@@ -51,6 +55,10 @@ def analyze_android_application_package_name_list_file():
         download_android_application_package_name_from_google_play_to_input_directory(application_package_name_without_extention)
         application_package_name_with_extention = find_application_package_name_with_extention(application_package_name_without_extention)
         decompile_android_application(application_package_name_with_extention, decompiling_tool)
+        
+        # When downloaded and decompiled application is .xapk, script should test .apk 
+        application_package_name_with_extention = application_package_name_with_extention.replace(".xapk", ".apk")
+        
         run_tests_android_application(application_package_name_with_extention)
         move_android_application_to_input_analyzed_directory(application_package_name_with_extention)
         move_android_application_to_output_analyzed_directory(application_package_name_with_extention)
@@ -73,6 +81,10 @@ def analyze_android_store_list_file():
         download_android_application_package_name_from_google_play_to_input_directory(application_package_name_without_extention)
         application_package_name_with_extention = find_application_package_name_with_extention(application_package_name_without_extention)
         decompile_android_application(application_package_name_with_extention, decompiling_tool)
+
+        # When downloaded and decompiled application is .xapk, script should test .apk 
+        application_package_name_with_extention = application_package_name_with_extention.replace(".xapk", ".apk")
+
         run_tests_android_application(application_package_name_with_extention)
         move_android_application_to_input_analyzed_directory(application_package_name_with_extention)
         move_android_application_to_output_analyzed_directory(application_package_name_with_extention)
@@ -110,21 +122,36 @@ def analyze_ios_store_list_file():
 
 def move_android_application_to_input_analyzed_directory(application_package_name_with_extention):
     
-    get_android_input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-    get_android_input_analyzed_directory_relative_path = source_code.config_file_manager.get_android_input_analyzed_directory_relative_path()
-    get_android_application_in_input_directory_path = pathlib.Path(get_android_input_directory_relative_path, application_package_name_with_extention)
+    android_input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
+    android_application_in_input_directory_path = str(pathlib.Path(android_input_directory_relative_path, application_package_name_with_extention))
 
-    if not os.path.exists(get_android_input_analyzed_directory_relative_path):
-        os.makedirs(get_android_input_analyzed_directory_relative_path)
-    shutil.move(get_android_application_in_input_directory_path, get_android_input_analyzed_directory_relative_path)
+    android_input_analyzed_directory_relative_path = source_code.config_file_manager.get_android_input_analyzed_directory_relative_path()
+    android_application_in_input_analyzed_directory_path = str(pathlib.Path(android_input_analyzed_directory_relative_path, application_package_name_with_extention))
+    
+    # If directory Input Analyzed does not exists - create it
+    if not os.path.exists(android_input_analyzed_directory_relative_path):
+        os.makedirs(android_input_analyzed_directory_relative_path)
 
+    # If application is already exists in Input Analyzed directory - replace it
+    if os.path.exists(android_application_in_input_analyzed_directory_path):
+        os.replace(android_application_in_input_directory_path, android_application_in_input_analyzed_directory_path)
+
+    # If application does not exists in Input Analyzed directory - move it
+    if os.path.exists(android_application_in_input_analyzed_directory_path):
+        shutil.move(android_application_in_input_directory_path, android_application_in_input_analyzed_directory_path)
 
 def move_android_application_to_output_analyzed_directory(application_package_name_with_extention):
     
-    get_android_output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-    get_android_output_analyzed_directory_relative_path = source_code.config_file_manager.get_android_output_analyzed_directory_relative_path()
-    get_android_application_in_output_directory_path = pathlib.Path(get_android_output_directory_relative_path, application_package_name_with_extention)
+    android_output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
+    android_application_in_output_directory_path = str(pathlib.Path(android_output_directory_relative_path, application_package_name_with_extention))
 
-    if not os.path.exists(get_android_output_analyzed_directory_relative_path):
-        os.makedirs(get_android_output_analyzed_directory_relative_path)
-    shutil.move(get_android_application_in_output_directory_path, get_android_output_analyzed_directory_relative_path)
+    android_output_analyzed_directory_relative_path = source_code.config_file_manager.get_android_output_analyzed_directory_relative_path()
+    android_application_in_output_analyzed_directory_relative_path = str(pathlib.Path(android_output_analyzed_directory_relative_path, application_package_name_with_extention))
+
+    if not os.path.exists(android_output_analyzed_directory_relative_path):
+        os.makedirs(android_output_analyzed_directory_relative_path)
+    
+    if os.path.exists(android_application_in_output_analyzed_directory_relative_path):
+        shutil.rmtree(android_application_in_output_analyzed_directory_relative_path)
+
+    shutil.move(android_application_in_output_directory_path, android_output_analyzed_directory_relative_path)
