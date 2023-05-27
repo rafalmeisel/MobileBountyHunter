@@ -137,7 +137,7 @@ def move_android_application_to_input_analyzed_directory(application_package_nam
         os.replace(android_application_in_input_directory_path, android_application_in_input_analyzed_directory_path)
 
     # If application does not exists in Input Analyzed directory - move it
-    if not os.path.exists(android_application_in_input_analyzed_directory_path):
+    elif not os.path.exists(android_application_in_input_analyzed_directory_path):
         shutil.move(android_application_in_input_directory_path, android_application_in_input_analyzed_directory_path)
 
 def move_android_application_to_output_analyzed_directory(application_package_name_with_extention):

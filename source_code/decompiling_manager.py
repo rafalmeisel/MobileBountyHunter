@@ -54,7 +54,7 @@ def decompile_xapk_with_jadx(application_package_name):
 
         subprocess.run(['jadx', input_application_package_absolute_path, '-d', output_application_package_absolute_path])
         remove_unzip_apk_temporary_directory(apk_application_package_name)
-        remove_xapk_file(apk_application_package_name)
+        remove_xapk_file(xapk_application_package_name)
 
 # Decompiling only Google Store applications with ApkTools
 def decompile_xapk_with_apk_tools(application_package_name):
@@ -78,7 +78,7 @@ def decompile_xapk_with_apk_tools(application_package_name):
         os.system("apktool d " + input_application_package_absolute_path + " -o " + output_application_package_absolute_path + " -f --quiet")
 
         remove_unzip_apk_temporary_directory(apk_application_package_name)
-        remove_xapk_file(apk_application_package_name)
+        remove_xapk_file(xapk_application_package_name)
 
 def use_apk_tools(decompiling_tool):
     if decompiling_tool == "apktool":
