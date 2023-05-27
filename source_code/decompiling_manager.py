@@ -11,10 +11,10 @@ def decompile_apk_with_jadx(application_package_name):
     print("Decompiling: " + application_package_name + " with JADX.")
 
     input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-    input_application_package_absolute_path = str(pathlib.Path(input_directory_relative_path, application_package_name))
+    input_application_package_absolute_path = str(os.path.abspath(pathlib.Path(input_directory_relative_path, application_package_name)))
 
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-    output_application_package_absolute_path = str(pathlib.Path(output_directory_relative_path, application_package_name))
+    output_application_package_absolute_path = str(os.path.abspath(pathlib.Path(output_directory_relative_path, application_package_name)))
 
     subprocess.run(['jadx', input_application_package_absolute_path,'-d', output_application_package_absolute_path])
 
@@ -25,10 +25,10 @@ def decompile_apk_with_apk_tools(application_package_name):
     print("Decompiling: " + application_package_name + " with ApkTools.")
 
     input_directory_relative_path = source_code.config_file_manager.get_android_input_directory_relative_path()
-    input_application_package_absolute_path = str(pathlib.Path(input_directory_relative_path, application_package_name))
+    input_application_package_absolute_path = str(os.path.abspath(pathlib.Path(input_directory_relative_path, application_package_name)))
 
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
-    output_application_package_absolute_path = str(pathlib.Path(output_directory_relative_path, application_package_name))
+    output_application_package_absolute_path = str(os.path.abspath(pathlib.Path(output_directory_relative_path, application_package_name)))
 
     os.system("apktool d " + input_application_package_absolute_path + " -o " + output_application_package_absolute_path + " -f --quiet")
 
