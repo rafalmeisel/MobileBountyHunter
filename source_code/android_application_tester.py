@@ -17,11 +17,15 @@ def run_tests_android_application(application_package_name):
     android_output_directory_relative_path = get_android_output_directory_relative_path()
     android_decompiling_tool = get_android_decompiling_tool()
     
-    if "jadx" == android_decompiling_tool:
+    android_application_jadx_resources_directory_path = pathlib.Path(android_output_directory_relative_path, application_package_name, "resources")
+    android_application_jadx_sources_directory_path = pathlib.Path(android_output_directory_relative_path, application_package_name, "sources")
+
+    # Check if android application was decompiled with Jadx, "resources" and "source" directories should be locaten in application directory
+    if os.path.exists(android_application_jadx_resources_directory_path) and os.path.exists(android_application_jadx_sources_directory_path):
         android_manifest_relative_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, "resources/AndroidManifest.xml")
         android_res_values_strings_relative_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, "resources/res/values/strings.xml")
 
-    elif "apktool"== android_decompiling_tool:
+    else:
         android_manifest_relative_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, "AndroidManifest.xml")
         android_res_values_strings_relative_file_path = pathlib.Path(android_output_directory_relative_path, application_package_name, "res/values/strings.xml")
 
