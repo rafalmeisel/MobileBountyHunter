@@ -40,7 +40,7 @@ def run_tests_android_application(application_package_name):
     check_android_manifest_allow_backup(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
     check_android_manifest_exported(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
     
-    check_res_values_strings_cloudinary(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
+    check_res_values_strings_cloudinary(application_package_system, application_package_name, android_values_strings_basename, android_manifest_content)
     check_res_values_strings_aws_long_term_access_keys(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content)
     check_res_values_strings_aws_short_term_access_keys(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content)
     check_res_values_strings_aws_secret_access_key(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content)
