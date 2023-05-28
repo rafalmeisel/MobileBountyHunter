@@ -14,6 +14,26 @@ application_package_system = "Android"
 # - Custom schemas
 # - Hardcoded values. Developers are encouraged to store strings as reference
 
+def check_res_values_strings_cloudinary(application_package_system, application_package_name, file_name, file_content):
+    
+    cloudinary_regex = 'cloudinary:\/\/.*(?="|\')'
+    cloudinary_value = ""
+    is_cloudinary_flag = False
+    issue_type = "Cloudinary"
+
+    for line in file_content:
+        if re.search(cloudinary_regex, line):
+            cloudinary_value = re.search(cloudinary_regex, line).group(0)
+            report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.TO_VERIFY, issue_type, cloudinary_value)
+
+            is_cloudinary_flag = True
+        
+        else:
+            is_cloudinary_flag= is_cloudinary_flag or False
+
+    if not is_cloudinary_flag:
+        report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, issue_type, "")
+
 def check_res_values_strings_aws_long_term_access_keys(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content):
     
     aws_akid_regex = r'(?<=>)AK(\S*?)(?=<)'

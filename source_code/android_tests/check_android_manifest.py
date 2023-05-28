@@ -94,24 +94,3 @@ def checks_android_manifest_exported(application_package_system, application_pac
 
     if not is_exported_flag:
         report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, issue_type, "")
-
-
-def checks_android_manifest_cloudinary(application_package_system, application_package_name, file_name, file_content):
-    
-    cloudinary_regex = 'cloudinary:\/\/.*(?="|\')'
-    cloudinary_value = ""
-    is_cloudinary_flag = False
-    issue_type = "Cloudinary"
-
-    for line in file_content:
-        if re.search(cloudinary_regex, line):
-            cloudinary_value = re.search(cloudinary_regex, line).group(0)
-            report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.TO_VERIFY, issue_type, cloudinary_value)
-
-            is_cloudinary_flag = True
-        
-        else:
-            is_cloudinary_flag= is_cloudinary_flag or False
-
-    if not is_cloudinary_flag:
-        report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, issue_type, "")
