@@ -45,6 +45,7 @@ The current analysis is:
 - iOS:
   - Currently not supported.
 
+## Example report
 ![Report](images/Example_Report.png)
 
 ## How to run?
