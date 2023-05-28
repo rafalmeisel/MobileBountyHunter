@@ -1,6 +1,6 @@
 # Mobile Bounty Hunter
 
-![Logo](Mobile_Bounty_Hunter_Logo.png)
+![Logo](images/Mobile_Bounty_Hunter_Logo.png)
 
 
 ## General
@@ -45,6 +45,7 @@ The current analysis is:
 - iOS:
   - Currently not supported.
 
+![Report](images/Example_Report.png)
 
 ## How to run?
 ### Help
