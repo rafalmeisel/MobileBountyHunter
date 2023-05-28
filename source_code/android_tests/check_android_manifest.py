@@ -15,7 +15,7 @@ from source_code.config_file_manager import get_android_output_directory_relativ
 # - Schema endpoints
 # - Deep link pathPatterns
 
-def checks_android_manifest_debuggable(application_package_system, application_package_name, file_name, file_content):
+def check_android_manifest_debuggable(application_package_system, application_package_name, file_name, file_content):
     
     debuggable_activity_true_regex='.*debuggable="true".*'
     debuggable_activity_type_value=""
@@ -42,7 +42,7 @@ def checks_android_manifest_debuggable(application_package_system, application_p
         report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, issue_type, "")
 
 
-def checks_android_manifest_allow_backup(application_package_system, application_package_name, file_name, file_content):
+def check_android_manifest_allow_backup(application_package_system, application_package_name, file_name, file_content):
     
     allow_backup_activity_true_regex='.*allowBackup="true".*'
     allow_backup_activity_type_value=""
@@ -69,7 +69,7 @@ def checks_android_manifest_allow_backup(application_package_system, application
     if not is_allow_backup_flag:
         report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, issue_type, "")
 
-def checks_android_manifest_exported(application_package_system, application_package_name, file_name, file_content):
+def check_android_manifest_exported(application_package_system, application_package_name, file_name, file_content):
     
     exported_activity_true_regex='.*exported="true".*'
     exported_activity_type_value=""

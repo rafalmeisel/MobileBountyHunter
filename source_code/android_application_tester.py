@@ -36,9 +36,9 @@ def run_tests_android_application(application_package_name):
     android_values_strings_basename = os.path.basename(android_res_values_strings_relative_file_path)
     android_values_strings_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
-    checks_android_manifest_debuggable(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
-    checks_android_manifest_allow_backup(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
-    checks_android_manifest_exported(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
+    check_android_manifest_debuggable(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
+    check_android_manifest_allow_backup(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
+    check_android_manifest_exported(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
     
     check_res_values_strings_cloudinary(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
     check_res_values_strings_aws_long_term_access_keys(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content)
