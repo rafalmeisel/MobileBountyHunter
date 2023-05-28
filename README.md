@@ -1,102 +1,123 @@
 # Mobile Bounty Hunter
 
+![Logo](Mobile_Bounty_Hunter_Logo.png)
+
+
 ## General
-Mobile Bounty Hunter is an application that scan mobile application in order to find secrets/api keys/misconfigurations.
+Mobile Bounty Hunter is a script that downloads an app from the Google Play store, decompiles it and looks for secrets, API keys, misconfiguration.
 
-## Example of use
+As an user you can:
+- update "*_store_urls_list.txt" file providing urls to application or developer profile
+- update "*_application_package_name_list.txt" file providing application package names
+- update "*_input" directory, where you put application to decompile and analyze
+- update "*_output" directory, where you put decompiled application to analyze
 
-Mobile Bounty Hunter execute commands:
+All * in files/directories names are reference to "android" or "ios" as:
+- "android_store_urls_list.txt"
+- "ios_output"
 
-``` Python
-# === Run the script (load applications from "storeUrls.txt") ===
-python3 MobileBountyHunter.py -s
+The current analysis is:
+- Android:
+  - AndroidManifest.xml:
+     - debug
+     - allowBackup
+     - exported: activities, receivers
+  - /values/strings.xml:
+     - Cloudinary key
+     - AWS Long Term Access Key
+     - AWS Short Term Access Key
+     - AWS Secret Key
+     - AWS Bucket
+     - PushIoApplicationIdentifier
+     - FirebaseUrl [Checking access with "/.json"]
+     - Google API [Checking access by sending Google Maps request]
+     - Google Clound Platform User Content
+     - Google Oauth Access Token
+     - Google AppSpot [Check if application is deployed]
+   - Looking for files:
+     - SQLite files [.sqlite]
+     - DB files [.db]
+     - Config files [*config*]
+   - Looking into files:
+     - JavaScriptEnabled
+   - Post-Analyze:
+     - Export activity with JavaScriptEnabled
+- iOS:
+  - Currently not supported.
 
-# === Help ===
+
+## How to run?
+### Help
+``` Bash
 python3 MobileBountyHunter.py -h
 
-# === Scan specific application file ===
-python3 MobileBountyHunter.py -f "com.google.android.googlequicksearchbox"
+usage: MobileBountyHunter.py [-h] [-ai] [-ao] [-al] [-as] [-ad {jadx,apktool}] [-ii] [-io] [-il] [-is] [-id]
 
-# === Input / Output directory ===
-# To use input directory, you need to create it and paste mobile application there.
-# Next, you need to specify Input (optionally output) directory
-# By Default, inputDirectory and outputDirectory are located in workspace
-python3 MobileBountyHunter.py -i /path/to/directory -o /path/to/output/directory
-
-# === Download and analyze applications from the apksList.txt file (you need to specify application names in the file) ===
-# Default apksListFile
-python3 MobileBountyHunter.py -l
-# Custom storeUrlsListFile
-python3 MobileBountyHunter.py -apksListFile /path/to/apksListFile
-
-# === Download and analyze applications from developer file ===
-# Default storeUrlsListFile
-python3 MobileBountyHunter.py -s
-# Custom storeUrlsListFile
-python3 MobileBountyHunter.py -storeUrlsListFile /path/to/storeUrlsListFile
-
-# === Download and analyze application from specific url ===
-python3 MobileBountyHunter.py -u 'https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox'
-python3 MobileBountyHunter.py -url 'https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox'
+options:
+  -h, --help            show this help message and exit
+  -ai, --analyze_android_input_directory
+  -ao, --analyze_android_output_directory
+  -al, --analyze_android_application_package_name_file
+  -as, --analyze_android_store_list_file
+  -ad {jadx,apktool}, --android_decompiling_tool {jadx,apktool}
+  -ii, --analyze_ios_input_directory
+  -io, --analyze_ios_output_directory
+  -il, --analyze_ios_application_package_name_file
+  -is, --analyze_ios_store_list_file
+  -id, --ios_decompiling_tool
 ```
 
-### Examples of configuration files
-
-``` Python
-# === "storeUrls.txt" ===
+### Case 1: Run analyze using Google Play store
+``` Bash
+# 1. Update "android_store_urls_list.txt". For example:
 https://play.google.com/store/apps/dev?id=5700313618786177705
-https://play.google.com/store/apps/dev?id=6720847872553662727
-https://play.google.com/store/apps/details?id=com.google.android.apps.walletnfcrel
-https://play.google.com/store/apps/details?id=com.microsoft.office.officehubrow
-https://apps.apple.com/pl/developer/google-llc/id281956209?l=pl
-https://apps.apple.com/pl/app/google-one/id1451784328
+https://play.google.com/store/apps/details?id=com.google.android.apps.chromecast.app
+https://play.google.com/store/apps/details?id=com.google.android.apps.fitness
 
-# === apksListFile ===
-com.google.android.googlequicksearchbox
-com.android.chrome
-com.google.android.apps.photos
+# 2. Run command:
+python3 MobileBountyHunter.py -as
 ```
 
-## Example output
+### Case 2: Run analyze using application package name
+``` Bash
+# 1. Update "android_application+package_name_list.txt". For example:
+com.google.android.apps.chromecast.app
+com.google.android.apps.youtube.kids
+com.google.android.apps.fitness
 
-![](images/2023-05-03-07-20-16.png)
+# 2. Run command:
+python3 MobileBountyHunter.py -al
+```
 
-## Functionalities
-This script was created to very quick find basic security issues in the application such as:
+### Case 3: Run analyze using input directory
+``` Bash
+# 1. In directory "android_input" move application. For example:
+com.google.android.apps.youtube.kids.apk
+com.google.android.apps.fitness.apk
 
-1. Android:
-   - Android Manifest:
-     - Exported activities   
-   - Android Resource Values:
-     - AWS keys
-     - Google keys
-     - Checking access to Firebase
-     - Checking access to Google Maps APIs
-   - Files:
-    - Finding database files
+# 2. Run command:
+python3 MobileBountyHunter.py -ai
+```
 
-2. iOS: 
-   - Will be added in the future.
+### Case 4: Run analyze using input directory
+``` Bash
+# 1. In directory "android_output" move decompiled application. For example:
+com.google.android.apps.youtube.kids.apk
+com.google.android.apps.fitness.apk
 
+# 2. Run command:
+python3 MobileBountyHunter.py -ao
+```
 
-## Why this application was created?
-On the market you can find great software to check mobile applications as:
+## Why Mobile Bounty Hunter was created?
+On the market you can find few great software to check mobile applications as:
 - MobSF (https://github.com/MobSF/Mobile-Security-Framework-MobSF)
 - ApkLeaks (https://github.com/dwisiswant0/apkleaks)
+- Marianna Trench (https://github.com/facebook/mariana-trench)
+- ApkUrlGrep (https://github.com/ndelphit/apkurlgrep)
+- Qark (https://github.com/linkedin/qark)
 
-The only problem with these tools is that they are time-consuming. You need manually download the mobile application and run above tools against application. Mobile Bounty Hunter needs only link to Google Play / Apple Store (developer url, application url) and download all applications related to this URL automatically, decompiling and checking them.
-
-The most important functionality and the idea of whole project is:
-- to provide url to developer page of Store and automatically find and download all application that were published by this Developer,
-- to check Firebase URL access and Google API Maps access.
-
-Scans are based on checking mainly:
-- Android: Manifest, resource Values
-- iOS: will be added in the future
-
-
-### Average time
-Average time is 20-30 applications per hour.
+The problem with some of above tools is that they are time-consuming. You need manually download the mobile application and run above tools against application. Mobile Bounty Hunter needs only link to Google Play / Apple Store (developer url, application url) and download all applications related to this URL automatically, decompiling and analyzing them.
 
 ### Example scenario
 Let's assume that you are Bounty Hunter and you would like to search for security issues in mobile applications. You know that there are few companies to check:
@@ -113,20 +134,11 @@ The Mobile Bounty Hunter is not full-penetration testing platform, it is rather 
 ## Disclaimer
 The Mobile Bounty Hunter can be used ONLY for educational purpose and Bug Bounty activities to find the issues and report them to application developers. Any other activities (especially illegal) are forbidden.
 
-## What kind of vulnerabilities are cheched, explanation how this knowledge could be used and if they are worth to report
-1. Android:
-   1. .db / .sql files:
-      1. Why: Databases files can contain sensitive information about clients/configurations/tables.
-      2. Next step: Read these files in order to find any sensitive informations.
-      3. Worth to report: Depends.
-   2. 
-
-
-
 ## Todo's:
 1. Check build configs like: local.properties, gradle.properties
 2. Check: /data/misc/keystore/
-3. Prepare full scan including all files in decompiled application
+3. Implement possibility to scan all files in decompiled application to find secrets
+4. Implement generation of summary report where you can find information about finding and Bounty program report reference.
 
 ## Interesting links about Mobile Bug Bounty:
 https://www.youtube.com/watch?v=OlgmPxTHLuY
@@ -135,3 +147,8 @@ https://www.youtube.com/watch?v=S6xGOU-QWWQ
 
 Checking WebViews
 https://medium.com/mobis3c/exploiting-android-webview-vulnerabilities-e2bcff780892
+
+
+# Special Thanks!
+- Banner: Jolanta Szczypara
+(https://www.linkedin.com/in/jolanta-szczypara-2a6064278/)
