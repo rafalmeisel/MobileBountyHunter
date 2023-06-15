@@ -1,10 +1,13 @@
 from source_code.config_file_manager import get_android_output_directory_relative_path
 from source_code.config_file_manager import get_android_decompiling_tool
-from source_code.android_tests.check_android_manifest import *
+from source_code.android_tests.check_android_manifest_allow_backup import run_check_android_manifest_allow_backup
+from source_code.android_tests.check_android_manifest_debuggable import run_check_android_manifest_debuggable
+from source_code.android_tests.check_android_manifest_exported import run_check_android_manifest_exported
 from source_code.android_tests.check_res_values_strings import *
 from source_code.android_tests.check_files_names import *
 from source_code.android_tests.check_smali_files import *
 from source_code.android_tests.check_report_file import *
+import xml.etree.ElementInclude as ET
 
 import os
 from termcolor import colored
@@ -32,13 +35,14 @@ def run_tests_android_application(application_package_name):
     
     android_manifest_basename = os.path.basename(android_manifest_relative_file_path)
     android_manifest_content = open(android_manifest_relative_file_path, "r").readlines()
+    android_manifest_content_xml = ET.ElementTree(ET.fromstring(android_manifest_content))
     
     android_values_strings_basename = os.path.basename(android_res_values_strings_relative_file_path)
     android_values_strings_content = open(android_res_values_strings_relative_file_path, "r").readlines()
     
-    check_android_manifest_debuggable(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
-    check_android_manifest_allow_backup(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
-    check_android_manifest_exported(application_package_system, application_package_name, android_manifest_basename, android_manifest_content)
+    run_check_android_manifest_allow_backup(application_package_system, application_package_name, android_manifest_basename, android_manifest_content_xml)
+    run_check_android_manifest_debuggable(application_package_system, application_package_name, android_manifest_basename, android_manifest_content_xml)
+    run_check_android_manifest_exported(application_package_system, application_package_name, android_manifest_basename, android_manifest_content_xml)
     
     check_res_values_strings_cloudinary(application_package_system, application_package_name, android_values_strings_basename, android_manifest_content)
     check_res_values_strings_aws_long_term_access_keys(application_package_system, application_package_name, android_values_strings_basename, android_values_strings_content)

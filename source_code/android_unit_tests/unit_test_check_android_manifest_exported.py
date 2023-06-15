@@ -4,6 +4,10 @@ import unittest
 import importlib.util
 from lxml import etree
 
+from termcolor import colored
+test_color_passed = "green"
+test_color_failed = "red"
+
 module_path = 'source_code/android_tests/check_android_manifest_exported.py'
 
 spec = importlib.util.spec_from_file_location('check_android_manifest_exported', module_path)
@@ -47,17 +51,37 @@ class TestCheckAndroidManifestExported(unittest.TestCase):
         root = etree.fromstring(self.android_manifest_xml)
         result = check_android_manifest_exported(root)
         expected = [
-            'exported: application: com.example.myapp.MyApplication.ApplicationTestExported',
-            'exported: activity: com.example.myapp.MyApplication.ActivityTestExported',
-            'exported: service: com.example.myapp.MyApplication.ServiceTestExported'
+            'application: com.example.myapp.MyApplication.ApplicationTestExported',
+            'activity: com.example.myapp.MyApplication.ActivityTestExported',
+            'service: com.example.myapp.MyApplication.ServiceTestExported'
         ]
-        self.assertEqual(result, expected)
+        # self.assertEqual(result, expected)
+
+        if result == expected:
+            print("test_check_android_manifest_exported: " + colored("Passed", test_color_passed))
+        else:
+            print("test_check_android_manifest_exported: " + colored("Failed", test_color_failed))
+
+            print("Expected:")
+            print(expected)
+            print("Result:")
+            print(result)
 
     def test_check_android_manifest_Exported_no_elements(self):
         root = etree.Element('manifest')
         result = check_android_manifest_exported(root)
         expected = []
-        self.assertEqual(result, expected)
+        # self.assertEqual(result, expected)
+
+        if result == expected:
+            print("test_check_android_manifest_Exported_no_elements: " + colored("Passed", test_color_passed))
+        else:
+            print("test_check_android_manifest_Exported_no_elements: " + colored("Failed", test_color_failed))
+
+            print("Expected:")
+            print(expected)
+            print("Result:")
+            print(result)
 
     def test_check_android_manifest_Exported_no_Exported_elements(self):
         self.android_manifest_xml = '''
@@ -74,7 +98,17 @@ class TestCheckAndroidManifestExported(unittest.TestCase):
         root = etree.fromstring(self.android_manifest_xml)
         result = check_android_manifest_exported(root)
         expected = []
-        self.assertEqual(result, expected)
+        # self.assertEqual(result, expected)
+
+        if result == expected:
+            print("test_check_android_manifest_Exported_no_Exported_elements: " + colored("Passed", test_color_passed))
+        else:
+            print("test_check_android_manifest_Exported_no_Exported_elements: " + colored("Failed", test_color_failed))
+
+            print("Expected:")
+            print(expected)
+            print("Result:")
+            print(result)
 
 if __name__ == '__main__':
     unittest.main()

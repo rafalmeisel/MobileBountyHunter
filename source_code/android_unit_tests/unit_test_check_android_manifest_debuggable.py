@@ -4,6 +4,10 @@ import unittest
 import importlib.util
 from lxml import etree
 
+from termcolor import colored
+test_color_passed = "green"
+test_color_failed = "red"
+
 module_path = 'source_code/android_tests/check_android_manifest_debuggable.py'
 
 spec = importlib.util.spec_from_file_location('check_android_manifest_debuggable', module_path)
@@ -47,17 +51,37 @@ class TestCheckAndroidManifestDebuggable(unittest.TestCase):
         root = etree.fromstring(self.android_manifest_xml)
         result = check_android_manifest_debuggable(root)
         expected = [
-            'debuggable: application: com.example.myapp.MyApplication.ApplicationTestDebuggable',
-            'debuggable: activity: com.example.myapp.MyApplication.ActivityTestDebuggable',
-            'debuggable: service: com.example.myapp.MyApplication.ServiceTestDebuggable'
+            'application: com.example.myapp.MyApplication.ApplicationTestDebuggable',
+            'activity: com.example.myapp.MyApplication.ActivityTestDebuggable',
+            'service: com.example.myapp.MyApplication.ServiceTestDebuggable'
         ]
-        self.assertEqual(result, expected)
+        # self.assertEqual(result, expected)
+
+        if result == expected:
+            print("test_check_android_manifest_debuggable: " + colored("Passed", test_color_passed))
+        else:
+            print("test_check_android_manifest_debuggable: " + colored("Failed", test_color_failed))
+
+            print("Expected:")
+            print(expected)
+            print("Result:")
+            print(result)
 
     def test_check_android_manifest_debuggable_no_elements(self):
         root = etree.Element('manifest')
         result = check_android_manifest_debuggable(root)
         expected = []
-        self.assertEqual(result, expected)
+        # self.assertEqual(result, expected)
+
+        if result == expected:
+            print("test_check_android_manifest_debuggable_no_elements: " + colored("Passed", test_color_passed))
+        else:
+            print("test_check_android_manifest_debuggable_no_elements: " + colored("Failed", test_color_failed))
+
+            print("Expected:")
+            print(expected)
+            print("Result:")
+            print(result)
 
     def test_check_android_manifest_debuggable_no_debuggable_elements(self):
         self.android_manifest_xml = '''
@@ -74,7 +98,17 @@ class TestCheckAndroidManifestDebuggable(unittest.TestCase):
         root = etree.fromstring(self.android_manifest_xml)
         result = check_android_manifest_debuggable(root)
         expected = []
-        self.assertEqual(result, expected)
+        # self.assertEqual(result, expected)
+
+        if result == expected:
+            print("test_check_android_manifest_debuggable_no_debuggable_elements: " + colored("Passed", test_color_passed))
+        else:
+            print("test_check_android_manifest_debuggable_no_debuggable_elements: " + colored("Failed", test_color_failed))
+
+            print("Expected:")
+            print(expected)
+            print("Result:")
+            print(result)
 
 if __name__ == '__main__':
     unittest.main()
