@@ -55,34 +55,16 @@ class TestCheckAndroidManifestAllowBackup(unittest.TestCase):
             'activity: com.example.myapp.MyApplication.ActivityTestAllowBackup',
             'service: com.example.myapp.MyApplication.ServiceTestAllowBackup'
         ]
-        # self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-        if result == expected:
-            print("test_check_android_manifest_allow_backup: " + colored("Passed", test_color_passed))
-        else:
-            print("test_check_android_manifest_allow_backup: " + colored("Failed", test_color_failed))
-            
-            print("Expected:")
-            print(expected)
-            print("Result:")
-            print(result)
 
     def test_check_android_manifest_allow_backup_no_elements(self):
         root = etree.Element('manifest')
         result = check_android_manifest_allow_backup(root)
         expected = []
-        # self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-        if result == expected:
-            print("test_check_android_manifest_allow_backup_no_elements: " + colored("Passed", test_color_passed))
-        else:
-            print("test_check_android_manifest_allow_backup_no_elements: " + colored("Failed", test_color_failed))
-
-            print("Expected:")
-            print(expected)
-            print("Result:")
-            print(result)
-
+        
     def test_check_android_manifest_allow_backup_no_allow_backup_elements(self):
         self.android_manifest_xml = '''
         <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -98,17 +80,8 @@ class TestCheckAndroidManifestAllowBackup(unittest.TestCase):
         root = etree.fromstring(self.android_manifest_xml)
         result = check_android_manifest_allow_backup(root)
         expected = []
-        # self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-        if result == expected:
-            print("test_check_android_manifest_allow_backup_no_allow_backup_elements: " + colored("Passed", test_color_passed))
-        else:
-            print("test_check_android_manifest_allow_backup_no_allow_backup_elements: " + colored("Failed", test_color_failed))
-
-            print("Expected:")
-            print(expected)
-            print("Result:")
-            print(result)
 
 if __name__ == '__main__':
     unittest.main()
