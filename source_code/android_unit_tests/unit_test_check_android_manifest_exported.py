@@ -55,33 +55,15 @@ class TestCheckAndroidManifestExported(unittest.TestCase):
             'activity: com.example.myapp.MyApplication.ActivityTestExported',
             'service: com.example.myapp.MyApplication.ServiceTestExported'
         ]
-        # self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-        if result == expected:
-            print("test_check_android_manifest_exported: " + colored("Passed", test_color_passed))
-        else:
-            print("test_check_android_manifest_exported: " + colored("Failed", test_color_failed))
-
-            print("Expected:")
-            print(expected)
-            print("Result:")
-            print(result)
 
     def test_check_android_manifest_Exported_no_elements(self):
         root = etree.Element('manifest')
         result = check_android_manifest_exported(root)
         expected = []
-        # self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-        if result == expected:
-            print("test_check_android_manifest_Exported_no_elements: " + colored("Passed", test_color_passed))
-        else:
-            print("test_check_android_manifest_Exported_no_elements: " + colored("Failed", test_color_failed))
-
-            print("Expected:")
-            print(expected)
-            print("Result:")
-            print(result)
 
     def test_check_android_manifest_Exported_no_Exported_elements(self):
         self.android_manifest_xml = '''
@@ -98,17 +80,8 @@ class TestCheckAndroidManifestExported(unittest.TestCase):
         root = etree.fromstring(self.android_manifest_xml)
         result = check_android_manifest_exported(root)
         expected = []
-        # self.assertEqual(result, expected)
+        self.assertEqual(result, expected)
 
-        if result == expected:
-            print("test_check_android_manifest_Exported_no_Exported_elements: " + colored("Passed", test_color_passed))
-        else:
-            print("test_check_android_manifest_Exported_no_Exported_elements: " + colored("Failed", test_color_failed))
-
-            print("Expected:")
-            print(expected)
-            print("Result:")
-            print(result)
 
 if __name__ == '__main__':
     unittest.main()
