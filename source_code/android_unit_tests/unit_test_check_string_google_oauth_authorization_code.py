@@ -4,12 +4,12 @@ import importlib.util
 test_color_passed = "green"
 test_color_failed = "red"
 
-module_path = 'source_code/android_tests/check_string_google_authorization_code.py'
+module_path = 'source_code/android_tests/check_string_google_oauth_authorization_code.py'
 
-spec = importlib.util.spec_from_file_location('check_string_google_authorization_code', module_path)
+spec = importlib.util.spec_from_file_location('check_string_google_oauth_authorization_code', module_path)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
-check_string_google_authorization_code = module.check_string_google_authorization_code
+check_string_google_oauth_authorization_code = module.check_string_google_oauth_authorization_code
 
 class TestCheckStringCloudinary(unittest.TestCase):   
 
@@ -43,27 +43,27 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="welcome_message">Welcome to our app, %1$s!</string>
                 <string name="page">Page %1$d</string>
                 <string name="remaining_attempts">Remaining attempts: %1$d</string>
-                <string name="google_authorization_access_code">4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12</string>
+                <string name="google_oauth_authorization_access_code">4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12</string>
             </resources>
         '''
 
 
-    def test_check_string_google_authorization_code(self):
-        result = check_string_google_authorization_code(self.content_file)
+    def test_check_string_google_oauth_authorization_code(self):
+        result = check_string_google_oauth_authorization_code(self.content_file)
         expected = [
             '4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12',
         ]
         self.assertEqual(result, expected)
 
 
-    def test_check_string_google_authorization_code_empty_file(self):
+    def test_check_string_google_oauth_authorization_code_empty_file(self):
         self.content_file = ""
-        result = check_string_google_authorization_code(self.content_file)
+        result = check_string_google_oauth_authorization_code(self.content_file)
         expected = []
         self.assertEqual(result, expected)
 
 
-    def test_check_string_google_authorization_code_without_elements(self):
+    def test_check_string_google_oauth_authorization_code_without_elements(self):
         self.content_file = '''
         <?xml version="1.0" encoding="utf-8"?>
             <resources>
@@ -77,11 +77,11 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="warning">Warning</string>
             </resources>
         '''
-        result = check_string_google_authorization_code(self.content_file)
+        result = check_string_google_oauth_authorization_code(self.content_file)
         expected = []
         self.assertEqual(result, expected)
 
-    def test_check_string_google_authorization_code_many_values(self):
+    def test_check_string_google_oauth_authorization_code_many_values(self):
         self.content_file = '''
         <?xml version="1.0" encoding="utf-8"?>
             <resources>
@@ -93,12 +93,12 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="google_authorization_access_code">4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12</string>
-                <string name="google_authorization_access_code">4/P7q-oMsCeLvIaQm6bTrgtp7</string>
-                <string name="google_authorization_access_code">4/Omoy</string>
+                <string name="google_oauth_authorization_access_code">4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12</string>
+                <string name="google_oauth_authorization_access_code">4/P7q-oMsCeLvIaQm6bTrgtp7</string>
+                <string name="google_oauth_authorization_access_code">4/Omoy</string>
             </resources>
         '''
-        result = check_string_google_authorization_code(self.content_file)
+        result = check_string_google_oauth_authorization_code(self.content_file)
         expected = [
             '4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12',
             '4/P7q-oMsCeLvIaQm6bTrgtp7',
@@ -106,7 +106,7 @@ class TestCheckStringCloudinary(unittest.TestCase):
         ]
         self.assertEqual(result, expected)
 
-    def test_check_string_google_authorization_code_wrong_value_wrong_prefix(self):
+    def test_check_string_google_oauth_authorization_code_wrong_value_wrong_prefix(self):
         self.content_file = '''
         <?xml version="1.0" encoding="utf-8"?>
             <resources>
@@ -118,10 +118,10 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="google_authorization_access_code">3/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12</string>
+                <string name="google_oauth_authorization_access_code">3/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12</string>
             </resources>
         '''
-        result = check_string_google_authorization_code(self.content_file)
+        result = check_string_google_oauth_authorization_code(self.content_file)
         expected = []
         self.assertEqual(result, expected)
 
