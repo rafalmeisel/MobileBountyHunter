@@ -1,10 +1,6 @@
-import xml.etree.ElementTree as ElementTree
 import unittest
-
 import importlib.util
-from lxml import etree
 
-from termcolor import colored
 test_color_passed = "green"
 test_color_failed = "red"
 
@@ -47,14 +43,14 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="welcome_message">Welcome to our app, %1$s!</string>
                 <string name="page">Page %1$d</string>
                 <string name="remaining_attempts">Remaining attempts: %1$d</string>
-                <string name="aws_long_term_access_key">AKS3G7H9T1F4J2K6L8M</string>
+                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6L8M</string>
             </resources>
         '''
 
     def test_check_string_aws_long_term_access_key(self):
         result = check_string_aws_long_term_access_key(self.content_file)
         expected = [
-            'AKS3G7H9T1F4J2K6L8M',
+            'AKSA3G7H9T1F4J2K6L8M',
         ]
         self.assertEqual(result, expected)
 
@@ -96,16 +92,16 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="aws_long_term_access_key">AKS3G7H9T1F4J2K6001</string>
-                <string name="aws_long_term_access_key">AKS3G7H9T1F4J2K6002</string>
-                <string name="aws_long_term_access_key">AKS3G7H9T1F4J2K6003</string>
+                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6001</string>
+                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6002</string>
+                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6003</string>
             </resources>
         '''
         result = check_string_aws_long_term_access_key(self.content_file)
         expected = [
-            'AKS3G7H9T1F4J2K6001',
-            'AKS3G7H9T1F4J2K6002',
-            'AKS3G7H9T1F4J2K6003'
+            'AKSA3G7H9T1F4J2K6001',
+            'AKSA3G7H9T1F4J2K6002',
+            'AKSA3G7H9T1F4J2K6003'
         ]
         self.assertEqual(result, expected)
 
@@ -127,7 +123,7 @@ class TestCheckStringCloudinary(unittest.TestCase):
         result = check_string_aws_long_term_access_key(self.content_file)
         expected = []
         self.assertEqual(result, expected)
-        
+
 
 if __name__ == '__main__':
     unittest.main()

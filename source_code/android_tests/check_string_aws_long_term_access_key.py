@@ -7,11 +7,14 @@ from source_code.report_manager import report_issue
 from source_code.report_manager import IssueSeverity
 from source_code.report_manager import IssueStatus
 
-# AWS Long Term Key: AKS3G7H9T1F4J2K6L8M
+# Valid AWS Long Term Key: AKS3G7H9T1F4J2K6L8M
+# Valid AWS Long Term Key: AKabcdefgh1234567
+# Valid AWS Long Term Key: AK1234567890ABCDEFG
+# Valid AWS Long Term Key: AKSDFGHJKLZXCVBNM
 
 def check_string_aws_long_term_access_key(file_content):
     
-    aws_long_term_access_key_regex = 'AK[A-Za-z0-9]{17}'
+    aws_long_term_access_key_regex = 'AK[A-Za-z0-9]{18}'
     aws_long_term_access_key_items_list = []
 
     aws_long_term_access_key_items_list = re.findall(aws_long_term_access_key_regex, file_content)
