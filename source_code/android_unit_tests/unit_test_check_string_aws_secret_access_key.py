@@ -95,14 +95,14 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="warning">Warning</string>
                 <string name="aws_secret_access_key">wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</string>
                 <string name="aws_secret_access_key">wJalrXJHKAjasd/asda/AKJNSKJDNKA/12312/as</string>
-                <string name="aws_secret_access_key">aska8912NKJASDnjk/1231/a9sdj1/3AJNKSJDaD</string>
+                <string name="aws_secret_access_key">Rh30BNyj+qNI4ftYRteoZbHJ3X4Ln71QtZkRXzJ9</string>
             </resources>
         '''
         result = check_string_aws_secret_access_key(self.content_file)
         expected = [
             'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
             'wJalrXJHKAjasd/asda/AKJNSKJDNKA/12312/as',
-            'aska8912NKJASDnjk/1231/a9sdj1/3AJNKSJDaD'
+            'Rh30BNyj+qNI4ftYRteoZbHJ3X4Ln71QtZkRXzJ9'
         ]
         self.assertEqual(result, expected)
 
