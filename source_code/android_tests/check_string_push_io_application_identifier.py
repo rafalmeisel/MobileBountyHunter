@@ -2,7 +2,6 @@
 import sys
 sys.path.append('./')
 
-import requests
 import re
 from source_code.report_manager import report_issue
 from source_code.report_manager import IssueSeverity
