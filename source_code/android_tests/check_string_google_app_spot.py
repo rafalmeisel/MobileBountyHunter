@@ -22,7 +22,6 @@ def check_string_google_app_spot(file_content):
     
     return google_app_spot_items_list
 
-
 def send_request_to_google_app_spot(google_app_spot):
     try:
         response = requests.get("https://" + google_app_spot)
