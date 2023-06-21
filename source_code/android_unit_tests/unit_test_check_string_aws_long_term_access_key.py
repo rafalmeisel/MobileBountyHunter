@@ -43,14 +43,15 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="welcome_message">Welcome to our app, %1$s!</string>
                 <string name="page">Page %1$d</string>
                 <string name="remaining_attempts">Remaining attempts: %1$d</string>
-                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6L8M</string>
+                <string name="aws_long_term_access_key">AKIAIOSFODNN7EXAMPLE</string>
             </resources>
         '''
+
 
     def test_check_string_aws_long_term_access_key(self):
         result = check_string_aws_long_term_access_key(self.content_file)
         expected = [
-            'AKSA3G7H9T1F4J2K6L8M',
+            'AKIAIOSFODNN7EXAMPLE',
         ]
         self.assertEqual(result, expected)
 
@@ -92,16 +93,16 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6001</string>
-                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6002</string>
-                <string name="aws_long_term_access_key">AKSA3G7H9T1F4J2K6003</string>
+                <string name="aws_long_term_access_key">AKIAIOSFODNN7EXAMPLE</string>
+                <string name="aws_long_term_access_key">AKIACVAKSJDKAL129AKS</string>
+                <string name="aws_long_term_access_key">AKIAKAJSHDIA91213ASN</string>
             </resources>
         '''
         result = check_string_aws_long_term_access_key(self.content_file)
         expected = [
-            'AKSA3G7H9T1F4J2K6001',
-            'AKSA3G7H9T1F4J2K6002',
-            'AKSA3G7H9T1F4J2K6003'
+            'AKIAIOSFODNN7EXAMPLE',
+            'AKIACVAKSJDKAL129AKS',
+            'AKIAKAJSHDIA91213ASN'
         ]
         self.assertEqual(result, expected)
 
@@ -117,7 +118,7 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="aws_long_term_access_key">AKS3G7HADS</string>
+                <string name="aws_long_term_access_key">AKIAIOSFODNN7EX</string>
             </resources>
         '''
         result = check_string_aws_long_term_access_key(self.content_file)
