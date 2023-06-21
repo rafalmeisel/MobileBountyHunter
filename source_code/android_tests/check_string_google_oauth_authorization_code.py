@@ -9,9 +9,9 @@ from source_code.report_manager import IssueStatus
 
 # [2023.06.21] Reference: https://stackoverflow.com/questions/10291696/does-my-google-oauth2-token-look-right
 # [2023.06.21] Reference: https://developers.google.com/identity/protocols/oauth2/web-server?hl=pl
-# Valid Google Authorization Code: 4/Omoy
-# Valid Google Authorization Code: 4/P7q-oMsCeLvIaQm6bTrgtp7
-# Valid Google Authorization Code: 4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12
+# Valid Google OAuth Authorization Code: 4/Omoy
+# Valid Google OAuth Authorization Code: 4/P7q-oMsCeLvIaQm6bTrgtp7
+# Valid Google OAuth Authorization Code: 4/P7q7W91a-oMsCesrqpnmolkjsrqpnm7W91agASJKL12
 
 def check_string_google_oauth_authorization_code(file_content):
     
