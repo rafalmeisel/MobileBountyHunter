@@ -45,4 +45,4 @@ def run_check_string_google_api_key(application_package_system, application_pack
                 
                 
     else:
-        report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Google User Content", "")
+        report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Google API Key", "")
