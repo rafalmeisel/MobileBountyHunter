@@ -43,14 +43,14 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="welcome_message">Welcome to our app, %1$s!</string>
                 <string name="page">Page %1$d</string>
                 <string name="remaining_attempts">Remaining attempts: %1$d</string>
-                <string name="aws_short_term_access_key">AS123456789012345678</string>
+                <string name="aws_short_term_access_key">ASIA3456789012345678</string>
             </resources>
         '''
 
     def test_check_string_aws_short_term_access_key(self):
         result = check_string_aws_short_term_access_key(self.content_file)
         expected = [
-            'AS123456789012345678',
+            'ASIA3456789012345678',
         ]
         self.assertEqual(result, expected)
 
@@ -92,16 +92,16 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="aws_short_term_access_key">AS123456789012345678</string>
-                <string name="aws_short_term_access_key">ASABCDEFGHIJKLMNOPTR</string>
-                <string name="aws_short_term_access_key">AS9876543210ZYXWVUTP</string>
+                <string name="aws_short_term_access_key">ASIA3456789012345678</string>
+                <string name="aws_short_term_access_key">ASIACDEFGHIJKLMNOPTR</string>
+                <string name="aws_short_term_access_key">ASIA76543210ZYXWVUTP</string>
             </resources>
         '''
         result = check_string_aws_short_term_access_key(self.content_file)
         expected = [
-            'AS123456789012345678',
-            'ASABCDEFGHIJKLMNOPTR',
-            'AS9876543210ZYXWVUTP'
+            'ASIA3456789012345678',
+            'ASIACDEFGHIJKLMNOPTR',
+            'ASIA76543210ZYXWVUTP'
         ]
         self.assertEqual(result, expected)
 
@@ -117,7 +117,7 @@ class TestCheckStringCloudinary(unittest.TestCase):
                 <string name="error">Error</string>
                 <string name="success">Success</string>
                 <string name="warning">Warning</string>
-                <string name="aws_short_term_access_key">ASS3G7HADS</string>
+                <string name="aws_short_term_access_key">ASIAG7HADS</string>
             </resources>
         '''
         result = check_string_aws_short_term_access_key(self.content_file)

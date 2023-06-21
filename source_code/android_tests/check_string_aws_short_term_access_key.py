@@ -7,14 +7,16 @@ from source_code.report_manager import report_issue
 from source_code.report_manager import IssueSeverity
 from source_code.report_manager import IssueStatus
 
-# Valid AWS Short Term Access Key: AS123456789012345678
-# Valid AWS Short Term Access Key: ASABCDEFGHIJKLMNOPTR
-# Valid AWS Short Term Access Key: AS9876543210ZYXWVUTP
-# Valid AWS Short Term Access Key: AS1B2C3D4E5F6G7H8I9J
+# [2023.06.21] Reference: https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html
+# [2023.06.21] Reference: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+# Valid AWS Short Term Access Key: ASIA3456789012345678
+# Valid AWS Short Term Access Key: ASIACDEFGHIJKLMNOPTR
+# Valid AWS Short Term Access Key: ASIA76543210ZYXWVUTP
+# Valid AWS Short Term Access Key: ASIA2C3D4E5F6G7H8I9J
 
 def check_string_aws_short_term_access_key(file_content):
     
-    aws_short_term_access_key_regex = 'AS[A-Za-z0-9]{18}'
+    aws_short_term_access_key_regex = 'ASIA[A-Za-z0-9]{16}'
     aws_short_term_access_key_items_list = []
 
     aws_short_term_access_key_items_list = re.findall(aws_short_term_access_key_regex, file_content)
