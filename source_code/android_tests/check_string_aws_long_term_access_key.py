@@ -9,6 +9,7 @@ from source_code.report_manager import IssueStatus
 
 # [2023.06.21] Reference: https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html
 # [2023.06.21] Reference: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+# [2023.06.21] Reference: https://summitroute.com/blog/2018/06/20/aws_security_credential_formats/
 # Valid AWS Long Term Key: AKIAIOSFODNN7EXAMPLE
 # Valid AWS Long Term Key: AKIACVAKSJDKAL129AKS
 # Valid AWS Long Term Key: AKIAKAJSHDIA91213ASN
