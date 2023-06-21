@@ -1,10 +1,7 @@
-import xml.etree.ElementTree as ElementTree
 import unittest
-
 import importlib.util
 from lxml import etree
 
-from termcolor import colored
 test_color_passed = "green"
 test_color_failed = "red"
 
