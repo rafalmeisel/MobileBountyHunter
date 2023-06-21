@@ -27,6 +27,6 @@ def run_check_string_cloudinary(application_package_system, application_package_
     
     if len(cloudinary_items_list) > 0:
         for cloudinary_item in cloudinary_items_list:
-            report_issue(application_package_system, application_package_name, file_name, IssueSeverity.MEDIUM, IssueStatus.VULNERABLE, "cloudinary", cloudinary_item)
+            report_issue(application_package_system, application_package_name, file_name, IssueSeverity.MEDIUM, IssueStatus.VULNERABLE, "Cloudinary", cloudinary_item)
     else:
-        report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "cloudinary", "")
+        report_issue(application_package_system, application_package_name, file_name, IssueSeverity.INFORMATIVE, IssueStatus.NOT_FOUND, "Cloudinary", "")
