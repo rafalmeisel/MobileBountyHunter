@@ -7,9 +7,7 @@ from source_code.config_file_manager import get_dedicated_mobile_bounty_hunter_r
 from source_code.config_file_manager import get_dedicated_mobile_bounty_hunter_report_file_name
 import re
 
-application_package_system = "Android"
-
-def check_exported_activity_with_java_script_enabled(application_package_name):
+def check_exported_activity_with_java_script_enabled(application_package_system, application_package_name):
     
     # From: pl.application.apk: AndroidManifest: exported: activity:pl.app.ChatActivity: FOUND!
     # Find: ChatActivity
