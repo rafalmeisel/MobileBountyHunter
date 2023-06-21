@@ -101,7 +101,7 @@ com.google.android.apps.fitness.apk
 python3 MobileBountyHunter.py -ai
 ```
 
-### Case 4: Run analyze using input directory
+### Case 4: Run analyze using output directory
 ``` Bash
 # 1. In directory "android_output" move decompiled application. For example:
 com.google.android.apps.youtube.kids.apk
