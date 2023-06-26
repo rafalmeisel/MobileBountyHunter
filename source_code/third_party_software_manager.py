@@ -75,10 +75,15 @@ def install_aws_cli():
         print("=== Installing AwsCli ===")
         os.system("apt install awscli -y")
 
-
+# Termcolor to print finding on console with coloring
+def install_termcolor():
+    print("=== Installing TermColor ===")
+    subprocess.check_call(['pip', 'install', 'termcolor'])
+    
 def install_third_party_software():
     
     install_android_decompiler_jadx()
     install_android_decompiler_apktools()
     install_apkeep()
     install_aws_cli()
+    install_termcolor()
