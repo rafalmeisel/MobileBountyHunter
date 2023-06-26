@@ -1,20 +1,20 @@
 import os
-import urllib.request
-import shutil
-import sys
 import subprocess
 
 # Tool to full decompiling Android application with reverse engineering of source code and .smali files
 def install_android_decompiler_jadx():
     
-    jadx_absolute_path = '/usr/bin/jadx'
+    try:
+        result = subprocess.run(['jadx', '--version'], capture_output=True, text=True)
+        if result.returncode == 0 and 'jadx' in result.stdout:
+            print("Jadx is already installed")
+        else:
+            print("=== Installing Jadx ===")
+            subprocess.run(["git", "clone", "https://github.com/skylot/jadx.git"])
+            subprocess.run(['cd', 'jadx', '&&', './gradlew', 'dist'])
+    except FileNotFoundError as error:
+            print(error)
 
-    if not os.path.exists(jadx_absolute_path):
-        print("=== Installing Jadx ===")
-
-        subprocess.run(["git", "clone", "https://github.com/skylot/jadx.git"])
-        subprocess.run(["./jadx/gradlew", "dist"])
-        subprocess.run(["rm", "-rf", "jadx"])
 
 # Tool to quick decompiling Android application with reverse engineering of .smali files
 def install_android_decompiler_apktools():
@@ -23,40 +23,8 @@ def install_android_decompiler_apktools():
     
     if not os.path.exists(apktool_absolute_path):
         print("=== Installing ApkTools ===")
-        
         subprocess.run(['sudo', 'apt', 'install', 'apktool', '-y'])
-
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Install apktool")
         
-        # current_installation_step = 0
-        # total_installation_steps = 6
-        
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Download Linux wrapper script")
-        # urllib.request.urlretrieve("https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool", "apktool.sh")
-
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Download apktool-2")
-        # urllib.request.urlretrieve("https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.7.0.jar", "apktool_2.7.0.jar")
-
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Rename downloaded jar to apktool.jar")
-        # subprocess.run(['sudo', 'rename', 'apktool_2.7.0.jar', 'apktool.jar'])
-
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Move 'apktool.jar' and 'apktool' to /usr/local/bin")
-        # subprocess.run(['sudo', 'mv', 'apktool.sh', '/usr/local/bin/apktool.sh'])
-        # subprocess.run(['sudo', 'mv', 'apktool.jar', '/usr/local/bin/apktool.jar'])
-
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Make 'apktool.jar' and 'apktool' executable (755)")
-        # subprocess.run(['sudo', 'chmod', '775', '/usr/local/bin/apktool.sh'])
-        # subprocess.run(['sudo', 'chmod', '775', '/usr/local/bin/apktool.jar'])
-
-        # current_installation_step+=1
-        # print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Check if apktool was successfully installed")
-        # subprocess.run(['which', 'apktool'])
 
 # Tool to download Android application from Google Play
 def install_apkeep():
@@ -67,7 +35,7 @@ def install_apkeep():
         print("=== Installing Apkeep ===")
         subprocess.run(['sudo', 'apt', 'install', 'libssl-dev', '-y'])
         subprocess.run(['sudo', 'apt', 'install', 'pkg-config', '-y'])
-        subprocess.run(['sudo', 'cargo', 'install', 'cargo', '-y'])
+        subprocess.run(['sudo', 'apt', 'install', 'cargo', '-y'])
         subprocess.run(['sudo', 'cargo', 'install', 'apkeep', '--locked'])
 
 
