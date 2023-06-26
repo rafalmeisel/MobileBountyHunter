@@ -3,6 +3,7 @@ import urllib.request
 import shutil
 import sys
 import subprocess
+import importlib
 
 # Tool to full decompiling Android application with reverse engineering of source code and .smali files
 def install_android_decompiler_jadx():
@@ -77,8 +78,11 @@ def install_aws_cli():
 
 # Termcolor to print finding on console with coloring
 def install_termcolor():
-    print("=== Installing TermColor ===")
-    subprocess.check_call(['pip', 'install', 'termcolor'])
+    try:
+        importlib.import_module("termcolor")
+    except ImportError:
+        print("=== Installing TermColor ===")
+        subprocess.run(['pip', 'install', 'termcolor'])
     
 def install_third_party_software():
     
