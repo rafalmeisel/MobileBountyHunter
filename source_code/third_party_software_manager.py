@@ -28,29 +28,29 @@ def install_android_decompiler_apktools():
         total_installation_steps = 6
         
         current_installation_step+=1
-        print("Step " + current_installation_step + "/" + total_installation_steps + ": Download Linux wrapper script")
+        print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Download Linux wrapper script")
         urllib.request.urlretrieve("https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool", "apktool.sh")
 
         current_installation_step+=1
-        print("Step " + current_installation_step + "/" + total_installation_steps + ": Download apktool-2")
+        print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Download apktool-2")
         urllib.request.urlretrieve("https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.7.0.jar", "apktool_2.7.0.jar")
 
         current_installation_step+=1
-        print("Step " + current_installation_step + "/" + total_installation_steps + ": Rename downloaded jar to apktool.jar")
+        print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Rename downloaded jar to apktool.jar")
         os.rename("apktool_2.7.0.jar", "apktool.jar")
 
         current_installation_step+=1
-        print("Step " + current_installation_step + "/" + total_installation_steps + ": Move 'apktool.jar' and 'apktool' to /usr/local/bin")
+        print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Move 'apktool.jar' and 'apktool' to /usr/local/bin")
         shutil.move("apktool.sh" "/usr/local/bin/apktool.sh")
         shutil.move("apktool.jar" "/usr/local/bin/apktool.jar")
 
         current_installation_step+=1
-        print("Step " + current_installation_step + "/" + total_installation_steps + ": Make 'apktool.jar' and 'apktool' executable (755)")
+        print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Make 'apktool.jar' and 'apktool' executable (755)")
         os.chmod("/usr/local/bin/apktool.sh", 755)
         os.chmod("/usr/local/bin/apktool.jar", 755)
         
         current_installation_step+=1
-        print("Step " + current_installation_step + "/" + total_installation_steps + ": Check if apktool was successfully installed")
+        print("Step " + str(current_installation_step) + "/" + str(total_installation_steps) + ": Check if apktool was successfully installed")
         os.system("which apktool")
     
 
