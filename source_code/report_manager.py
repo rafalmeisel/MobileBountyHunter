@@ -35,32 +35,34 @@ def print_on_console(application_package_name, analyzed_file_name, issue_severit
     issue_severity_report_color = ""
     issue_status_report_color = ""
 
-    match issue_severity:
-        case IssueSeverity.HIGH:
-            issue_severity_report_color = "red"
-        case IssueSeverity.MEDIUM:
-            issue_severity_report_color = "yellow"
-        case IssueSeverity.LOW:
-            issue_severity_report_color = "blue"
-        case IssueSeverity.INFORMATIVE:
-            issue_severity_report_color = "grey"
-        case _:
-            issue_severity_report_color = "grey"
-    
-    match issue_status:
-        case IssueStatus.VULNERABLE:
-            issue_status_report_color = "red"
-        case IssueStatus.SECURED:
-            issue_status_report_color = "blue"
-        case IssueStatus.TO_VERIFY:
-            issue_status_report_color = "yellow"
-        case IssueStatus.FOUND:
-            issue_status_report_color = "red"
-        case IssueStatus.NOT_FOUND:
-            issue_status_report_color = "grey"
-        case _:
-            issue_status_report_color = "grey"
+    # These if/elif are implemented for backward compability with older version of Python 3
+    # Match was implemented in Python 3.10
 
+    if (issue_severity == IssueSeverity.HIGH):
+        issue_severity_report_color = "red"
+    elif (issue_severity == IssueSeverity.MEDIUM):
+        issue_severity_report_color = "yellow"
+    elif (issue_severity == IssueSeverity.LOW):
+        issue_severity_report_color = "blue"
+    elif (issue_severity == IssueSeverity.INFORMATIVE):
+        issue_severity_report_color = "grey"
+    else:
+        issue_severity_report_color = "grey"
+
+    if (issue_status == IssueStatus.VULNERABLE):
+        issue_status_report_color = "red"
+    elif (issue_status == IssueStatus.SECURED):
+        issue_status_report_color = "blue"
+    elif (issue_status == IssueStatus.TO_VERIFY):
+        issue_status_report_color = "yellow"
+    elif (issue_status == IssueStatus.FOUND):
+        issue_status_report_color = "red"
+    elif (issue_status == IssueStatus.NOT_FOUND):
+        issue_status_report_color = "grey"
+    else:
+        issue_status_report_color = "grey"
+    
+    
     if len(analyzed_file_name) == 0 and len(token_value) == 0:
         print(application_package_name + ": " + colored(str(issue_severity.name), issue_severity_report_color) + ": " + colored(str(issue_status.name) + ": " + token_name, issue_status_report_color))
 
