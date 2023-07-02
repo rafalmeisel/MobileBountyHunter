@@ -7,6 +7,7 @@ def is_installed_awscli():
     
     try:
         subprocess.check_output(["which", "aws"])
+        is_installed_awscli = True
     except (subprocess.CalledProcessError, FileNotFoundError):
         is_installed_awscli = False
     
