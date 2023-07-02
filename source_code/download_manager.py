@@ -1,5 +1,6 @@
 import sys
 import os
+import getpass
 import source_code.config_file_manager
 
 def download_android_application_package_name_from_google_play_to_input_directory(application_package_name):
@@ -13,7 +14,7 @@ def download_android_application_package_name_from_google_play_to_input_director
             print("An error occurred while creating the directory: " + android_input_directory_relative_path)
 
     print("Start downloading: " + application_package_name + " to " + android_input_directory_relative_path)
-    os.system("apkeep -a " + application_package_name + " " + android_input_directory_relative_path)
+    os.system("/home/" + getpass.getuser() + "/.cargo/bin/apkeep -a " + application_package_name + " " + android_input_directory_relative_path)
 
 
 # TODO: Implement iOS application downloader
