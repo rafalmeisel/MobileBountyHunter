@@ -32,10 +32,9 @@ def install_awscli():
 
 def run_install_process_aws_cli():
     
-    is_installed_awscli = is_installed_awscli()
     is_autoinstall_third_party_software = get_autoinstall_third_party_software()
 
-    if not (is_installed_awscli):
+    if not (is_installed_awscli()):
         if (is_autoinstall_third_party_software):
             install_awscli()
         else:

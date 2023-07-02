@@ -36,10 +36,9 @@ def install_android_decompiler_jadx():
 
 def run_install_process_android_decompiler_jadx():
     
-    is_installed_jadx = is_installed_jadx()
     is_autoinstall_third_party_software = get_autoinstall_third_party_software()
 
-    if not (is_installed_jadx):
+    if not (is_installed_jadx()):
         if (is_autoinstall_third_party_software):
             install_android_decompiler_jadx()
         else:

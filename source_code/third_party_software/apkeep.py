@@ -51,10 +51,9 @@ def install_android_apkeep():
 
 def run_install_process_apkeep():
     
-    is_installed_apkeep = is_installed_apkeep()
     is_autoinstall_third_party_software = get_autoinstall_third_party_software()
 
-    if not (is_installed_apkeep):
+    if not (is_installed_apkeep()):
         if (is_autoinstall_third_party_software):
             install_android_apkeep()
         else:

@@ -38,10 +38,9 @@ def install_android_decompiler_apktool():
 
 def run_install_process_android_decompiler_apktool():
     
-    is_installed_apktool = is_installed_apktool()
     is_autoinstall_third_party_software = get_autoinstall_third_party_software()
 
-    if not (is_installed_apktool):
+    if not (is_installed_apktool()):
         if (is_autoinstall_third_party_software):
             install_android_decompiler_apktool()
         else:
