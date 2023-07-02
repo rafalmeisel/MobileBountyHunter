@@ -39,3 +39,6 @@ def run_install_process_aws_cli():
             install_awscli()
         else:
             show_installation_process_aws_cli()
+    
+    if not (is_installed_awscli()):
+        exit()

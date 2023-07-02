@@ -58,3 +58,6 @@ def run_install_process_apkeep():
             install_android_apkeep()
         else:
             show_installation_process_android_decompiler_apkeep()
+    
+    if not (is_installed_apkeep()):
+        exit()

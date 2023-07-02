@@ -45,3 +45,6 @@ def run_install_process_android_decompiler_apktool():
             install_android_decompiler_apktool()
         else:
             show_installation_process_android_decompiler_apktool()
+
+    if not(is_installed_apktool()):
+        exit()

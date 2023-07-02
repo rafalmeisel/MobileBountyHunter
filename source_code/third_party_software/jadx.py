@@ -43,3 +43,6 @@ def run_install_process_android_decompiler_jadx():
             install_android_decompiler_jadx()
         else:
             show_installation_process_android_decompiler_jadx()
+
+    if not (is_installed_jadx()):
+        exit()
