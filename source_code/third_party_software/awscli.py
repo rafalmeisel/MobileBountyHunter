@@ -26,7 +26,7 @@ def install_awscli():
 
     print("=== Installing AwsCli ===")
     if (distribution == "kali" or distribution =="debian" or distribution =="linuxmint"):
-        subprocess.run('apt install jadx', shell=True, check=True)
+        subprocess.run('apt install awscli', shell=True, check=True)
     else:
         print("You're using " + distribution + " system. It suprised us that you are using this system. Please, let us know about adding this system to the script ;)")
 
