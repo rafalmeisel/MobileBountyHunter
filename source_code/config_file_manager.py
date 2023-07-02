@@ -45,8 +45,12 @@ def write_config_runtime_file(key, value):
     return config_runtime_file_contents
 
 
-def set_autoinstall_third_party_software(autoinstall_third_party_software):
-    write_config_runtime_file("autoinstallThirdPartySoftware", autoinstall_third_party_software)
+def set_true_autoinstall_third_party_software():
+    write_config_runtime_file("autoinstallThirdPartySoftware", "True")
+
+
+def set_false_autoinstall_third_party_software():
+    write_config_runtime_file("autoinstallThirdPartySoftware", "False")
 
 
 def get_autoinstall_third_party_software():
