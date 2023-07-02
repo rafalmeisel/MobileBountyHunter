@@ -49,6 +49,15 @@ The current analysis is:
 ![Report](images/Example_Report.png)
 
 ## How to run?
+
+``` Bash
+# Install preconditions
+sudo apt install python3-pip
+pip install termcolor
+pip install boto3
+pip install install-jdk
+```
+
 ### Help
 ``` Bash
 python3 MobileBountyHunter.py -h
@@ -56,7 +65,7 @@ python3 MobileBountyHunter.py -h
 usage: MobileBountyHunter.py [-h] [-ai] [-ao] [-al] [-as] [-ad {jadx,apktool}] [-ii] [-io] [-il] [-is] [-id]
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help show this help message and exit
   -ai, --analyze_android_input_directory
   -ao, --analyze_android_output_directory
   -al, --analyze_android_application_package_name_file
