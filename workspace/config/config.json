@@ -1,4 +1,5 @@
 {
+    "autoinstallThirdPartySoftware": "False",
     "globalMobileBountyHunterReportFileRelativePath": "_MobileBountyHunterReport.txt",
     "dedicatedMobileBountyHunterReportFileName": "_MobileBountyHunterReport.txt",
     "dedicatedMobileBountyHunterReportDirectoryRelativePath": "_MobileBountyHunterReport",

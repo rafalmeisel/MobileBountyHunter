@@ -2,31 +2,62 @@ import json
 import shutil
 import os
 
+def get_mobile_bounty_hunter_config_path():
+    mobile_bounty_hunter_directory = os.getcwd()
+    config_path = mobile_bounty_hunter_directory + "/workspace/config/config.json"
+    return config_path
+
+
+def get_mobile_bounty_hunter_config_runtime_path():
+    mobile_bounty_hunter_directory = os.getcwd()
+    config_runtime_path = mobile_bounty_hunter_directory + "/workspace/config/config_runtime.json"
+    return config_runtime_path
+
+
 def create_config_runtime_file():
-    shutil.copyfile('./workspace/config/config.json', './workspace/config/config_runtime.json')
+    config_path = get_mobile_bounty_hunter_config_path()
+    config_runtime_path = get_mobile_bounty_hunter_config_runtime_path()
+    shutil.copyfile(config_path, config_runtime_path)
 
 
 def delete_config_runtime_file():
-    os.remove('./workspace/config/config_runtime.json')
+    config_runtime_path = get_mobile_bounty_hunter_config_runtime_path()
+    os.remove(config_runtime_path)
 
 
 def read_config_runtime_file():
-    with open('./workspace/config/config_runtime.json') as config_runtime_file:
+    config_runtime_path = get_mobile_bounty_hunter_config_runtime_path()
+    with open(config_runtime_path) as config_runtime_file:
         config_runtime_file_contents = json.load(config_runtime_file)
     return config_runtime_file_contents
 
 
 def write_config_runtime_file(key, value):
-    
-    with open('./workspace/config/config_runtime.json', 'r') as config_runtime_file:
+    config_runtime_path = get_mobile_bounty_hunter_config_runtime_path()
+
+    with open(config_runtime_path, 'r') as config_runtime_file:
         config_runtime_file_contents = json.load(config_runtime_file)
         config_runtime_file_contents[key] = value
     
-    with open('./workspace/config/config_runtime.json', 'w') as config_runtime_file:
+    with open(config_runtime_path, 'w') as config_runtime_file:
         json.dump(config_runtime_file_contents, config_runtime_file, indent=4)
     
     return config_runtime_file_contents
 
+
+def set_autoinstall_third_party_software(autoinstall_third_party_software):
+    write_config_runtime_file("autoinstallThirdPartySoftware", autoinstall_third_party_software)
+
+
+def get_autoinstall_third_party_software():
+    config_file_json = read_config_runtime_file()
+    autoinstall_third_party_software_value = config_file_json["autoinstallThirdPartySoftware"]
+
+    if (autoinstall_third_party_software_value == "True"):
+        return True
+    else:
+        return False
+    
 
 def set_android_decompiling_tool(decompiling_tool):
     write_config_runtime_file("androidDecompilingTool", decompiling_tool)
