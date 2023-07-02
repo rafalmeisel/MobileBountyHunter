@@ -30,7 +30,7 @@ def main(argv):
     args = parser.parse_args()
 
     create_config_runtime_file()
-    
+
     if args.autoinstall:
         print("You selected automagically installation of 3rd Party Software!")
         set_true_autoinstall_third_party_software()
@@ -73,8 +73,8 @@ def main(argv):
         print('You choose: analyze_ios_application_package_name_file')
         source_code.application_manager.analyze_ios_application_package_name_list_file()
 
-    elif args.analyze_ios_store_url_file:
-        print('You choose: analyze_ios_store_url_file')
+    elif args.analyze_ios_store_list_file:
+        print('You choose: analyze_ios_store_list_file')
         source_code.application_manager.analyze_ios_store_list_file()
 
     delete_config_runtime_file()
