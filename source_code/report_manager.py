@@ -104,10 +104,11 @@ def write_to_dedicated_report_file(application_package_system, application_packa
 
 def write_to_global_report_file(application_package_system, application_package_name, analyzed_file_name, issue_severity, issue_status, token_name, token_value):
     
+    workspace_relative_path = get_workspace_relative_path()
     global_mobile_bounty_hunter_report_file_relative_path = get_global_mobile_bounty_hunter_report_file_relative_path()
 
     if not(os.path.exists(global_mobile_bounty_hunter_report_file_relative_path)):
-        os.makedirs(os.path.dirname(global_mobile_bounty_hunter_report_file_relative_path), exist_ok=True)
+        os.makedirs(pathlib.Path(workspace_relative_path,global_mobile_bounty_hunter_report_file_relative_path), exist_ok=True)
     
     report_global_file = open(global_mobile_bounty_hunter_report_file_relative_path, "a")
 

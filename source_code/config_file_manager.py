@@ -71,6 +71,11 @@ def set_ios_decompiling_tool(decompiling_tool):
     write_config_runtime_file("iosDecompilingTool", decompiling_tool)
 
 
+def get_workspace_relative_path():
+    config_file_json = read_config_runtime_file()
+    return config_file_json["workspaceRelativePath"]
+
+
 def get_global_mobile_bounty_hunter_report_file_relative_path():
     config_file_json = read_config_runtime_file()
     return config_file_json["globalMobileBountyHunterReportFileRelativePath"]
