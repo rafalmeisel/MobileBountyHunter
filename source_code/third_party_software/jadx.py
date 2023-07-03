@@ -86,17 +86,16 @@ def install_android_decompiler_jadx():
         subprocess.run(['unzip', 'jadx.zip', '-d', 'jadx-temp'])
 
         # Moving JADX binaries and libraries to /opt/jadx
-        subprocess.run(['sudo', 'mkdir', '-p', '/usr/jadx/bin'])
-        subprocess.run(['sudo', 'mv', 'jadx-temp/bin/jadx', '/usr/jadx/bin'])
-        subprocess.run(['sudo', 'mv', 'jadx-temp/bin/jadx-gui', '/usr/jadx/bin'])
-        subprocess.run(['sudo', 'mv', 'jadx-temp/lib', '/usr/jadx'])
+        subprocess.run(['sudo', 'mkdir', '-p', '/usr/jadx/bin'], shell=True, check=True)
+        subprocess.run(['sudo', 'mv', 'jadx-temp/bin/jadx', '/usr/jadx/bin'], shell=True, check=True)
+        subprocess.run(['sudo', 'mv', 'jadx-temp/bin/jadx-gui', '/usr/jadx/bin'], shell=True, check=True)
+        subprocess.run(['sudo', 'mv', 'jadx-temp/lib', '/usr/jadx'], shell=True, check=True)
 
         # Adding JADX to the system PATH
-        subprocess.run(['echo', 'export PATH=$PATH:/usr/jadx/bin', '|', 'sudo', 'tee', '-a', '/etc/profile'])
-        subprocess.run(['source', '/etc/profile'])
+        os.environ['PATH'] += ':/opt/jadx/bin'
 
         # Remove jadx.zip
-        subprocess.run(['rm', 'jadx.zip'])
+        subprocess.run(['rm', 'jadx.zip'], shell=True, check=True)
     else:
         print("You're using " + distribution + " system. It suprised us that you are using this system. Please, let us know about adding this system to the script ;)")
 
