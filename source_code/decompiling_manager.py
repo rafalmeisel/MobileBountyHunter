@@ -16,7 +16,7 @@ def decompile_apk_with_jadx(application_package_name):
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
     output_application_package_absolute_path = str(os.path.abspath(pathlib.Path(output_directory_relative_path, application_package_name)))
 
-    subprocess.run(['jadx', input_application_package_absolute_path,'-d', output_application_package_absolute_path])
+    subprocess.run(['/usr/jadx/bin/jadx', input_application_package_absolute_path,'-d', output_application_package_absolute_path])
 
 
 # Decompiling only Google Store applications with ApkTools
@@ -30,7 +30,7 @@ def decompile_apk_with_apk_tools(application_package_name):
     output_directory_relative_path = source_code.config_file_manager.get_android_output_directory_relative_path()
     output_application_package_absolute_path = str(os.path.abspath(pathlib.Path(output_directory_relative_path, application_package_name)))
 
-    os.system("apktool d " + input_application_package_absolute_path + " -o " + output_application_package_absolute_path + " -f --quiet")
+    os.system("/usr/bin/apktool d " + input_application_package_absolute_path + " -o " + output_application_package_absolute_path + " -f --quiet")
 
 
 # Decompiling only Google Store applications with Jadx
