@@ -59,7 +59,7 @@ def is_apkeep_installed_not_added_to_path():
 
 # TODO: It seems to not work on Linux Mint. Cargo/bin path cannot be permamently saved.
 def add_apkeep_to_path():
-    subprocess.run('export PATH=$PATH:/home/' + getpass.getuser() + '/.cargo/bin', shell=True, check=True)
+    os.environ['PATH'] += ':/home/' + getpass.getuser() + '/.cargo/bin'
 
 def check_apkeep_and_update_path():
     
