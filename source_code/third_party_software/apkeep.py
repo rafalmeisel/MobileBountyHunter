@@ -5,15 +5,17 @@ import os
 from source_code.config_file_manager import get_autoinstall_third_party_software
 
 def is_installed_apkeep():
-    is_installed_apkeep = False
-
+    
     try:
         subprocess.check_output(["which", "apkeep"])
-        is_installed_apkeep = True
+        return True
     except (subprocess.CalledProcessError, FileNotFoundError):
-        is_installed_apkeep = False
-
-    return is_installed_apkeep
+        apkeep_file_path = '/home/' + getpass.getuser() + '/.cargo/bin/apkeep'
+    
+        if os.path.exists(apkeep_file_path):
+            return True
+        else:
+            return False
 
 def show_installation_process_android_decompiler_apkeep():
     
@@ -46,44 +48,16 @@ def install_android_apkeep():
         print("You're using " + distribution + " system. It suprised us that you are using this system. Please, let us know about adding this system to the script ;)")
 
 
-def is_apkeep_installed_not_added_to_path():
-    is_apkeep_installed = os.path.isfile('/home/' + getpass.getuser() + '/.cargo/bin/apkeep')
-
-    if(is_apkeep_installed):
-        return True
-    else:
-        return False
-
-# TODO: It seems to not work on Linux Mint. Cargo/bin path cannot be permamently saved.
-def add_apkeep_to_path():
-    os.environ['PATH'] += ':/home/' + getpass.getuser() + '/.cargo/bin'
-
-def check_apkeep_and_update_path():
-    
-    is_apkeep_installed = os.path.isfile('/home/' + getpass.getuser() + '/.cargo/bin/apkeep')
-    if (is_apkeep_installed):
-        subprocess.run('export PATH=$PATH:/home/' + getpass.getuser() + '/.cargo/bin', shell=True, check=True)
-    
-
 def run_install_process_apkeep():
     
     is_autoinstall_third_party_software = get_autoinstall_third_party_software()
+
+    if not (is_installed_apkeep()):
+
+        if (is_autoinstall_third_party_software):
+            install_android_apkeep()
+        else:
+            show_installation_process_android_decompiler_apkeep()
     
-    # In Linux Mint, there is an issue to update $PATH with ./cargo/bin
-    # Due to this issue each time, when user run the script, there is check:
-    # 1. to verify if apkeep is already installed:
-    # a) yes - add /.cargo/bin to $PATH (it works only in current Python session!)
-    # b) no - continue script and install apkeep
-
-    if (is_apkeep_installed_not_added_to_path):
-        add_apkeep_to_path()
-    else:
-        if not (is_installed_apkeep()):
-
-            if (is_autoinstall_third_party_software):
-                install_android_apkeep()
-            else:
-                show_installation_process_android_decompiler_apkeep()
-        
-        if not (is_installed_apkeep()):
-            exit()
+    if not (is_installed_apkeep()):
+        exit()

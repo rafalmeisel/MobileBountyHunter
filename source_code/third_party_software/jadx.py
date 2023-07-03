@@ -7,15 +7,17 @@ import json
 from source_code.config_file_manager import get_autoinstall_third_party_software
 
 def is_installed_jadx():
-    is_installed_jadx = False
-
+    
     try:
         subprocess.check_output(["which", "jadx"])
-        is_installed_jadx = True
+        return True
     except (subprocess.CalledProcessError, FileNotFoundError):
-        is_installed_jadx = False
-
-    return is_installed_jadx
+        jadx_file_path = '/usr/jadx/bin/jadx'
+    
+        if os.path.exists(jadx_file_path):
+            return True
+        else:
+            return False
 
 def show_installation_process_android_decompiler_jadx():
     distribution = distro.id()
@@ -100,32 +102,15 @@ def install_android_decompiler_jadx():
         print("You're using " + distribution + " system. It suprised us that you are using this system. Please, let us know about adding this system to the script ;)")
 
 
-# TODO: It seems to not work on Linux Mint. Jadx path cannot be permamently saved.
-def add_jadx_to_path():
-    os.environ['PATH'] += ':/opt/jadx/bin'
-
-
-def is_jadx_installed_not_added_to_path():
-    is_jadx_installed = os.path.isfile('/usr/jadx/bin/jadx')
-
-    if(is_jadx_installed):
-        return True
-    else:
-        return False
-
 def run_install_process_android_decompiler_jadx():
     
     is_autoinstall_third_party_software = get_autoinstall_third_party_software()
 
+    if not (is_installed_jadx()):
+        if (is_autoinstall_third_party_software):
+            install_android_decompiler_jadx()
+        else:
+            show_installation_process_android_decompiler_jadx()
 
-    if (is_jadx_installed_not_added_to_path()):
-        add_jadx_to_path()
-    else:
-        if not (is_installed_jadx()):
-            if (is_autoinstall_third_party_software):
-                install_android_decompiler_jadx()
-            else:
-                show_installation_process_android_decompiler_jadx()
-
-        if not (is_installed_jadx()):
-            exit()
+    if not (is_installed_jadx()):
+        exit()
