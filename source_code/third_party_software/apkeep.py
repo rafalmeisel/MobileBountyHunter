@@ -50,9 +50,9 @@ def install_android_apkeep():
 
 
 def is_apkeep_installed_not_added_to_path():
-    is_appkeep_installed = os.path.isfile('/home/' + getpass.getuser() + '/.cargo/bin/apkeep')
+    is_apkeep_installed = os.path.isfile('/home/' + getpass.getuser() + '/.cargo/bin/apkeep')
 
-    if(is_appkeep_installed):
+    if(is_apkeep_installed):
         return True
     else:
         return False
@@ -63,8 +63,8 @@ def add_apkeep_to_path():
 
 def check_apkeep_and_update_path():
     
-    is_appkeep_installed = os.path.isfile('/home/' + getpass.getuser() + '/.cargo/bin/apkeep')
-    if (is_appkeep_installed):
+    is_apkeep_installed = os.path.isfile('/home/' + getpass.getuser() + '/.cargo/bin/apkeep')
+    if (is_apkeep_installed):
         subprocess.run('export PATH=$PATH:/home/' + getpass.getuser() + '/.cargo/bin', shell=True, check=True)
     
 
