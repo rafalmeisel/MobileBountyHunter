@@ -35,15 +35,12 @@ def install_android_apkeep():
     distribution = distro.id()
 
     print("=== Installing Apkeep ===")
-    if (distribution == "kali" or distribution =="debian"):
+    if (distribution == "kali" or distribution =="debian" or distribution == "linuxmint"):
         subprocess.run('apt install libssl-dev -y', shell=True, check=True)
         subprocess.run('apt install pkg-config -y', shell=True, check=True)
         subprocess.run('apt install cargo -y', shell=True, check=True)
         subprocess.run('cargo install apkeep --locked', shell=True, check=True)
         subprocess.run('export PATH=$PATH:/home/' + getpass.getuser() + '/.cargo/bin', shell=True, check=True)
-
-    elif (distribution == "linuxmint"):
-        subprocess.run('flatpak install flathub com.github.skylot.jadx', shell=True, check=True)
 
     else:
         print("You're using " + distribution + " system. It suprised us that you are using this system. Please, let us know about adding this system to the script ;)")

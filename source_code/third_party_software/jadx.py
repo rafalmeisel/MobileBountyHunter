@@ -102,8 +102,7 @@ def install_android_decompiler_jadx():
 
 # TODO: It seems to not work on Linux Mint. Jadx path cannot be permamently saved.
 def add_jadx_to_path():
-    subprocess.run('export PATH=$PATH:/usr/jadx/bin | sudo tee -a /etc/profile', shell=True, check=True)
-    subprocess.run('source /etc/profile', shell=True, check=True)
+    os.environ['PATH'] += ':/opt/jadx/bin'
 
 
 def is_jadx_installed_not_added_to_path():
