@@ -52,6 +52,8 @@ The current analysis is:
 
 ``` Bash
 # Install preconditions
+sudo apt update
+sudo apt install git
 sudo apt install python3-pip
 pip install termcolor
 pip install boto3
