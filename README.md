@@ -51,20 +51,33 @@ The current analysis is:
 ## How to run?
 
 ``` Bash
-# Install preconditions
+# Step 1: Install preconditions
+
+# Debian/Ubuntu/Kali/Mint
 sudo apt update
 sudo apt install git
 sudo apt install python3-pip
 pip install termcolor
 pip install boto3
 pip install install-jdk
+
+# Step 2: Download project
+git clone https://github.com/rafalmeisel/MobileBountyHunter.git
+cd MobileBountyHunter
+
+# [Optionally] Step 3: Autoinstall all dependencies
+# --autoinstall - install automagically all necessary tools like: apktool, apkeep, jadx, awscli
+python3 MobileBountyHunter.py -as --autoinstall
+
+# Step 4: Run and hack the Mobile World!
+python3 MobileBountyHunter.py -as
 ```
 
 ### Help
 ``` Bash
 python3 MobileBountyHunter.py -h
 
-usage: MobileBountyHunter.py [-h] [-ai] [-ao] [-al] [-as] [-ad {jadx,apktool}] [-ii] [-io] [-il] [-is] [-id]
+usage: MobileBountyHunter.py [-h] [-ai] [-ao] [-al] [-as] [-ad {jadx,apktool}] [-ii] [-io] [-il] [-is] [-id] [--autoinstall]
 
 options:
   -h, --help show this help message and exit
@@ -78,6 +91,7 @@ options:
   -il, --analyze_ios_application_package_name_file
   -is, --analyze_ios_store_list_file
   -id, --ios_decompiling_tool
+  --autoinstall
 ```
 
 ### Case 1: Run analyze using Google Play store
@@ -86,41 +100,65 @@ options:
 https://play.google.com/store/apps/dev?id=5700313618786177705
 https://play.google.com/store/apps/details?id=com.google.android.apps.chromecast.app
 https://play.google.com/store/apps/details?id=com.google.android.apps.fitness
+```
+![](images/case_1_android_store_urls_list_file.png)
 
+``` Bash
 # 2. Run command:
 python3 MobileBountyHunter.py -as
 ```
+![](images/case_1_android_store_urls_list_run.png)
 
 ### Case 2: Run analyze using application package name
 ``` Bash
-# 1. Update "android_application+package_name_list.txt". For example:
+# 1. Update "android_application_package_name_list.txt". For example:
 com.google.android.apps.chromecast.app
 com.google.android.apps.youtube.kids
 com.google.android.apps.fitness
+```
+![](images/case_2_android_application_package_name_list_file.png)
 
+``` Bash
 # 2. Run command:
 python3 MobileBountyHunter.py -al
 ```
+![](images/case_2_android_application_package_name_list_run.png)
 
 ### Case 3: Run analyze using input directory
 ``` Bash
-# 1. In directory "android_input" move application. For example:
+# 1. In directory "android_input" put as many application files as you want. For example:
 com.google.android.apps.youtube.kids.apk
 com.google.android.apps.fitness.apk
+```
+![](images/case_3_android_input_directory.png)
 
+``` Bash
 # 2. Run command:
 python3 MobileBountyHunter.py -ai
 ```
+![](images/case_3_android_input_run.png)
 
 ### Case 4: Run analyze using output directory
 ``` Bash
-# 1. In directory "android_output" move decompiled application. For example:
+# 1. In directory "android_output" put decompiled applications. For example:
 com.google.android.apps.youtube.kids.apk
 com.google.android.apps.fitness.apk
+```
+![](images/case_4_android_output_directory.png)
 
+``` Bash
 # 2. Run command:
 python3 MobileBountyHunter.py -ao
 ```
+![](images/case_4_android_output_run.png)
+
+## Currently supported Operating Systems (only Linux):
+- Debian
+- Ubuntu
+- Kali
+- Mint
+
+If your distribution is not on the list - create the issue :)
 
 ## Why Mobile Bounty Hunter was created?
 On the market you can find few great software to check mobile applications as:
